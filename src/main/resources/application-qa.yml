@@ -1,0 +1,17 @@
+server:
+  port: 8591
+  servlet:
+    context-path: /api/v1/docent-control
+
+spring:
+  application:
+    name: docent-control-service-qa
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://127.0.0.1:8762/eureka}
+  instance:
+    preferIpAddress: true
+
+    

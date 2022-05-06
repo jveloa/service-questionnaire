@@ -1,11 +1,31 @@
 server:
-  port: 8591
+  port: 8597
   servlet:
-    context-path: /api/v1/docent-control
+    context-path: /api/v1/training
 
 spring:
   application:
-    name: docent-control-service-qa
+    name: training-service-qa
+    
+  datasource:
+    url: jdbc:postgresql://10.8.1.33:5432/training
+    username: postgres
+    password: postgres
+    tomcat:
+      test-while-idle: true
+      validation-query: SELECT 1
+    initialization-mode: never
+    platform: 
+  jpa:
+    database: postgresql
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: none
 
 eureka:
   client:

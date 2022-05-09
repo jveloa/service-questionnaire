@@ -8,7 +8,7 @@ spring:
     name: training-service
     
   datasource:
-    url: jdbc:postgresql://localhost:5433/training
+    url: jdbc:postgresql://localhost:5432/training
     username: postgres
     password: postgres
     tomcat:

@@ -21,7 +21,7 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public Question findById(Long id) {
+	public Question findById(Integer id) {
 		return questionRepository.findById(id).get();
 	}
 
@@ -32,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public Question update(Question item) {
-		Question itemInDb = findById(Long.valueOf(item.getId()));
+		Question itemInDb = findById(item.getId());
 		itemInDb.setDescription(item.getDescription());
 		itemInDb.setQuestion(item.getQuestion());
 		
@@ -40,7 +40,7 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(Integer id) {
 		questionRepository.deleteById(id);
 	}
 

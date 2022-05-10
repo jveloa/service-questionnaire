@@ -9,13 +9,13 @@ public interface QuestionService {
 	
 	Question findByName(String name);
 	
-	Question findById(Long id);
+	Question findById(Integer id);
 	
 	Question save(Question faq);
 	
 	Question update(Question faq);
 	
-	void delete(Long id);
+	void delete(Integer id);
 
 	
 }

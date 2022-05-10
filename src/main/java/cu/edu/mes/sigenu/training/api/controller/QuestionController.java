@@ -52,9 +52,8 @@ public class QuestionController {
 	
 	@GetMapping("/{id}")
 	@ApiOperation(value = "Get question by id")
-	public QuestionDto get(@PathVariable Long id){
+	public QuestionDto get(@PathVariable Integer id){
 		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		Question item = questionService.findById(id);
 		return modelMapper.map(item, QuestionDto.class);
 	}
@@ -86,7 +85,7 @@ public class QuestionController {
 	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping("/{id}")
 	@ApiOperation(value = "Delete question registered")
-	public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
+	public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
 		try {
 			questionService.delete(id);
 		} catch (Exception e) {

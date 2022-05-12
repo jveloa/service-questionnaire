@@ -45,7 +45,7 @@ public class GroupQuestion implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "name_group")
     private String nameGroup;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroupQuestion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupQuestionId")
     private List<Question> questionList;
 
     public GroupQuestion() {

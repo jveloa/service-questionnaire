@@ -40,30 +40,24 @@ public class Question implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "question")
     private String question;
-
     @Size(max = 2147483647)
     @Column(name = "description")
     private String description;
-
     @JoinTable(name = "questionnaire_question", joinColumns = {
-        @JoinColumn(name = "id_question", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "id_questionnaire", referencedColumnName = "id")})
+        @JoinColumn(name = "question_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "questionnaire_id", referencedColumnName = "id")})
     @ManyToMany
     private List<Questionnaire> questionnaireList;
-
-    @JoinColumn(name = "id_group_question", referencedColumnName = "id")
+    @JoinColumn(name = "group_question_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private GroupQuestion idGroupQuestion;
-
+    private GroupQuestion groupQuestionId;
     @OneToMany(mappedBy = "questionId")
     private List<QuestionAnswer> questionAnswerList;
-
     @OneToMany(mappedBy = "questionId")
     private List<QuestionCarrer> questionCarrerList;
 
@@ -111,12 +105,12 @@ public class Question implements Serializable {
         this.questionnaireList = questionnaireList;
     }
 
-    public GroupQuestion getIdGroupQuestion() {
-        return idGroupQuestion;
+    public GroupQuestion getGroupQuestionId() {
+        return groupQuestionId;
     }
 
-    public void setIdGroupQuestion(GroupQuestion idGroupQuestion) {
-        this.idGroupQuestion = idGroupQuestion;
+    public void setGroupQuestionId(GroupQuestion groupQuestionId) {
+        this.groupQuestionId = groupQuestionId;
     }
 
     public List<QuestionAnswer> getQuestionAnswerList() {

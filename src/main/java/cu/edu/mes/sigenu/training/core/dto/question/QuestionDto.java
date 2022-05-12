@@ -6,7 +6,7 @@ import lombok.Data;
 public class QuestionDto {
 
     private Integer id;
-	private Integer idGroupQuestion;
+	private Integer GroupQuestionId;
 	private String question;
 	private String description;
 }

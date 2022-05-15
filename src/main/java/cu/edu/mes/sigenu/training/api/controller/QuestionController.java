@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @Api(tags = "Question endpoint controller")
-@RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/question", produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionController {
 	
 	@Autowired

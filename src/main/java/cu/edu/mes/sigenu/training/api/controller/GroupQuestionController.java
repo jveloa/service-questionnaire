@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "Group Question enpoint controller")
-@RequestMapping(value = "group-question",produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/group-question",produces = MediaType.APPLICATION_JSON_VALUE)
 public class GroupQuestionController {
 
     @Autowired

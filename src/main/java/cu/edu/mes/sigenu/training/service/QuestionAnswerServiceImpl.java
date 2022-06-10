@@ -36,7 +36,7 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     public QuestionAnswer update(QuestionAnswer questionAnswer) {
         QuestionAnswer itemDb = findById(questionAnswer.getId());
         itemDb.setQuestionId(questionAnswer.getQuestionId());
-        itemDb.setAnswer(questionAnswer.getAnswer());
+        itemDb.setIdAnswer(questionAnswer.getIdAnswer());
         return questionAnswerRepository.save(itemDb);
     }
 

@@ -38,7 +38,7 @@ public class QuestionAnswerController {
 
         TypeMap<QuestionAnswer,QuestionAnswerDto> propertyMapper = modelMapper.createTypeMap(QuestionAnswer.class, QuestionAnswerDto.class);
         propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionId().getId(),QuestionAnswerDto::setQuestionId));
-
+        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getIdAnswer().getId(),QuestionAnswerDto::setIdAnswer));
         return questionAnswerService.listAll().stream()
                                     .map(item -> modelMapper.map(item,QuestionAnswerDto.class))
                                     .collect(Collectors.toList());
@@ -53,6 +53,7 @@ public class QuestionAnswerController {
 
         TypeMap<QuestionAnswer,QuestionAnswerDto> propertyMapper = modelMapper.createTypeMap(QuestionAnswer.class,QuestionAnswerDto.class);
         propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionId().getId(),QuestionAnswerDto::setQuestionId));
+        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getIdAnswer().getId(),QuestionAnswerDto::setIdAnswer));
         QuestionAnswer item = questionAnswerService.findById(id);
         return modelMapper.map(item, QuestionAnswerDto.class);
 

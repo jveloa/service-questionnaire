@@ -33,7 +33,6 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public Question update(Question item) {
 		Question itemInDb = findById(item.getId());
-		itemInDb.setDescription(item.getDescription());
 		itemInDb.setQuestion(item.getQuestion());
 		
 		return questionRepository.save(itemInDb);

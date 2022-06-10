@@ -20,23 +20,24 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author fpicayo
+ * @author Junior
  */
 @Entity
-@Table(name = "questionnarie_student")
+@Table(name = "questionnarie_student", catalog = "training", schema = "public")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "QuestionnarieStudent.findAll", query = "SELECT q FROM QuestionnarieStudent q")})
+    @NamedQuery(name = "QuestionnarieStudent.findAll", query = "SELECT q FROM QuestionnarieStudent q")
+    , @NamedQuery(name = "QuestionnarieStudent.findByStudentSigenuId", query = "SELECT q FROM QuestionnarieStudent q WHERE q.studentSigenuId = :studentSigenuId")
+    , @NamedQuery(name = "QuestionnarieStudent.findByDoneDate", query = "SELECT q FROM QuestionnarieStudent q WHERE q.doneDate = :doneDate")
+    , @NamedQuery(name = "QuestionnarieStudent.findById", query = "SELECT q FROM QuestionnarieStudent q WHERE q.id = :id")})
 public class QuestionnarieStudent implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "student_sigenu_id")
     private String studentSigenuId;
     @Column(name = "done_date")

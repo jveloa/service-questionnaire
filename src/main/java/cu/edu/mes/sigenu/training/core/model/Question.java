@@ -21,17 +21,20 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author fpicayo
+ * @author Junior
  */
 @Entity
-@Table(name = "question")
+@Table(name = "question", catalog = "training", schema = "public")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q")})
+    @NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q")
+    , @NamedQuery(name = "Question.findById", query = "SELECT q FROM Question q WHERE q.id = :id")
+    , @NamedQuery(name = "Question.findByQuestion", query = "SELECT q FROM Question q WHERE q.question = :question")})
 public class Question implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,21 +44,16 @@ public class Question implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "question")
     private String question;
-    @Size(max = 2147483647)
-    @Column(name = "description")
-    private String description;
     @JoinTable(name = "questionnaire_question", joinColumns = {
         @JoinColumn(name = "question_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "questionnaire_id", referencedColumnName = "id")})
     @ManyToMany
     private List<Questionnaire> questionnaireList;
-    @JoinColumn(name = "group_question_id", referencedColumnName = "id")
+    @JoinColumn(name = "id_group_question", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private GroupQuestion groupQuestionId;
+    private GroupQuestion idGroupQuestion;
     @OneToMany(mappedBy = "questionId")
     private List<QuestionAnswer> questionAnswerList;
     @OneToMany(mappedBy = "questionId")
@@ -89,14 +87,7 @@ public class Question implements Serializable {
         this.question = question;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    @XmlTransient
     public List<Questionnaire> getQuestionnaireList() {
         return questionnaireList;
     }
@@ -105,14 +96,15 @@ public class Question implements Serializable {
         this.questionnaireList = questionnaireList;
     }
 
-    public GroupQuestion getGroupQuestionId() {
-        return groupQuestionId;
+    public GroupQuestion getIdGroupQuestion() {
+        return idGroupQuestion;
     }
 
-    public void setGroupQuestionId(GroupQuestion groupQuestionId) {
-        this.groupQuestionId = groupQuestionId;
+    public void setIdGroupQuestion(GroupQuestion idGroupQuestion) {
+        this.idGroupQuestion = idGroupQuestion;
     }
 
+    @XmlTransient
     public List<QuestionAnswer> getQuestionAnswerList() {
         return questionAnswerList;
     }
@@ -121,6 +113,7 @@ public class Question implements Serializable {
         this.questionAnswerList = questionAnswerList;
     }
 
+    @XmlTransient
     public List<QuestionCarrer> getQuestionCarrerList() {
         return questionCarrerList;
     }

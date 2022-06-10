@@ -17,23 +17,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author fpicayo
+ * @author Junior
  */
 @Entity
-@Table(name = "student_answer")
+@Table(name = "student_answer", catalog = "training", schema = "public")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "StudentAnswer.findAll", query = "SELECT s FROM StudentAnswer s")})
+    @NamedQuery(name = "StudentAnswer.findAll", query = "SELECT s FROM StudentAnswer s")
+    , @NamedQuery(name = "StudentAnswer.findByStudentSigenuId", query = "SELECT s FROM StudentAnswer s WHERE s.studentSigenuId = :studentSigenuId")
+    , @NamedQuery(name = "StudentAnswer.findById", query = "SELECT s FROM StudentAnswer s WHERE s.id = :id")})
 public class StudentAnswer implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "student_sigenu_id")
     private String studentSigenuId;
     @Id

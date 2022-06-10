@@ -6,7 +6,9 @@
 package cu.edu.mes.sigenu.training.core.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,18 +16,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author fpicayo
+ * @author Junior
  */
 @Entity
-@Table(name = "answer")
+@Table(name = "answer", catalog = "training", schema = "public")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Answer.findAll", query = "SELECT a FROM Answer a")})
+    @NamedQuery(name = "Answer.findAll", query = "SELECT a FROM Answer a")
+    , @NamedQuery(name = "Answer.findById", query = "SELECT a FROM Answer a WHERE a.id = :id")
+    , @NamedQuery(name = "Answer.findByAnswer", query = "SELECT a FROM Answer a WHERE a.answer = :answer")})
 public class Answer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,10 +41,10 @@ public class Answer implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "answer")
     private String answer;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAnswer")
+    private List<QuestionAnswer> questionAnswerList;
 
     public Answer() {
     }
@@ -66,6 +72,15 @@ public class Answer implements Serializable {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    @XmlTransient
+    public List<QuestionAnswer> getQuestionAnswerList() {
+        return questionAnswerList;
+    }
+
+    public void setQuestionAnswerList(List<QuestionAnswer> questionAnswerList) {
+        this.questionAnswerList = questionAnswerList;
     }
 
     @Override

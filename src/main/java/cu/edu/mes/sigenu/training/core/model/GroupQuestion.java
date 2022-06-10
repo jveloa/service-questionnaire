@@ -18,17 +18,21 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author fpicayo
+ * @author Junior
  */
 @Entity
-@Table(name = "group_question")
+@Table(name = "group_question", catalog = "training", schema = "public")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "GroupQuestion.findAll", query = "SELECT g FROM GroupQuestion g")})
+    @NamedQuery(name = "GroupQuestion.findAll", query = "SELECT g FROM GroupQuestion g")
+    , @NamedQuery(name = "GroupQuestion.findById", query = "SELECT g FROM GroupQuestion g WHERE g.id = :id")
+    , @NamedQuery(name = "GroupQuestion.findByDescription", query = "SELECT g FROM GroupQuestion g WHERE g.description = :description")
+    , @NamedQuery(name = "GroupQuestion.findByNameGroup", query = "SELECT g FROM GroupQuestion g WHERE g.nameGroup = :nameGroup")})
 public class GroupQuestion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,15 +41,12 @@ public class GroupQuestion implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 2147483647)
     @Column(name = "description")
     private String description;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "name_group")
     private String nameGroup;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupQuestionId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroupQuestion")
     private List<Question> questionList;
 
     public GroupQuestion() {
@@ -84,6 +85,7 @@ public class GroupQuestion implements Serializable {
         this.nameGroup = nameGroup;
     }
 
+    @XmlTransient
     public List<Question> getQuestionList() {
         return questionList;
     }

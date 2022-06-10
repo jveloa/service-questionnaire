@@ -1,12 +1,15 @@
+
 --
 -- Name: answer; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.answer (
-    id integer NOT NULL,
-    answer character varying NOT NULL
+                               id integer NOT NULL,
+                               answer character varying NOT NULL
 );
 
+
+ALTER TABLE public.answer OWNER TO postgres;
 
 --
 -- Name: answer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -20,6 +23,8 @@ CREATE SEQUENCE public.answer_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.answer_id_seq OWNER TO postgres;
+
 --
 -- Name: answer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -32,31 +37,39 @@ ALTER SEQUENCE public.answer_id_seq OWNED BY public.answer.id;
 --
 
 CREATE TABLE public.group_question (
-    id integer NOT NULL,
-    description character varying,
-    name_group character varying NOT NULL
+                                       id integer NOT NULL,
+                                       description character varying,
+                                       name_group character varying NOT NULL
 );
+
+
+ALTER TABLE public.group_question OWNER TO postgres;
 
 --
 -- Name: question; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.question (
-    id integer NOT NULL,
-    question character varying NOT NULL,
-    description character varying,
-    group_question_id integer NOT NULL
+                                 id integer NOT NULL,
+                                 question character varying NOT NULL,
+                                 id_group_question integer NOT NULL
 );
+
+
+ALTER TABLE public.question OWNER TO postgres;
 
 --
 -- Name: question_answer; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.question_answer (
-    id integer NOT NULL,
-    question_id integer,
-    answer text
+                                        id integer NOT NULL,
+                                        question_id integer,
+                                        id_answer integer NOT NULL
 );
+
+
+ALTER TABLE public.question_answer OWNER TO postgres;
 
 --
 -- Name: question_answer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -70,6 +83,8 @@ CREATE SEQUENCE public.question_answer_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.question_answer_id_seq OWNER TO postgres;
+
 --
 -- Name: question_answer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -82,11 +97,13 @@ ALTER SEQUENCE public.question_answer_id_seq OWNED BY public.question_answer.id;
 --
 
 CREATE TABLE public.question_carrer (
-    id integer NOT NULL,
-    question_id integer,
-    career_sigenu_id character varying
+                                        id integer NOT NULL,
+                                        question_id integer,
+                                        career_sigenu_id character varying
 );
 
+
+ALTER TABLE public.question_carrer OWNER TO postgres;
 
 --
 -- Name: question_carrer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -99,6 +116,8 @@ CREATE SEQUENCE public.question_carrer_id_seq
     NO MAXVALUE
     CACHE 1;
 
+
+ALTER TABLE public.question_carrer_id_seq OWNER TO postgres;
 
 --
 -- Name: question_carrer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -119,6 +138,8 @@ CREATE SEQUENCE public.question_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.question_id_seq OWNER TO postgres;
+
 --
 -- Name: question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -131,11 +152,13 @@ ALTER SEQUENCE public.question_id_seq OWNED BY public.question.id;
 --
 
 CREATE TABLE public.questionnaire (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying
+                                      id integer NOT NULL,
+                                      name character varying NOT NULL,
+                                      description character varying
 );
 
+
+ALTER TABLE public.questionnaire OWNER TO postgres;
 
 --
 -- Name: questionnaire_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -149,6 +172,8 @@ CREATE SEQUENCE public.questionnaire_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.questionnaire_id_seq OWNER TO postgres;
+
 --
 -- Name: questionnaire_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -161,20 +186,26 @@ ALTER SEQUENCE public.questionnaire_id_seq OWNED BY public.questionnaire.id;
 --
 
 CREATE TABLE public.questionnaire_question (
-    questionnaire_id integer NOT NULL,
-    question_id integer NOT NULL
+                                               questionnaire_id integer NOT NULL,
+                                               question_id integer NOT NULL
 );
+
+
+ALTER TABLE public.questionnaire_question OWNER TO postgres;
 
 --
 -- Name: questionnarie_student; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.questionnarie_student (
-    questionnarie_id integer NOT NULL,
-    student_sigenu_id character varying NOT NULL,
-    done_date timestamp without time zone,
-    id integer NOT NULL
+                                              questionnarie_id integer NOT NULL,
+                                              student_sigenu_id character varying NOT NULL,
+                                              done_date timestamp without time zone,
+                                              id integer NOT NULL
 );
+
+
+ALTER TABLE public.questionnarie_student OWNER TO postgres;
 
 --
 -- Name: questionnarie_student_id_questionnaire_student_sigenu_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -186,6 +217,9 @@ CREATE SEQUENCE public.questionnarie_student_id_questionnaire_student_sigenu_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+
+ALTER TABLE public.questionnarie_student_id_questionnaire_student_sigenu_seq OWNER TO postgres;
 
 --
 -- Name: questionnarie_student_id_questionnaire_student_sigenu_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -199,10 +233,13 @@ ALTER SEQUENCE public.questionnarie_student_id_questionnaire_student_sigenu_seq 
 --
 
 CREATE TABLE public.student_answer (
-    student_sigenu_id character varying NOT NULL,
-    question_answer_id integer NOT NULL,
-    id integer NOT NULL
+                                       student_sigenu_id character varying NOT NULL,
+                                       question_answer_id integer NOT NULL,
+                                       id integer NOT NULL
 );
+
+
+ALTER TABLE public.student_answer OWNER TO postgres;
 
 --
 -- Name: student_answer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -214,6 +251,9 @@ CREATE SEQUENCE public.student_answer_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+
+ALTER TABLE public.student_answer_id_seq OWNER TO postgres;
 
 --
 -- Name: student_answer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -233,6 +273,8 @@ CREATE SEQUENCE public."type-question_id_seq"
     NO MAXVALUE
     CACHE 1;
 
+
+ALTER TABLE public."type-question_id_seq" OWNER TO postgres;
 
 --
 -- Name: type-question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -394,11 +436,19 @@ ALTER TABLE ONLY public.student_answer
 
 
 --
+-- Name: fk_question_answer_answer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.question_answer
+    ADD CONSTRAINT fk_question_answer_answer FOREIGN KEY (id_answer) REFERENCES public.answer(id);
+
+
+--
 -- Name: fk_question_type-question; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.question
-    ADD CONSTRAINT "fk_question_type-question" FOREIGN KEY (group_question_id) REFERENCES public.group_question(id);
+    ADD CONSTRAINT "fk_question_type-question" FOREIGN KEY (id_group_question) REFERENCES public.group_question(id);
 
 
 --

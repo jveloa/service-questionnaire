@@ -19,17 +19,21 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author fpicayo
+ * @author Junior
  */
 @Entity
-@Table(name = "questionnaire")
+@Table(name = "questionnaire", catalog = "training", schema = "public")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Questionnaire.findAll", query = "SELECT q FROM Questionnaire q")})
+    @NamedQuery(name = "Questionnaire.findAll", query = "SELECT q FROM Questionnaire q")
+    , @NamedQuery(name = "Questionnaire.findById", query = "SELECT q FROM Questionnaire q WHERE q.id = :id")
+    , @NamedQuery(name = "Questionnaire.findByName", query = "SELECT q FROM Questionnaire q WHERE q.name = :name")
+    , @NamedQuery(name = "Questionnaire.findByDescription", query = "SELECT q FROM Questionnaire q WHERE q.description = :description")})
 public class Questionnaire implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,11 +43,8 @@ public class Questionnaire implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "name")
     private String name;
-    @Size(max = 2147483647)
     @Column(name = "description")
     private String description;
     @ManyToMany(mappedBy = "questionnaireList")
@@ -87,6 +88,7 @@ public class Questionnaire implements Serializable {
         this.description = description;
     }
 
+    @XmlTransient
     public List<Question> getQuestionList() {
         return questionList;
     }
@@ -95,6 +97,7 @@ public class Questionnaire implements Serializable {
         this.questionList = questionList;
     }
 
+    @XmlTransient
     public List<QuestionnarieStudent> getQuestionnarieStudentList() {
         return questionnarieStudentList;
     }

@@ -17,16 +17,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author fpicayo
+ * @author Junior
  */
 @Entity
-@Table(name = "question_carrer")
+@Table(name = "question_carrer", catalog = "training", schema = "public")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "QuestionCarrer.findAll", query = "SELECT q FROM QuestionCarrer q")})
+    @NamedQuery(name = "QuestionCarrer.findAll", query = "SELECT q FROM QuestionCarrer q")
+    , @NamedQuery(name = "QuestionCarrer.findById", query = "SELECT q FROM QuestionCarrer q WHERE q.id = :id")
+    , @NamedQuery(name = "QuestionCarrer.findByCareerSigenuId", query = "SELECT q FROM QuestionCarrer q WHERE q.careerSigenuId = :careerSigenuId")})
 public class QuestionCarrer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +38,6 @@ public class QuestionCarrer implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 2147483647)
     @Column(name = "career_sigenu_id")
     private String careerSigenuId;
     @JoinColumn(name = "question_id", referencedColumnName = "id")

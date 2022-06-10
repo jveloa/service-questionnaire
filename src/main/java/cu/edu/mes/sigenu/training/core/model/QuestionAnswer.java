@@ -20,16 +20,19 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author fpicayo
+ * @author Junior
  */
 @Entity
-@Table(name = "question_answer")
+@Table(name = "question_answer", catalog = "training", schema = "public")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "QuestionAnswer.findAll", query = "SELECT q FROM QuestionAnswer q")})
+    @NamedQuery(name = "QuestionAnswer.findAll", query = "SELECT q FROM QuestionAnswer q")
+    , @NamedQuery(name = "QuestionAnswer.findById", query = "SELECT q FROM QuestionAnswer q WHERE q.id = :id")})
 public class QuestionAnswer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,11 +41,11 @@ public class QuestionAnswer implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 2147483647)
-    @Column(name = "answer")
-    private String answer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionAnswerId")
     private List<StudentAnswer> studentAnswerList;
+    @JoinColumn(name = "id_answer", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Answer idAnswer;
     @JoinColumn(name = "question_id", referencedColumnName = "id")
     @ManyToOne
     private Question questionId;
@@ -62,20 +65,21 @@ public class QuestionAnswer implements Serializable {
         this.id = id;
     }
 
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
+    @XmlTransient
     public List<StudentAnswer> getStudentAnswerList() {
         return studentAnswerList;
     }
 
     public void setStudentAnswerList(List<StudentAnswer> studentAnswerList) {
         this.studentAnswerList = studentAnswerList;
+    }
+
+    public Answer getIdAnswer() {
+        return idAnswer;
+    }
+
+    public void setIdAnswer(Answer idAnswer) {
+        this.idAnswer = idAnswer;
     }
 
     public Question getQuestionId() {

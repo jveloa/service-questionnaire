@@ -33,8 +33,8 @@ public class StudentAnswerController {
         TypeMap<StudentAnswer, StudentAnswerDto> propertyMapper = modelMapper.createTypeMap(StudentAnswer.class, StudentAnswerDto.class);
         propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionAnswerId().getQuestionId().getId(),
                                                          (destination, value) -> destination.getQuestionAnswerId().setQuestionId((Integer)value)));
-        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionAnswerId().getIdAnswer().getId(),
-                                                         (destination, value) -> destination.getQuestionAnswerId().setIdAnswer((Integer) value)));
+        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionAnswerId().getAnswerId().getId(),
+                                                         (destination, value) -> destination.getQuestionAnswerId().setAnswerId((Integer) value)));
         return studentAnswerService.listAllByStudent(sigenuId).stream()
                                     .map(item -> modelMapper.map(item,StudentAnswerDto.class))
                                     .collect(Collectors.toList());
@@ -49,8 +49,8 @@ public class StudentAnswerController {
         TypeMap<StudentAnswer, StudentAnswerDto> propertyMapper = modelMapper.createTypeMap(StudentAnswer.class, StudentAnswerDto.class);
         propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionAnswerId().getQuestionId().getId(),
                                                          (destination, value) -> destination.getQuestionAnswerId().setQuestionId((Integer)value)));
-        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionAnswerId().getIdAnswer().getId(),
-                                                         (destination, value) -> destination.getQuestionAnswerId().setIdAnswer((Integer) value)));
+        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionAnswerId().getAnswerId().getId(),
+                                                         (destination, value) -> destination.getQuestionAnswerId().setAnswerId((Integer) value)));
         StudentAnswer item = studentAnswerService.findById(id);
         return modelMapper.map(item, StudentAnswerDto.class);
 

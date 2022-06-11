@@ -8,5 +8,4 @@ public class QuestionDto {
     private Integer id;
 	private Integer GroupQuestionId;
 	private String question;
-	private String description;
 }

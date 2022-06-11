@@ -43,9 +43,9 @@ public class QuestionAnswer implements Serializable {
     private Integer id;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionAnswerId")
     private List<StudentAnswer> studentAnswerList;
-    @JoinColumn(name = "id_answer", referencedColumnName = "id")
+    @JoinColumn(name = "answer_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Answer idAnswer;
+    private Answer answerId;
     @JoinColumn(name = "question_id", referencedColumnName = "id")
     @ManyToOne
     private Question questionId;
@@ -74,12 +74,12 @@ public class QuestionAnswer implements Serializable {
         this.studentAnswerList = studentAnswerList;
     }
 
-    public Answer getIdAnswer() {
-        return idAnswer;
+    public Answer getAnswerId() {
+        return answerId;
     }
 
-    public void setIdAnswer(Answer idAnswer) {
-        this.idAnswer = idAnswer;
+    public void setAnswerId(Answer answerId) {
+        this.answerId = answerId;
     }
 
     public Question getQuestionId() {

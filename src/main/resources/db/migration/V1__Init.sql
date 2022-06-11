@@ -65,7 +65,7 @@ ALTER TABLE public.question OWNER TO postgres;
 CREATE TABLE public.question_answer (
                                         id integer NOT NULL,
                                         question_id integer,
-                                        id_answer integer NOT NULL
+                                        answer_id integer NOT NULL
 );
 
 
@@ -440,7 +440,7 @@ ALTER TABLE ONLY public.student_answer
 --
 
 ALTER TABLE ONLY public.question_answer
-    ADD CONSTRAINT fk_question_answer_answer FOREIGN KEY (id_answer) REFERENCES public.answer(id);
+    ADD CONSTRAINT fk_question_answer_answer FOREIGN KEY (answer_id) REFERENCES public.answer(id);
 
 
 --

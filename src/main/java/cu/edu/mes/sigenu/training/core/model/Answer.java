@@ -43,7 +43,7 @@ public class Answer implements Serializable {
     @Basic(optional = false)
     @Column(name = "answer")
     private String answer;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAnswer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "answerId")
     private List<QuestionAnswer> questionAnswerList;
 
     public Answer() {

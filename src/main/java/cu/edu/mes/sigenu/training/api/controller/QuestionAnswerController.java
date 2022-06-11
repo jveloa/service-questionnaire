@@ -1,10 +1,7 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
 import cu.edu.mes.sigenu.training.core.dto.question.QuestionAnswerDto;
-import cu.edu.mes.sigenu.training.core.dto.question.QuestionCarrerDto;
 import cu.edu.mes.sigenu.training.core.model.QuestionAnswer;
-import cu.edu.mes.sigenu.training.core.model.QuestionCarrer;
-import cu.edu.mes.sigenu.training.core.repository.QuestionAnswerRepository;
 import cu.edu.mes.sigenu.training.core.service.QuestionAnswerService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import io.swagger.annotations.Api;
@@ -38,7 +35,7 @@ public class QuestionAnswerController {
 
         TypeMap<QuestionAnswer,QuestionAnswerDto> propertyMapper = modelMapper.createTypeMap(QuestionAnswer.class, QuestionAnswerDto.class);
         propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionId().getId(),QuestionAnswerDto::setQuestionId));
-        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getIdAnswer().getId(),QuestionAnswerDto::setIdAnswer));
+        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getAnswerId().getId(),QuestionAnswerDto::setAnswerId));
         return questionAnswerService.listAll().stream()
                                     .map(item -> modelMapper.map(item,QuestionAnswerDto.class))
                                     .collect(Collectors.toList());
@@ -53,7 +50,7 @@ public class QuestionAnswerController {
 
         TypeMap<QuestionAnswer,QuestionAnswerDto> propertyMapper = modelMapper.createTypeMap(QuestionAnswer.class,QuestionAnswerDto.class);
         propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionId().getId(),QuestionAnswerDto::setQuestionId));
-        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getIdAnswer().getId(),QuestionAnswerDto::setIdAnswer));
+        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getAnswerId().getId(),QuestionAnswerDto::setAnswerId));
         QuestionAnswer item = questionAnswerService.findById(id);
         return modelMapper.map(item, QuestionAnswerDto.class);
 

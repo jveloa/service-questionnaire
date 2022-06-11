@@ -52,7 +52,7 @@ ALTER TABLE public.group_question OWNER TO postgres;
 CREATE TABLE public.question (
                                  id integer NOT NULL,
                                  question character varying NOT NULL,
-                                 id_group_question integer NOT NULL
+                                 group_question_id integer NOT NULL
 );
 
 
@@ -448,7 +448,7 @@ ALTER TABLE ONLY public.question_answer
 --
 
 ALTER TABLE ONLY public.question
-    ADD CONSTRAINT "fk_question_type-question" FOREIGN KEY (id_group_question) REFERENCES public.group_question(id);
+    ADD CONSTRAINT "fk_question_type-question" FOREIGN KEY (group_question_id) REFERENCES public.group_question(id);
 
 
 --

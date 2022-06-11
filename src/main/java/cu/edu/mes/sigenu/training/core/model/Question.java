@@ -51,9 +51,9 @@ public class Question implements Serializable {
         @JoinColumn(name = "questionnaire_id", referencedColumnName = "id")})
     @ManyToMany
     private List<Questionnaire> questionnaireList;
-    @JoinColumn(name = "id_group_question", referencedColumnName = "id")
+    @JoinColumn(name = "group_question_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private GroupQuestion idGroupQuestion;
+    private GroupQuestion groupQuestionId;
     @OneToMany(mappedBy = "questionId")
     private List<QuestionAnswer> questionAnswerList;
     @OneToMany(mappedBy = "questionId")
@@ -96,12 +96,12 @@ public class Question implements Serializable {
         this.questionnaireList = questionnaireList;
     }
 
-    public GroupQuestion getIdGroupQuestion() {
-        return idGroupQuestion;
+    public GroupQuestion getGroupQuestionId() {
+        return groupQuestionId;
     }
 
-    public void setIdGroupQuestion(GroupQuestion idGroupQuestion) {
-        this.idGroupQuestion = idGroupQuestion;
+    public void setGroupQuestionId(GroupQuestion groupQuestionId) {
+        this.groupQuestionId = groupQuestionId;
     }
 
     @XmlTransient

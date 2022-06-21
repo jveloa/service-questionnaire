@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>cu.edu.mes.sigenu</groupId>
-	<artifactId>docentcontrol</artifactId>
+	<artifactId>training</artifactId>
 	<version>1.0.0</version>
 	<name>training</name>
 	<packaging>jar</packaging>

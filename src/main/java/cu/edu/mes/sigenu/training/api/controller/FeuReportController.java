@@ -1,6 +1,9 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
+import cu.edu.mes.sigenu.training.core.dto.question.DeportArtListDto;
 import cu.edu.mes.sigenu.training.core.dto.question.ResponsabilityReportDto;
+import cu.edu.mes.sigenu.training.core.dto.question.StudentArtDto;
+import cu.edu.mes.sigenu.training.core.dto.question.StudentSportDto;
 import cu.edu.mes.sigenu.training.core.service.ReportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,11 +25,35 @@ public class FeuReportController {
     @Autowired
     private ReportService reportService;
 
-
     @GetMapping("/responsabilityReport/{year}")
-    @ApiOperation(value = "Get resposability report")
-    public List<ResponsabilityReportDto> list(@PathVariable Integer year) {
+    @ApiOperation(value = "List of students who are interested in occupying responsibilities")
+    public List<ResponsabilityReportDto> responsabilityReport(@PathVariable Integer year) {
         return reportService.responsabilityReport(year);
 
     }
+
+    @GetMapping("/studentSportList/{year}")
+    @ApiOperation(value = "Get all the students who play sports and which ones")
+    public List<StudentSportDto> studentSportList(@PathVariable Integer year) {
+        return reportService.studentSportList(year);
+
+    }
+
+    @GetMapping("/studentArtList/{year}")
+    @ApiOperation(value = "Get all the students who practice arts and which ones")
+    public List<StudentArtDto> studentArtList(@PathVariable Integer year) {
+        return reportService.studentArtList(year);
+
+    }
+
+    @GetMapping("/deportArtListByStudent/{studentSigenuId}")
+    @ApiOperation(value = "get all the sports and arts that a student practices")
+    public DeportArtListDto deportArtListByStudent(@PathVariable String studentSigenuId) {
+        return reportService.deportArtListByStudent(studentSigenuId);
+
+    }
+
+
+
+
 }

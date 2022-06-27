@@ -4,6 +4,7 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 
 import cu.edu.mes.sigenu.training.core.dto.question.StudentNotComputerDto;
+import cu.edu.mes.sigenu.training.core.service.ReportThreeService;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,11 +24,20 @@ public class CareerChiefReportController {
 
     @Autowired
     private ReportTwoService reportTwoService;
+    
+    @Autowired
+    private ReportThreeService ReportThreeService;
 
     @GetMapping("/studentNotComputerList/{year}")
     @ApiOperation(value = "Return all students who do not have a computer")
     public List<StudentNotComputerDto> studentNotComputerList(@PathVariable Integer year) {
         return reportTwoService.studentNotComputerList(year);
 
+    }
+
+    @GetMapping("/studentCorrectInterpretation/{year}")
+    @ApiOperation(value = "Return all students who have all interpretation questions with correct answers")
+    public float studentCorrectInterpretation(@PathVariable Integer year) {
+        return ReportThreeService.studentCorrectInterpretation(year);
     }
 }

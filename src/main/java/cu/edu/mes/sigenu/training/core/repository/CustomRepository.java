@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -92,6 +93,27 @@ public class CustomRepository {
         q.setParameter("student_sigenu_id", studentSigenuId);
 
         List<Object[]> results = q.getResultList();
+        return results;
+    }
+
+    public List<String> studentNotComputer(Integer year){
+        Query q = entityManager.createNativeQuery(
+                " select student_answer.student_sigenu_id" +
+                        " from student_answer\n" +
+                        " join question_answer on question_answer.id = student_answer.question_answer_id " +
+                        " join question on question.id = question_answer.question_id" +
+                        " join answer on answer.id = question_answer.answer_id" +
+                        " join questionnarie_student on student_answer.student_sigenu_id = questionnarie_student.student_sigenu_id" +
+                        " join group_question on question.group_question_id = group_question.id" +
+                        " where answer.answer = 'No tengo acceso a ninguna'  " +
+                        " and question.question='Tienes computadora' and " +
+                        "group_question.name_group = 'Recursos para enfrentar la carrera' and" + " " +
+                        " date_part('year',questionnarie_student.done_date) = :year" +
+                        " order by student_answer.student_sigenu_id");
+
+        q.setParameter("year", year);
+
+        List<String> results = q.getResultList();
         return results;
     }
 

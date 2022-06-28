@@ -18,5 +18,12 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>, Jp
 	    		+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
 	    		+ "where year(qs.doneDate) = ?1 and q.groupQuestionId = 2")
 	    List<Question> findInterpretativeQuestions(int year);
+	 
+	 @Query("select distinct q from Question q inner join QuestionAnswer qa on q.id = qa.questionId "
+	    		+ "inner join StudentAnswer sa on qa.id = sa.questionAnswerId "
+	    		+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
+	    		+ "where year(qs.doneDate) = ?1 and q.groupQuestionId = 17")
+	    List<Question> findContestQuestions(int year);
 }
+
 

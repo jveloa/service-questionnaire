@@ -12,5 +12,9 @@ public interface ReportThreeService {
 	float studentWhoEnterCareerBecauseTheyLikeIt(Integer year);
 	
 	float studentWhoEnterCareerBecauseTheyPleaseParents(Integer year);
+	
+	int contestsQuestionTotalByYear(Integer year);
+	
+	float studentWhoNeverMadeContests(Integer year);
 
 }

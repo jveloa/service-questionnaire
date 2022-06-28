@@ -59,5 +59,10 @@ public class CareerChiefReportController {
         return ReportThreeService.studentWhoEnterCareerBecauseTheyPleaseParents(year);
     }
     
+    @GetMapping("/studentWhoNeverMadeContest/{year}")
+    @ApiOperation(value = "Return all students who never made a contest of any type")
+    public float studentWhoNeverMadeContest(@PathVariable Integer year) {
+        return ReportThreeService.studentWhoNeverMadeContests(year);
+    }
     
 }

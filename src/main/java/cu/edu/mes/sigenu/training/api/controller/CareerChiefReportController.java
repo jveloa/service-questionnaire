@@ -40,4 +40,10 @@ public class CareerChiefReportController {
     public float studentCorrectInterpretation(@PathVariable Integer year) {
         return ReportThreeService.studentCorrectInterpretation(year);
     }
+    
+    @GetMapping("/studentWrongInterpretation/{year}")
+    @ApiOperation(value = "Return all students who could not answer correctly any interpretation questions")
+    public float studentWrongInterpretation(@PathVariable Integer year) {
+        return ReportThreeService.studentWrongInterpretation(year);
+    }
 }

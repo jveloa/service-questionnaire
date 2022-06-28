@@ -15,4 +15,11 @@ public interface StudentAnswerRepository extends JpaRepository <StudentAnswer,In
     		+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
     		+ "where year(qs.doneDate) = ?1 and a.id = 8 and q.groupQuestionId = 2 order by sa.studentSigenuId")
     List<StudentAnswer> findStudentsCorrectAnswerInterpretation(int year);
+    
+    
+    @Query("select sa from StudentAnswer sa inner join QuestionAnswer qa on sa.questionAnswerId = qa.id "
+    		+ "inner join Question q on qa.questionId = q.id inner join Answer a on qa.answerId = a.id "
+    		+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
+    		+ "where year(qs.doneDate) = ?1 and a.id = 9 and q.groupQuestionId = 2 order by sa.studentSigenuId")
+    List<StudentAnswer> findStudentsWrongAnswerInterpretation(int year);
 }

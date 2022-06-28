@@ -6,5 +6,7 @@ public interface ReportThreeService {
 	int interpretationQuestionTotalByYear(Integer year);
 	
 	float studentCorrectInterpretation(Integer year);
+	
+	float studentWrongInterpretation(Integer year);
 
 }

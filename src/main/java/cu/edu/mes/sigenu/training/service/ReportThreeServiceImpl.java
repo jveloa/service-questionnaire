@@ -55,4 +55,25 @@ public class ReportThreeServiceImpl implements ReportThreeService{
 		return result;
 	}
 
+	@Override
+	public float studentWrongInterpretation(Integer year) {
+		float result = 0;
+		List<StudentAnswer> studentWrongInterpretation = studentAnswerRepository.findStudentsWrongAnswerInterpretation(year);
+		int totalStudents = studentTotalByYear(year);
+		int totalInterpretationQuestions = interpretationQuestionTotalByYear(year);
+		int count = 0, aux = 0;
+        for (int i = 1; i < studentWrongInterpretation.size(); i++) {
+            if (studentWrongInterpretation.get(i).getStudentSigenuId().equals(studentWrongInterpretation.get(i - 1).getStudentSigenuId())) {
+                aux++;
+                if (aux == totalInterpretationQuestions - 1) {
+                    count++;
+                    aux = 0;
+                }
+            }
+            else aux = 0;
+        }
+		result = ((float) (count * 100)) / totalStudents;
+		return result;
+	}
+
 }

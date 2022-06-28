@@ -76,4 +76,24 @@ public class ReportThreeServiceImpl implements ReportThreeService{
 		return result;
 	}
 
+	@Override
+	public float studentWhoEnterCareerBecauseTheyLikeIt(Integer year) {
+		float result = 0;
+		List<StudentAnswer>studentWhoEnterCareerBecauseTheyLikeIt = studentAnswerRepository.findStudentsWhoEnterCareerBecauseTheyLikeIt(year);
+		int totalStudents = studentTotalByYear(year);
+		int totalStudentsWhoEnterCareerBecauseTheyLikeIt = studentWhoEnterCareerBecauseTheyLikeIt.size();
+		result = ((float) (totalStudentsWhoEnterCareerBecauseTheyLikeIt * 100)) / totalStudents;
+		return result;
+	}
+
+	@Override
+	public float studentWhoEnterCareerBecauseTheyPleaseParents(Integer year) {
+		float result = 0;
+		List<StudentAnswer> studentWhoEnterCareerBecauseTheyPleaseParents = studentAnswerRepository.findStudentsWhoEnterCareerBecauseTheyPleaseParents(year);
+		int totalStudents = studentTotalByYear(year);
+		int totalStudentsWhoEnterCareerBecauseTheyPleaseParents = studentWhoEnterCareerBecauseTheyPleaseParents.size();
+		result = ((float) (totalStudentsWhoEnterCareerBecauseTheyPleaseParents * 100)) / totalStudents;
+		return result;
+	}
+
 }

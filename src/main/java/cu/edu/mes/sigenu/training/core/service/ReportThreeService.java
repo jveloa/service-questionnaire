@@ -8,5 +8,9 @@ public interface ReportThreeService {
 	float studentCorrectInterpretation(Integer year);
 	
 	float studentWrongInterpretation(Integer year);
+	
+	float studentWhoEnterCareerBecauseTheyLikeIt(Integer year);
+	
+	float studentWhoEnterCareerBecauseTheyPleaseParents(Integer year);
 
 }

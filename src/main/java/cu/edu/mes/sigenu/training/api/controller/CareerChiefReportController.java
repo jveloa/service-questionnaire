@@ -46,4 +46,18 @@ public class CareerChiefReportController {
     public float studentWrongInterpretation(@PathVariable Integer year) {
         return ReportThreeService.studentWrongInterpretation(year);
     }
+    
+    @GetMapping("/studentWhoEnterCareerBecauseTheyLikeIt/{year}")
+    @ApiOperation(value = "Return all students who declare they entered to the career because they like it")
+    public float studentWhoEnterCareerBecauseTheyLikeIt(@PathVariable Integer year) {
+        return ReportThreeService.studentWhoEnterCareerBecauseTheyLikeIt(year);
+    }    
+    
+    @GetMapping("/studentWhoEnterCareerBecauseTheyPleaseParents/{year}")
+    @ApiOperation(value = "Return all students who declare they entered to the career because their parents's influence")
+    public float studentWhoEnterCareerBecauseTheyPleaseParents(@PathVariable Integer year) {
+        return ReportThreeService.studentWhoEnterCareerBecauseTheyPleaseParents(year);
+    }
+    
+    
 }

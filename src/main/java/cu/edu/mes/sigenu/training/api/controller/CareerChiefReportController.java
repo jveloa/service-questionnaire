@@ -4,6 +4,7 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 
 import cu.edu.mes.sigenu.training.core.dto.question.StudentNotComputerDto;
+import cu.edu.mes.sigenu.training.core.dto.question.StudentsAnswerByAnswerByQuestionDto;
 import cu.edu.mes.sigenu.training.core.service.ReportThreeService;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import io.swagger.annotations.Api;
@@ -32,6 +33,13 @@ public class CareerChiefReportController {
     @ApiOperation(value = "Return all students who do not have a computer")
     public List<StudentNotComputerDto> studentNotComputerList(@PathVariable Integer year) {
         return reportTwoService.studentNotComputerList(year);
+
+    }
+
+    @GetMapping("/percentsStudyFomrsByAnswer/{year}")
+    @ApiOperation(value = "Percent of the frequency with which students use each form of study by academic year")
+    public List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(@PathVariable Integer year) {
+        return reportTwoService.percentsStudyFomrsByAnswer(year);
 
     }
 

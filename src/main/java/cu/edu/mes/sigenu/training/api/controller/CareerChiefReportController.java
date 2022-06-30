@@ -51,6 +51,12 @@ public class CareerChiefReportController {
 
     }
 
+    @GetMapping("/studentsByPlaceEgress/{year}/{placeEgress}")
+    @ApiOperation(value = "Return all students by place of egress")
+    public List<String> studentsByPlaceEgress(@PathVariable Integer year,@PathVariable String placeEgress) {
+        return reportTwoService.studentsByPlaceEgress(year,placeEgress);
+    }
+
     @GetMapping("/studentCorrectInterpretation/{year}")
     @ApiOperation(value = "Return all students who have all interpretation questions with correct answers")
     public float studentCorrectInterpretation(@PathVariable Integer year) {

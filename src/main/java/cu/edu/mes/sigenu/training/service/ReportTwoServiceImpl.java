@@ -3,10 +3,7 @@ package cu.edu.mes.sigenu.training.service;
 
 import cu.edu.mes.sigenu.training.core.dto.question.StudentNotComputerDto;
 import cu.edu.mes.sigenu.training.core.dto.question.StudentsAnswerByAnswerByQuestionDto;
-import cu.edu.mes.sigenu.training.core.model.Answer;
-import cu.edu.mes.sigenu.training.core.model.Question;
-import cu.edu.mes.sigenu.training.core.model.QuestionAnswer;
-import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
+import cu.edu.mes.sigenu.training.core.model.*;
 import cu.edu.mes.sigenu.training.core.repository.*;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import cu.edu.mes.sigenu.training.core.utils.Client;
@@ -37,6 +34,9 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
     @Autowired
     private StudentAnswerRepository studentAnswerRepository;
+
+    @Autowired
+    private QuestionnaireStudentRepository questionnaireStudentRepository;
 
 
     @Override
@@ -108,6 +108,24 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             listReport.put(list.get(i).getAnswerId().getAnswer().toString(),percents);
         }
 
+        return listReport;
+    }
+
+    @Override
+    public List<String> studentsByPlaceEgress(Integer year,String placeEgress) {
+
+        List<String> listReport = new ArrayList<>();
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+
+        for (int i = 0; i < list.size(); i++){
+
+            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            if (studentSigenu.getScholasticOrigin().getName().equals(placeEgress))
+                listReport.add((studentSigenu.getName() +" "
+                        + studentSigenu.getLastName())
+                        .replace("  "," "));
+
+        }
         return listReport;
     }
 

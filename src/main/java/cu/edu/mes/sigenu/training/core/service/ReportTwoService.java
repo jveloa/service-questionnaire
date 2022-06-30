@@ -16,5 +16,7 @@ public interface ReportTwoService {
 
     Map<String, Float> percentsStudyHoursByAnswer(Integer year);
 
+    List<String> studentsByPlaceEgress(Integer year, String placeEgress);
+
 
 }

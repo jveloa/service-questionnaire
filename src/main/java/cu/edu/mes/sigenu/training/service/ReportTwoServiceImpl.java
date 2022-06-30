@@ -94,6 +94,23 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         return listReport;
     }
 
+    @Override
+    public Map<String, Float> percentsStudyHoursByAnswer(Integer year) {
+
+        Map<String,Float> listReport = new HashMap<String, Float>();
+        float total = questionRepository.totalQuestionByStudyHours(year);
+        List<QuestionAnswer> list = questionAnswerRepository.findQuestionAnswerByQuestionByStudyHours();
+
+        for (int i = 0; i < list.size(); i++){
+
+            float part = questionAnswerRepository.totalAnswerByQuestionByStudyHours(year,list.get(i).getAnswerId().getId());
+            float percents = part / total * 100;
+            listReport.put(list.get(i).getAnswerId().getAnswer().toString(),percents);
+        }
+
+        return listReport;
+    }
+
 
     public StudentVO getInfoStudent(String studentId) {
         try {

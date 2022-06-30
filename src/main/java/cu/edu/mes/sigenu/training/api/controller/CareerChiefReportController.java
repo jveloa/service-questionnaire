@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Api(tags = "Career Chief Report enpoint controller")
@@ -40,6 +41,13 @@ public class CareerChiefReportController {
     @ApiOperation(value = "Percent of the frequency with which students use each form of study by academic year")
     public List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(@PathVariable Integer year) {
         return reportTwoService.percentsStudyFomrsByAnswer(year);
+
+    }
+
+    @GetMapping("/percentsStudyHoursByAnswer/{year}")
+    @ApiOperation(value = "Percent of the frequency of students who dedicate different ranges of hours per week to study.")
+    public Map<String,Float> percentsStudyHoursByAnswer(@PathVariable Integer year) {
+        return reportTwoService.percentsStudyHoursByAnswer(year);
 
     }
 

@@ -36,6 +36,13 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>, Jp
 			+ "inner join questionnarie_student qs on qs.student_sigenu_id = sa.student_sigenu_id "
 			+ "where date_part('year',qs.done_date) = ?1 and q.id = ?2 and q.group_question_id = 11 group by q.id", nativeQuery=true)
 	int totalQuestionByStudyForms(int year,int questionId);
+
+	@Query(value = " select count(q.id) from student_answer sa inner join question_answer qa on sa.question_answer_id = qa.id  "
+			+ "inner join question q on qa.question_id = q.id inner join answer a on qa.answer_id = a.id "
+			+ "inner join questionnarie_student qs on qs.student_sigenu_id = sa.student_sigenu_id "
+			+ "where date_part('year',qs.done_date) = ?1 and q.id = 56 and q.group_question_id = 4 group by q.id", nativeQuery=true)
+	int totalQuestionByStudyHours(int year);
+
 }
 
 

@@ -6,10 +6,8 @@ import cu.edu.mes.sigenu.training.core.dto.question.StudentsAnswerByAnswerByQues
 import cu.edu.mes.sigenu.training.core.model.Answer;
 import cu.edu.mes.sigenu.training.core.model.Question;
 import cu.edu.mes.sigenu.training.core.model.QuestionAnswer;
-import cu.edu.mes.sigenu.training.core.repository.AnswerRepository;
-import cu.edu.mes.sigenu.training.core.repository.CustomRepository;
-import cu.edu.mes.sigenu.training.core.repository.QuestionAnswerRepository;
-import cu.edu.mes.sigenu.training.core.repository.QuestionRepository;
+import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
+import cu.edu.mes.sigenu.training.core.repository.*;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import cu.edu.mes.sigenu.training.core.utils.Client;
 import cu.edu.mes.subsystem.student.vo.StudentVO;
@@ -37,18 +35,22 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     @Autowired
     private AnswerRepository answerRepository;
 
+    @Autowired
+    private StudentAnswerRepository studentAnswerRepository;
+
+
     @Override
     public List<StudentNotComputerDto> studentNotComputerList(Integer year) {
-        List<String> list = customRepository.studentNotComputer(year);
+        List<StudentAnswer> list = studentAnswerRepository.studentNotComputer(year);
         List<StudentNotComputerDto> listReport = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i ++) {
-            StudentVO studentSigenu = getInfoStudent(list.get(i));
+            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
             StudentNotComputerDto item = StudentNotComputerDto.builder()
                                                                 .name((studentSigenu.getName() +" "
                                                                         + studentSigenu.getLastName())
                                                                         .replace("  "," "))
-                                                                .studentSigenuId(list.get(i).toString())
+                                                                .studentSigenuId(list.get(i).getStudentSigenuId().toString())
                                                                 .build();
             listReport.add(item);
         }

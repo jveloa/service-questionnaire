@@ -16,5 +16,25 @@ public interface ReportThreeService {
 	int contestsQuestionTotalByYear(Integer year);
 	
 	float studentWhoNeverMadeContests(Integer year);
+	
+	float studentWhoMadeMathContest(Integer year);
+	
+	float studentWhoMadeSpanishContest(Integer year);
+	
+	float studentWhoMadeChemistryContest(Integer year);
+	
+	float studentWhoMadeBiologyContest(Integer year);
+	
+	float studentWhoMadeInformaticsContest(Integer year);
+	
+	float studentWhoMadePoliticCultureContest(Integer year);
+	
+	float studentWhoMadeEnglishContest(Integer year);
+	
+	float studentWhoMadePhysicsContest(Integer year);
+	
+	float studentWhoMadeHistoryContest(Integer year);
+	
+	float studentWhoMadeContestByYearBySubject(Integer year, String subject);
 
 }

@@ -73,4 +73,9 @@ public class CareerChiefReportController {
         return ReportThreeService.studentWhoNeverMadeContests(year);
     }
     
+    @GetMapping("/studentWhoMadeContestByYearBySubject/{year}/{subject}")
+    @ApiOperation(value = "Return all students who made a determined contest")
+    public float studentWhoMadeContestByYearBySubject(@PathVariable Integer year,@PathVariable String subject) {
+        return ReportThreeService.studentWhoMadeContestByYearBySubject(year,subject);
+    }
 }

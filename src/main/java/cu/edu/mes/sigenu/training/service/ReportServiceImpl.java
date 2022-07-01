@@ -4,13 +4,13 @@ import cu.edu.mes.sigenu.training.core.dto.question.DeportArtListDto;
 import cu.edu.mes.sigenu.training.core.dto.question.ResponsabilityReportDto;
 import cu.edu.mes.sigenu.training.core.dto.question.StudentArtDto;
 import cu.edu.mes.sigenu.training.core.dto.question.StudentSportDto;
-import cu.edu.mes.sigenu.training.core.repository.CustomRepository;
+import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
+import cu.edu.mes.sigenu.training.core.repository.StudentAnswerRepository;
 import cu.edu.mes.sigenu.training.core.service.ReportService;
 import cu.edu.mes.sigenu.training.core.utils.Client;
 import cu.edu.mes.subsystem.student.vo.StudentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,26 +19,26 @@ import java.util.List;
 public class ReportServiceImpl implements ReportService {
 
     @Autowired
-    private CustomRepository customRepository;
+    private StudentAnswerRepository studentAnswerRepository;
 
     @Override
     public List<ResponsabilityReportDto> responsabilityReport(Integer year) {
-        List<Object[]> list = customRepository.responsibilityReport(year);
+        List<StudentAnswer> list = studentAnswerRepository.responsibilityReport(year);
         List<ResponsabilityReportDto> listReport = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i += 3) {
-            StudentVO studentSigenu = getInfoStudent(list.get(i)[0].toString());
+            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
             ResponsabilityReportDto item = ResponsabilityReportDto.builder()
                                                                   .name((studentSigenu.getName() +" "
                                                                             + studentSigenu.getLastName())
                                                                                   .replace("  "," "))
-                                                                  .studentSigenuId(list.get(i)[0].toString())
-                                                                  .questionInterest(list.get(i)[1].toString())
-                                                                  .answerInterest(list.get(i)[2].toString())
-                                                                  .questionExp(list.get(i + 1)[1].toString())
-                                                                  .answerExp(list.get(i + 1)[2].toString())
-                                                                  .questionOrg(list.get(i + 2)[1].toString())
-                                                                  .answerOrg(list.get(i + 2)[2].toString())
+                                                                  .studentSigenuId(list.get(i).getStudentSigenuId())
+                                                                  .questionInterest(list.get(i).getQuestionAnswerId().getQuestionId().getQuestion())
+                                                                  .answerInterest(list.get(i).getQuestionAnswerId().getAnswerId().getAnswer())
+                                                                  .questionExp(list.get(i + 1).getQuestionAnswerId().getQuestionId().getQuestion())
+                                                                  .answerExp(list.get(i + 1).getQuestionAnswerId().getAnswerId().getAnswer())
+                                                                  .questionOrg(list.get(i + 2).getQuestionAnswerId().getQuestionId().getQuestion())
+                                                                  .answerOrg(list.get(i + 2).getQuestionAnswerId().getAnswerId().getAnswer())
                                                                   .build();
             listReport.add(item);
         }
@@ -48,23 +48,23 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<StudentSportDto> studentSportList(Integer year) {
-        List<Object[]> list = customRepository.studentSportList(year);
+        List<StudentAnswer> list = studentAnswerRepository.studentSportList(year);
         List<StudentSportDto> listStudent = new ArrayList<>();
-        for (Object[] objects : list) {
+        for (StudentAnswer studentAnswer : list) {
             List<String> sports = new ArrayList<>();
 
             if (!listStudent.isEmpty() && listStudent.get(listStudent.size() - 1)
                                                      .getStudentSigenuId()
-                                                     .equals(objects[0].toString())) {
+                                                     .equals(studentAnswer.getStudentSigenuId())) {
 
                 listStudent.get(listStudent.size() - 1)
                            .getSports()
-                           .add(objects[1].toString());
+                           .add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
 
             } else {
-                sports.add(objects[1].toString());
+                sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
                 StudentSportDto item = StudentSportDto.builder()
-                                                      .studentSigenuId(objects[0].toString())
+                                                      .studentSigenuId(studentAnswer.getStudentSigenuId())
                                                       .sports(sports)
                                                       .build();
                 listStudent.add(item);
@@ -75,23 +75,23 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<StudentArtDto> studentArtList(Integer year) {
-        List<Object[]> list = customRepository.studentArtList(year);
+        List<StudentAnswer> list = studentAnswerRepository.studentArtList(year);
         List<StudentArtDto> listStudent = new ArrayList<>();
-        for (Object[] objects : list) {
+        for (StudentAnswer studentAnswer : list) {
             List<String> arts = new ArrayList<>();
 
             if (!listStudent.isEmpty() && listStudent.get(listStudent.size() - 1)
                                                      .getStudentSigenuId()
-                                                     .equals(objects[0].toString())) {
+                                                     .equals(studentAnswer.getStudentSigenuId())) {
 
                 listStudent.get(listStudent.size() - 1)
                            .getArts()
-                           .add(objects[1].toString());
+                           .add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
 
             } else {
-                arts.add(objects[1].toString());
+                arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
                 StudentArtDto item = StudentArtDto.builder()
-                                                  .studentSigenuId(objects[0].toString())
+                                                  .studentSigenuId(studentAnswer.getStudentSigenuId())
                                                   .arts(arts)
                                                   .build();
                 listStudent.add(item);
@@ -103,25 +103,23 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public DeportArtListDto deportArtListByStudent(String studentSigenuId) {
-        List<Object[]> list = customRepository.deportArtListByStudent(studentSigenuId);
+        List<StudentAnswer> list = studentAnswerRepository.deportArtListByStudent(studentSigenuId);
 
         List<String> sports = new ArrayList<>();
         List<String> arts = new ArrayList<>();
 
-        for (Object[] e:list) {
+        for (StudentAnswer studentAnswer:list) {
 
-            if (e[0].equals("Deportes")) {
-                sports.add(e[1].toString());
+            if (studentAnswer.getQuestionAnswerId().getQuestionId().getGroupQuestionId().getNameGroup().equals("Deportes")) {
+                sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
             } else
-                arts.add(e[1].toString());
+                arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
 
         }
-
         return DeportArtListDto.builder()
                                .arts(arts)
                                .sports(sports)
                                .build();
-
     }
 
 

@@ -4,6 +4,7 @@ import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -141,6 +142,63 @@ public interface StudentAnswerRepository extends JpaRepository <StudentAnswer,In
 			+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
 			+ "where year(qs.doneDate) = ?1 and a.id = 69 and q.groupQuestionId = 8")
 	List<StudentAnswer> studentNotComputer(int year);
+
+    @Query( nativeQuery = true,
+            value = "SELECT *" +
+               " from student_answer" +
+               " join question_answer  on student_answer.question_answer_id = question_answer.id " +
+               " join question on question_answer.question_id = question.id" +
+               " join answer on question_answer.answer_id = answer.id" +
+               " join group_question on  question.group_question_id = group_question.id" +
+               " join questionnarie_student on student_answer.student_sigenu_id = questionnarie_student.student_sigenu_id" +
+               " where (question.question = 'Tienes interés en apoyar en la dirección de las organizaciones estudiantiles '" +
+               " or question.question = 'Experiencias en dirección de FEEM o UJC'" +
+               " or question.question = 'Organización política a la que perteneces' )" +
+               " and date_part('year',questionnarie_student.done_date) = :year" +
+               " order by student_answer.student_sigenu_id")
+    public List<StudentAnswer> responsibilityReport(@Param("year") Integer year);
+
+    @Query(nativeQuery = true,
+           value = "SELECT *" +
+               " from student_answer" +
+               " join question_answer on question_answer.id = student_answer.question_answer_id" +
+               " join question on question.id = question_answer.question_id" +
+               " join answer on answer.id = question_answer.answer_id" +
+               " join questionnarie_student on student_answer.student_sigenu_id = questionnarie_student.student_sigenu_id" +
+               " join group_question on question.group_question_id = group_question.id" +
+               " where answer.answer = 'Si' and" +
+               " group_question.name_group = 'Deportes' and" +
+               " date_part('year',questionnarie_student.done_date) = :year" +
+               " order by student_answer.student_sigenu_id")
+    public List<StudentAnswer> studentSportList(@Param("year") Integer year);
+
+    @Query(nativeQuery = true,
+           value = " select *" +
+               " from student_answer " +
+               " join question_answer on question_answer.id = student_answer.question_answer_id " +
+               " join question on question.id = question_answer.question_id" +
+               " join answer on answer.id = question_answer.answer_id" +
+               " join questionnarie_student on student_answer.student_sigenu_id = questionnarie_student.student_sigenu_id" +
+               " join group_question on question.group_question_id = group_question.id" +
+               " where answer.answer = 'Si' and " +
+               " group_question.name_group = 'Manifestaciones artísticas' and" + " " +
+               " date_part('year',questionnarie_student.done_date) = :year" +
+               " order by student_answer.student_sigenu_id")
+    public List<StudentAnswer> studentArtList(@Param("year") Integer year);
+
+    @Query(nativeQuery = true,
+           value = "SELECT *" +
+               " from student_answer\n" +
+               " join question_answer on student_answer.question_answer_id = question_answer.id" +
+               " join question on question_answer.question_id = question.id" +
+               " join answer on question_answer.answer_id = answer.id" +
+               " join group_question on  question.group_question_id = group_question.id" +
+               " join questionnarie_student on student_answer.student_sigenu_id = questionnarie_student.student_sigenu_id " +
+               " where student_answer.student_sigenu_id = :student_sigenu_id and" +
+               " answer.answer = 'Si' and " +
+               "(group_question.name_group = 'Manifestaciones artísticas' " +
+               " or group_question.name_group = 'Deportes')")
+    public List<StudentAnswer> deportArtListByStudent(@Param("student_sigenu_id") String studentSigenuId);
 
 
 }

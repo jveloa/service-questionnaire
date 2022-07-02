@@ -3,19 +3,21 @@ package cu.edu.mes.sigenu.training.service;
 
 import cu.edu.mes.sigenu.training.core.dto.question.StudentNotComputerDto;
 import cu.edu.mes.sigenu.training.core.dto.question.StudentsAnswerByAnswerByQuestionDto;
+import cu.edu.mes.sigenu.training.core.dto.question.StudentsWithNotesDto;
 import cu.edu.mes.sigenu.training.core.model.*;
 import cu.edu.mes.sigenu.training.core.repository.*;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import cu.edu.mes.sigenu.training.core.utils.Client;
 import cu.edu.mes.subsystem.student.vo.StudentVO;
+
+import cu.edu.mes.vo.EntryEvaluationDataVO;
+import cu.edu.mes.vo.EntryEvaluationVO;
+import cu.edu.mes.vo.EntrySourceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ReportTwoServiceImpl implements ReportTwoService {
@@ -123,6 +125,37 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                         .replace("  "," "));
 
         }
+        return listReport;
+    }
+
+   @Override
+    public List<StudentsWithNotesDto> studentsWithNotes(Integer year) {
+
+        List<StudentsWithNotesDto> listReport = new ArrayList<>();
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+
+        for (int i = 0; i < list.size(); i++){
+
+            Map<String,Float> listAux = new HashMap<String, Float>();
+            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            listAux.put("Índice acádemico",studentSigenu.getAcademicIndex());
+            List <EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
+
+            for (int j = 0; j < entryEvaluationVOList.size(); j++)
+            listAux.put(entryEvaluationVOList.get(j).getEntrySubjectName().toString()
+                        ,entryEvaluationVOList.get(j).getMark());
+
+            StudentsWithNotesDto item  = StudentsWithNotesDto.builder()
+                                                                .name((studentSigenu.getName() +" "
+                                                                        + studentSigenu.getLastName())
+                                                                        .replace("  "," "))
+                                                                .notesList(listAux)
+                                                                .build();
+
+            listReport.add(item);
+
+        }
+
         return listReport;
     }
 

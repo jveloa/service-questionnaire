@@ -4,6 +4,7 @@ package cu.edu.mes.sigenu.training.core.service;
 
 import cu.edu.mes.sigenu.training.core.dto.question.StudentNotComputerDto;
 import cu.edu.mes.sigenu.training.core.dto.question.StudentsAnswerByAnswerByQuestionDto;
+import cu.edu.mes.sigenu.training.core.dto.question.StudentsWithNotesDto;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ public interface ReportTwoService {
     Map<String, Float> percentsStudyHoursByAnswer(Integer year);
 
     List<String> studentsByPlaceEgress(Integer year, String placeEgress);
+
+    List<StudentsWithNotesDto> studentsWithNotes(Integer year);
 
 
 }

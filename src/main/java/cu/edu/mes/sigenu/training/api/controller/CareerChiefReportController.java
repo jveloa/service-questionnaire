@@ -5,6 +5,7 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 import cu.edu.mes.sigenu.training.core.dto.question.StudentNotComputerDto;
 import cu.edu.mes.sigenu.training.core.dto.question.StudentsAnswerByAnswerByQuestionDto;
+import cu.edu.mes.sigenu.training.core.dto.question.StudentsWithNotesDto;
 import cu.edu.mes.sigenu.training.core.service.ReportThreeService;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import io.swagger.annotations.Api;
@@ -44,10 +45,10 @@ public class CareerChiefReportController {
 
     }
 
-    @GetMapping("/percentsStudyHoursByAnswer/{year}")
-    @ApiOperation(value = "Percent of the frequency of students who dedicate different ranges of hours per week to study.")
-    public Map<String,Float> percentsStudyHoursByAnswer(@PathVariable Integer year) {
-        return reportTwoService.percentsStudyHoursByAnswer(year);
+    @GetMapping("/studentsWithNotes/{year}")
+    @ApiOperation(value = "List of students by index and entrance grades")
+    public List<StudentsWithNotesDto> studentsWithNotes(@PathVariable Integer year) {
+        return reportTwoService.studentsWithNotes(year);
 
     }
 
@@ -55,6 +56,13 @@ public class CareerChiefReportController {
     @ApiOperation(value = "Return all students by place of egress")
     public List<String> studentsByPlaceEgress(@PathVariable Integer year,@PathVariable String placeEgress) {
         return reportTwoService.studentsByPlaceEgress(year,placeEgress);
+    }
+
+    @GetMapping("/percentsStudyHoursByAnswer/{year}")
+    @ApiOperation(value = "Percent of the frequency of students who dedicate different ranges of hours per week to study.")
+    public Map<String,Float> percentsStudyHoursByAnswer(@PathVariable Integer year) {
+        return reportTwoService.percentsStudyHoursByAnswer(year);
+
     }
 
     @GetMapping("/studentCorrectInterpretation/{year}")

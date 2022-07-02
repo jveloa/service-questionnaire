@@ -41,8 +41,14 @@ public interface ReportThreeService {
 	
 	float studentWhoNotRead(Integer year);
 	
+	float studentWhoRegularyRead(Integer year);
+	
+	float studentWhoOnlyReadSchool(Integer year);
+	
 	List<String> studentsCorrectInterpretation (Integer year);
 	
 	List<String> studentsWhoNotRead (Integer year);
+	
+	List<String> studentsWrongInterpretation (Integer year);
 
 }

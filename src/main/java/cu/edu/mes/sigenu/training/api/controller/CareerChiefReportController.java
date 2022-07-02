@@ -65,57 +65,75 @@ public class CareerChiefReportController {
 
     }
 
-    @GetMapping("/studentCorrectInterpretation/{year}")
+    @GetMapping("/studentCorrectInterpretationPercent/{year}")
     @ApiOperation(value = "Return the percent of students who have all interpretation questions with correct answers")
     public float studentCorrectInterpretation(@PathVariable Integer year) {
         return ReportThreeService.studentCorrectInterpretation(year);
     }
     
-    @GetMapping("/studentWrongInterpretation/{year}")
+    @GetMapping("/studentWrongInterpretationPercent/{year}")
     @ApiOperation(value = "Return the percent of students who could not answer correctly any interpretation questions")
     public float studentWrongInterpretation(@PathVariable Integer year) {
         return ReportThreeService.studentWrongInterpretation(year);
     }
     
-    @GetMapping("/studentWhoEnterCareerBecauseTheyLikeIt/{year}")
+    @GetMapping("/studentWhoEnterCareerBecauseTheyLikeItPercent/{year}")
     @ApiOperation(value = "Return the percent of students who declare they entered to the career because they like it")
     public float studentWhoEnterCareerBecauseTheyLikeIt(@PathVariable Integer year) {
         return ReportThreeService.studentWhoEnterCareerBecauseTheyLikeIt(year);
     }    
     
-    @GetMapping("/studentWhoEnterCareerBecauseTheyPleaseParents/{year}")
+    @GetMapping("/studentWhoEnterCareerBecauseTheyPleaseParentsPercent/{year}")
     @ApiOperation(value = "Return the percent of students who declare they entered to the career because their parents's influence")
     public float studentWhoEnterCareerBecauseTheyPleaseParents(@PathVariable Integer year) {
         return ReportThreeService.studentWhoEnterCareerBecauseTheyPleaseParents(year);
     }
     
-    @GetMapping("/studentWhoNeverMadeContest/{year}")
+    @GetMapping("/studentWhoNeverMadeContestPercent/{year}")
     @ApiOperation(value = "Return the percent of students who never made a contest of any type")
     public float studentWhoNeverMadeContest(@PathVariable Integer year) {
         return ReportThreeService.studentWhoNeverMadeContests(year);
     }
     
-    @GetMapping("/studentWhoMadeContestByYearBySubject/{year}/{subject}")
+    @GetMapping("/studentWhoMadeContestByYearBySubjectPercent/{year}/{subject}")
     @ApiOperation(value = "Return the percent of students who made a determined contest")
     public float studentWhoMadeContestByYearBySubject(@PathVariable Integer year,@PathVariable String subject) {
         return ReportThreeService.studentWhoMadeContestByYearBySubject(year,subject);
     }
     
-    @GetMapping("/studentsCorrectInterpretation/{year}")
+    @GetMapping("/studentsCorrectInterpretationList/{year}")
     @ApiOperation(value = "Return the list of all students who have all interpretation questions with correct answers")
     public List<String> studentsCorrectInterpretation(@PathVariable Integer year) {
         return ReportThreeService.studentsCorrectInterpretation(year);
     }
     
-    @GetMapping("/studentWhoNotRead/{year}")
+    @GetMapping("/studentWhoNotReadPercent/{year}")
     @ApiOperation(value = "Return the percent of students who not read")
     public float studentWhoNotRead(@PathVariable Integer year) {
         return ReportThreeService.studentWhoNotRead(year);
     }
     
-    @GetMapping("/studentsWhoNotRead/{year}")
+    @GetMapping("/studentsWhoNotReadList/{year}")
     @ApiOperation(value = "Return the list of all students who not read")
     public List<String> studentsWhoNotRead(@PathVariable Integer year) {
         return ReportThreeService.studentsWhoNotRead(year);
+    }
+    
+    @GetMapping("/studentsWrongInterpretationList/{year}")
+    @ApiOperation(value = "Return the list of all students who could not answer correctly any interpretation questions")
+    public List<String> studentsWrongInterpretation(@PathVariable Integer year) {
+        return ReportThreeService.studentsWrongInterpretation(year);
+    }
+    
+    @GetMapping("/studentWhoRegularyReadPercent/{year}")
+    @ApiOperation(value = "Return the percent of students who read not schoolar books regulary")
+    public float studentWhoRegularyRead(@PathVariable Integer year) {
+        return ReportThreeService.studentWhoRegularyRead(year);
+    }
+    
+    @GetMapping("/studentWhoOnlyReadSchoolPercent/{year}")
+    @ApiOperation(value = "Return the percent of students who only read schoolar books")
+    public float studentWhoOnlyReadSchool(@PathVariable Integer year) {
+        return ReportThreeService.studentWhoOnlyReadSchool(year);
     }
 }

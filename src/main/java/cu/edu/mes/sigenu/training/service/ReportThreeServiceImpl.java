@@ -50,21 +50,9 @@ public class ReportThreeServiceImpl implements ReportThreeService{
 	@Override
 	public float studentWrongInterpretation(Integer year) {
 		float result = 0;
-		List<StudentAnswer> studentWrongInterpretation = studentAnswerRepository.findStudentsWrongAnswerInterpretation(year);
+		int listSize  = studentWrongInterpretationList(year).size();
 		int totalStudents = studentTotalByYear(year);
-		int totalInterpretationQuestions = interpretationQuestionTotalByYear(year);
-		int count = 0, aux = 0;
-        for (int i = 1; i < studentWrongInterpretation.size(); i++) {
-            if (studentWrongInterpretation.get(i).getStudentSigenuId().equals(studentWrongInterpretation.get(i - 1).getStudentSigenuId())) {
-                aux++;
-                if (aux == totalInterpretationQuestions - 1) {
-                    count++;
-                    aux = 0;
-                }
-            }
-            else aux = 0;
-        }
-		result = ((float) (count * 100)) / totalStudents;
+		result = ((float) (listSize * 100)) / totalStudents;
 		return result;
 	}
 
@@ -282,6 +270,37 @@ public class ReportThreeServiceImpl implements ReportThreeService{
 	        }
 			return studentCorrectInterpretationFinal;
 		}
+		
+		private List<StudentAnswer> studentWrongInterpretationList(Integer year) {
+			List<StudentAnswer> studentWrongInterpretationQuery = studentAnswerRepository.findStudentsWrongAnswerInterpretation(year);
+			int totalInterpretationQuestions = interpretationQuestionTotalByYear(year);
+			List<StudentAnswer> studentWrongInterpretationFinal = new ArrayList<>();
+			int aux = 0;
+	        for (int i = 1; i < studentWrongInterpretationQuery.size(); i++) {
+	            if (studentWrongInterpretationQuery.get(i).getStudentSigenuId().equals(studentWrongInterpretationQuery.get(i - 1).getStudentSigenuId())) {
+	                aux++;
+	                if (aux == totalInterpretationQuestions - 1) {
+	                   aux = 0;
+	                   studentWrongInterpretationFinal.add(studentWrongInterpretationQuery.get(i));	                   
+	                }
+	            }
+	            else aux = 0;
+	        }
+			return studentWrongInterpretationFinal;
+		}
+		
+		@Override
+		public List<String> studentsWrongInterpretation(Integer year) {
+			List<String> studentsWrongInterpretation = new ArrayList<>();
+			List<StudentAnswer> studentWrongInterpretation = studentWrongInterpretationList(year);
+			String auxiliar;
+	        for (int i = 0; i < studentWrongInterpretation.size(); i++) {
+	                    StudentVO studentSigenu = getInfoStudent(studentWrongInterpretation.get(i).getStudentSigenuId());
+	                    auxiliar = studentSigenu.getName() + " " + studentSigenu.getMiddleName() + " " + studentSigenu.getLastName();
+	                    studentsWrongInterpretation.add(auxiliar);
+	        }
+			return studentsWrongInterpretation;
+		}
 
 		@Override
 		public float studentWhoNotRead(Integer year) {
@@ -321,4 +340,46 @@ public class ReportThreeServiceImpl implements ReportThreeService{
 	        }
 			return studentWhoNotReadFinal;
 		}
+
+		@Override
+		public float studentWhoRegularyRead(Integer year) {
+			List<StudentAnswer> studentWhoRegularyRead = studentAnswerRepository.findStudentsWhoRegularyRead(year);
+			float result = 0;
+			int totalStudents = studentTotalByYear(year);
+			int aux = 0, count = 0;
+	        for (int i = 1; i < studentWhoRegularyRead.size(); i++) {
+	            if (studentWhoRegularyRead.get(i).getStudentSigenuId().equals(studentWhoRegularyRead.get(i - 1).getStudentSigenuId())) {
+	                aux++;
+	                if (aux == 2) {
+	                   aux = 0;
+	                   count++;	                   
+	                }
+	            }
+	            else aux = 0;
+	        }
+	        result = ((float) (count * 100)) / totalStudents;
+			return result;
+		}
+
+		@Override
+		public float studentWhoOnlyReadSchool(Integer year) {
+			List<StudentAnswer> studentWhoOnlyReadSchool = studentAnswerRepository.findStudentsWhoOnlyReadSchool(year);
+			float result = 0;
+			int totalStudents = studentTotalByYear(year);
+			int aux = 0, count = 0;
+	        for (int i = 1; i < studentWhoOnlyReadSchool.size(); i++) {
+	            if(studentWhoOnlyReadSchool.get(i).getStudentSigenuId().equals(studentWhoOnlyReadSchool.get(i - 1).getStudentSigenuId())) {
+	                aux++;
+	                if (aux == 2) {
+	                   aux = 0;
+	                   count++;	                   
+	                }
+	            }
+	            else aux = 0;
+	        }
+	        result = ((float) (count * 100)) / totalStudents;
+			return result;
+		}
+		
+		
 }

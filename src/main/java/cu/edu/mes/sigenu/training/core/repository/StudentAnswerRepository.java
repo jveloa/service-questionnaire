@@ -205,8 +205,26 @@ public interface StudentAnswerRepository extends JpaRepository <StudentAnswer,In
     		+ "inner join Question q on qa.questionId = q.id "
     		+ "inner join Answer a on qa.answerId = a.id "
     		+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
-    		+ "where year(qs.doneDate) = ?1 and a.id = 73 and q.id = 48 or q.id = 49 or q.id = 50 order by sa.studentSigenuId")
+    		+ "where year(qs.doneDate) = ?1 and a.id = 73 and q.id = 48 or year(qs.doneDate) = ?1 and a.id = 73 and q.id = 49 or year(qs.doneDate) = ?1 and a.id = 73 and q.id = 50 order by sa.studentSigenuId")
     List<StudentAnswer> findStudentsWhoNotRead(int year);
+    
+    @Query("select sa from StudentAnswer sa "
+    		+ "inner join QuestionAnswer qa on sa.questionAnswerId = qa.id "
+    		+ "inner join Question q on qa.questionId = q.id "
+    		+ "inner join Answer a on qa.answerId = a.id "
+    		+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
+    		+ "where year(qs.doneDate) = ?1 and a.id = 7 and q.id = 48 or year(qs.doneDate) = ?1 and a.id = 7 and q.id = 49 or year(qs.doneDate) = ?1 and a.id = 7 and q.id = 50 order by sa.studentSigenuId")
+    List<StudentAnswer> findStudentsWhoRegularyRead(int year);
+    
+    @Query("select sa from StudentAnswer sa "
+    		+ "inner join QuestionAnswer qa on sa.questionAnswerId = qa.id "
+    		+ "inner join Question q on qa.questionId = q.id "
+    		+ "inner join Answer a on qa.answerId = a.id "
+    		+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
+    		+ "where year(qs.doneDate) = ?1 and a.id = 6 and q.id = 48 or year(qs.doneDate) = ?1 and a.id = 6 and q.id = 49 or year(qs.doneDate) = ?1 and a.id = 6 and q.id = 50  order by sa.studentSigenuId")
+    List<StudentAnswer> findStudentsWhoOnlyReadSchool(int year);
+    
+    
 
 
 }

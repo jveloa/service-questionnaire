@@ -1,5 +1,7 @@
 package cu.edu.mes.sigenu.training.service;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import cu.edu.mes.sigenu.training.core.repository.QuestionRepository;
 import cu.edu.mes.sigenu.training.core.repository.QuestionnaireStudentRepository;
 import cu.edu.mes.sigenu.training.core.repository.StudentAnswerRepository;
 import cu.edu.mes.sigenu.training.core.service.ReportThreeService;
+import cu.edu.mes.sigenu.training.core.utils.Client;
+import cu.edu.mes.subsystem.student.vo.StudentVO;
 
 @Service
 public class ReportThreeServiceImpl implements ReportThreeService{
@@ -37,21 +41,9 @@ public class ReportThreeServiceImpl implements ReportThreeService{
 	@Override
 	public float studentCorrectInterpretation(Integer year) {
 		float result = 0;
-		List<StudentAnswer> studentCorrectInterpretation = studentAnswerRepository.findStudentsCorrectAnswerInterpretation(year);
+		int listSize  = studentCorrectInterpretationList(year).size();
 		int totalStudents = studentTotalByYear(year);
-		int totalInterpretationQuestions = interpretationQuestionTotalByYear(year);
-		int count = 0, aux = 0;
-        for (int i = 1; i < studentCorrectInterpretation.size(); i++) {
-            if (studentCorrectInterpretation.get(i).getStudentSigenuId().equals(studentCorrectInterpretation.get(i - 1).getStudentSigenuId())) {
-                aux++;
-                if (aux == totalInterpretationQuestions - 1) {
-                    count++;
-                    aux = 0;
-                }
-            }
-            else aux = 0;
-        }
-		result = ((float) (count * 100)) / totalStudents;
+		result = ((float) (listSize * 100)) / totalStudents;
 		return result;
 	}
 
@@ -250,4 +242,45 @@ public class ReportThreeServiceImpl implements ReportThreeService{
 		}
 		return result;
 	}
+
+	@Override
+	public List<String> studentsCorrectInterpretation(Integer year) {
+		List<String> studentsCorrectInterpretation = new ArrayList<>();
+		List<StudentAnswer> studentCorrectInterpretation = studentCorrectInterpretationList(year);
+		String auxiliar;
+        for (int i = 0; i < studentCorrectInterpretation.size(); i++) {
+                    StudentVO studentSigenu = getInfoStudent(studentCorrectInterpretation.get(i).getStudentSigenuId());
+                    auxiliar = studentSigenu.getName() + " " + studentSigenu.getMiddleName() + " " + studentSigenu.getLastName();
+                    studentsCorrectInterpretation.add(auxiliar);
+        }
+		return studentsCorrectInterpretation;
+	}
+	
+	 public StudentVO getInfoStudent(String studentId) {
+	        try {
+	            return Client.getStudentSubsystem().getStudent(studentId);
+	        } catch (RemoteException e) {
+	            e.printStackTrace();
+	        }
+	        return null;
+	    }
+	 
+	 @Override
+		public List<StudentAnswer> studentCorrectInterpretationList(Integer year) {
+			List<StudentAnswer> studentCorrectInterpretationQuery = studentAnswerRepository.findStudentsCorrectAnswerInterpretation(year);
+			int totalInterpretationQuestions = interpretationQuestionTotalByYear(year);
+			List<StudentAnswer> studentCorrectInterpretationFinal = new ArrayList<>();
+			int aux = 0;
+	        for (int i = 1; i < studentCorrectInterpretationQuery.size(); i++) {
+	            if (studentCorrectInterpretationQuery.get(i).getStudentSigenuId().equals(studentCorrectInterpretationQuery.get(i - 1).getStudentSigenuId())) {
+	                aux++;
+	                if (aux == totalInterpretationQuestions - 1) {
+	                   aux = 0;
+	                   studentCorrectInterpretationFinal.add(studentCorrectInterpretationQuery.get(i));	                   
+	                }
+	            }
+	            else aux = 0;
+	        }
+			return studentCorrectInterpretationFinal;
+		}
 }

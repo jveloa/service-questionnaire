@@ -92,4 +92,11 @@ public class CareerChiefReportController {
     public float studentWhoMadeContestByYearBySubject(@PathVariable Integer year,@PathVariable String subject) {
         return ReportThreeService.studentWhoMadeContestByYearBySubject(year,subject);
     }
+    
+    @GetMapping("/studentsCorrectInterpretation/{year}")
+    @ApiOperation(value = "Return all students who have all interpretation questions with correct answers")
+    public List<String> studentsCorrectInterpretation(@PathVariable Integer year) {
+        return ReportThreeService.studentsCorrectInterpretation(year);
+    }
+    
 }

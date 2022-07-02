@@ -23,4 +23,6 @@ public interface ReportTwoService {
 
     List<StudentsWithNotesDto> entryDataByCourse(Integer year);
 
+    List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String placeEgress);
+
 }

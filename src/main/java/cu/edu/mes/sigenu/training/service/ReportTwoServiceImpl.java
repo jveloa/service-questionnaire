@@ -21,9 +21,6 @@ import java.util.Map;
 public class ReportTwoServiceImpl implements ReportTwoService {
 
     @Autowired
-    private CustomRepository customRepository;
-
-    @Autowired
     private QuestionRepository questionRepository;
 
     @Autowired

@@ -2,8 +2,6 @@ package cu.edu.mes.sigenu.training.core.service;
 
 import java.util.List;
 
-import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
-
 public interface ReportThreeService {
 	int studentTotalByYear(Integer year);
 	
@@ -41,8 +39,10 @@ public interface ReportThreeService {
 	
 	float studentWhoMadeContestByYearBySubject(Integer year, String subject);
 	
+	float studentWhoNotRead(Integer year);
+	
 	List<String> studentsCorrectInterpretation (Integer year);
 	
-	List<StudentAnswer> studentCorrectInterpretationList (Integer year);
+	List<String> studentsWhoNotRead (Integer year);
 
 }

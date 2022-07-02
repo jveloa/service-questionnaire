@@ -199,6 +199,14 @@ public interface StudentAnswerRepository extends JpaRepository <StudentAnswer,In
                "(group_question.name_group = 'Manifestaciones artísticas' " +
                " or group_question.name_group = 'Deportes')")
     public List<StudentAnswer> deportArtListByStudent(@Param("student_sigenu_id") String studentSigenuId);
+    
+    @Query("select sa from StudentAnswer sa "
+    		+ "inner join QuestionAnswer qa on sa.questionAnswerId = qa.id "
+    		+ "inner join Question q on qa.questionId = q.id "
+    		+ "inner join Answer a on qa.answerId = a.id "
+    		+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
+    		+ "where year(qs.doneDate) = ?1 and a.id = 73 and q.id = 48 or q.id = 49 or q.id = 50 order by sa.studentSigenuId")
+    List<StudentAnswer> findStudentsWhoNotRead(int year);
 
 
 }

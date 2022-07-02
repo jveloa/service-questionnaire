@@ -265,8 +265,7 @@ public class ReportThreeServiceImpl implements ReportThreeService{
 	        return null;
 	    }
 	 
-	 @Override
-		public List<StudentAnswer> studentCorrectInterpretationList(Integer year) {
+		private List<StudentAnswer> studentCorrectInterpretationList(Integer year) {
 			List<StudentAnswer> studentCorrectInterpretationQuery = studentAnswerRepository.findStudentsCorrectAnswerInterpretation(year);
 			int totalInterpretationQuestions = interpretationQuestionTotalByYear(year);
 			List<StudentAnswer> studentCorrectInterpretationFinal = new ArrayList<>();
@@ -282,5 +281,44 @@ public class ReportThreeServiceImpl implements ReportThreeService{
 	            else aux = 0;
 	        }
 			return studentCorrectInterpretationFinal;
+		}
+
+		@Override
+		public float studentWhoNotRead(Integer year) {
+			float result = 0;
+			int listSize  = studentWhoNotReadList(year).size();
+			int totalStudents = studentTotalByYear(year);
+			result = ((float) (listSize * 100)) / totalStudents;
+			return result;
+		}
+
+		@Override
+		public List<String> studentsWhoNotRead(Integer year) {
+			List<String> studentsWhoNotRead = new ArrayList<>();
+			List<StudentAnswer> studentWhoNotRead = studentWhoNotReadList(year);
+			String auxiliar;
+	        for (int i = 0; i < studentWhoNotRead.size(); i++) {
+	                    StudentVO studentSigenu = getInfoStudent(studentWhoNotRead.get(i).getStudentSigenuId());
+	                    auxiliar = studentSigenu.getName() + " " + studentSigenu.getMiddleName() + " " + studentSigenu.getLastName();
+	                    studentsWhoNotRead.add(auxiliar);
+	        }
+			return studentsWhoNotRead;
+		}
+		
+		private List<StudentAnswer> studentWhoNotReadList(Integer year) {
+			List<StudentAnswer> studentWhoNotReadQuery = studentAnswerRepository.findStudentsWhoNotRead(year);
+			List<StudentAnswer> studentWhoNotReadFinal = new ArrayList<>();
+			int aux = 0;
+	        for (int i = 1; i < studentWhoNotReadQuery.size(); i++) {
+	            if (studentWhoNotReadQuery.get(i).getStudentSigenuId().equals(studentWhoNotReadQuery.get(i - 1).getStudentSigenuId())) {
+	                aux++;
+	                if (aux == 2) {
+	                   aux = 0;
+	                   studentWhoNotReadFinal.add(studentWhoNotReadQuery.get(i));	                   
+	                }
+	            }
+	            else aux = 0;
+	        }
+			return studentWhoNotReadFinal;
 		}
 }

@@ -58,45 +58,56 @@ public class CareerChiefReportController {
     }
 
     @GetMapping("/studentCorrectInterpretation/{year}")
-    @ApiOperation(value = "Return all students who have all interpretation questions with correct answers")
+    @ApiOperation(value = "Return the percent of students who have all interpretation questions with correct answers")
     public float studentCorrectInterpretation(@PathVariable Integer year) {
         return ReportThreeService.studentCorrectInterpretation(year);
     }
     
     @GetMapping("/studentWrongInterpretation/{year}")
-    @ApiOperation(value = "Return all students who could not answer correctly any interpretation questions")
+    @ApiOperation(value = "Return the percent of students who could not answer correctly any interpretation questions")
     public float studentWrongInterpretation(@PathVariable Integer year) {
         return ReportThreeService.studentWrongInterpretation(year);
     }
     
     @GetMapping("/studentWhoEnterCareerBecauseTheyLikeIt/{year}")
-    @ApiOperation(value = "Return all students who declare they entered to the career because they like it")
+    @ApiOperation(value = "Return the percent of students who declare they entered to the career because they like it")
     public float studentWhoEnterCareerBecauseTheyLikeIt(@PathVariable Integer year) {
         return ReportThreeService.studentWhoEnterCareerBecauseTheyLikeIt(year);
     }    
     
     @GetMapping("/studentWhoEnterCareerBecauseTheyPleaseParents/{year}")
-    @ApiOperation(value = "Return all students who declare they entered to the career because their parents's influence")
+    @ApiOperation(value = "Return the percent of students who declare they entered to the career because their parents's influence")
     public float studentWhoEnterCareerBecauseTheyPleaseParents(@PathVariable Integer year) {
         return ReportThreeService.studentWhoEnterCareerBecauseTheyPleaseParents(year);
     }
     
     @GetMapping("/studentWhoNeverMadeContest/{year}")
-    @ApiOperation(value = "Return all students who never made a contest of any type")
+    @ApiOperation(value = "Return the percent of students who never made a contest of any type")
     public float studentWhoNeverMadeContest(@PathVariable Integer year) {
         return ReportThreeService.studentWhoNeverMadeContests(year);
     }
     
     @GetMapping("/studentWhoMadeContestByYearBySubject/{year}/{subject}")
-    @ApiOperation(value = "Return all students who made a determined contest")
+    @ApiOperation(value = "Return the percent of students who made a determined contest")
     public float studentWhoMadeContestByYearBySubject(@PathVariable Integer year,@PathVariable String subject) {
         return ReportThreeService.studentWhoMadeContestByYearBySubject(year,subject);
     }
     
     @GetMapping("/studentsCorrectInterpretation/{year}")
-    @ApiOperation(value = "Return all students who have all interpretation questions with correct answers")
+    @ApiOperation(value = "Return the list of all students who have all interpretation questions with correct answers")
     public List<String> studentsCorrectInterpretation(@PathVariable Integer year) {
         return ReportThreeService.studentsCorrectInterpretation(year);
     }
     
+    @GetMapping("/studentWhoNotRead/{year}")
+    @ApiOperation(value = "Return the percent of students who not read")
+    public float studentWhoNotRead(@PathVariable Integer year) {
+        return ReportThreeService.studentWhoNotRead(year);
+    }
+    
+    @GetMapping("/studentsWhoNotRead/{year}")
+    @ApiOperation(value = "Return the list of all students who not read")
+    public List<String> studentsWhoNotRead(@PathVariable Integer year) {
+        return ReportThreeService.studentsWhoNotRead(year);
+    }
 }

@@ -160,6 +160,102 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
 
+    @Override
+    public List<StudentsWithNotesDto> entryDataByCourse(Integer year) {
+
+        float aveAcademic = 0;
+        float aveSpanish = 0;
+        float aveHistory = 0;
+        float aveMat = 0;
+        int countAcademic = 0;
+        int countSpanish = 0;
+        int countHistory = 0;
+        int countMat = 0;
+
+        List<StudentsWithNotesDto> listReport = new ArrayList<>();
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+        List <Float> noteAcademic = new ArrayList<>();
+        List <Float> noteSpanish = new ArrayList<>();
+        List <Float> noteMat = new ArrayList<>();
+        List <Float> noteHistory = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++){
+
+            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            if (studentSigenu.getAcademicIndex() > 0){
+
+                aveAcademic += studentSigenu.getAcademicIndex();
+                noteAcademic.add(studentSigenu.getAcademicIndex());
+                countAcademic++;
+            }
+
+            List <EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
+
+            for (int j = 0; j < entryEvaluationVOList.size(); j++) {
+
+                if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español") && entryEvaluationVOList.get(j).getMark() > 0) {
+                    aveSpanish += entryEvaluationVOList.get(j).getMark();
+                    noteSpanish.add(entryEvaluationVOList.get(j).getMark());
+                    countSpanish++;
+                } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática") && entryEvaluationVOList.get(j).getMark() > 0) {
+                    aveMat += entryEvaluationVOList.get(j).getMark();
+                    noteMat.add(entryEvaluationVOList.get(j).getMark());
+                    countMat++;
+                } else if (entryEvaluationVOList.get(j).getMark() > 0){
+                    aveHistory += entryEvaluationVOList.get(j).getMark();
+                    noteHistory.add(entryEvaluationVOList.get(j).getMark());
+                    countHistory++;
+                }
+
+            }
+
+        }
+
+
+        StudentsWithNotesDto spanish = addNotes(noteSpanish,aveSpanish,"Español",countSpanish);
+        listReport.add(spanish);
+
+        StudentsWithNotesDto mat = addNotes(noteMat,aveMat,"Matemática",countMat);
+        listReport.add(mat);
+
+        StudentsWithNotesDto history = addNotes(noteHistory,aveHistory,"Historia",countHistory);
+        listReport.add(history);
+
+        StudentsWithNotesDto index = addNotes(noteAcademic,aveAcademic,"Índice Academico",countAcademic);
+        listReport.add(index);
+
+        return listReport;
+    }
+
+    public StudentsWithNotesDto addNotes(List <Float> note, float average, String name, int size){
+
+        float min = Collections.min(note);
+        float max = Collections.max(note);
+        float ave = average / size;
+        Map<String,Float> listAux = new HashMap<String, Float>();
+
+        listAux.put("Promedio",ave);
+        listAux.put("Máximo",max);
+        listAux.put("Mínimo",min);
+
+        StudentsWithNotesDto item  = StudentsWithNotesDto.builder()
+                                                            .name(name)
+                                                            .notesList(listAux)
+                                                            .build();
+
+        return item;
+    }
+
+    public float noteMax(float currentNote, float noteStudent){
+        float noteMax = 0;
+        if(noteStudent >= currentNote)
+            noteMax = currentNote;
+        else
+            noteMax = currentNote;
+
+        return noteMax;
+    }
+
     public StudentVO getInfoStudent(String studentId) {
         try {
             return Client.getStudentSubsystem().getStudent(studentId);

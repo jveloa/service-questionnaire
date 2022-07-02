@@ -45,6 +45,13 @@ public class CareerChiefReportController {
 
     }
 
+    @GetMapping("/entryDataByCourse/{year}")
+    @ApiOperation(value = "Report of data entry by course")
+    public List<StudentsWithNotesDto> entryDataByCourse(@PathVariable Integer year) {
+        return reportTwoService.entryDataByCourse(year);
+
+    }
+
     @GetMapping("/studentsWithNotes/{year}")
     @ApiOperation(value = "List of students by index and entrance grades")
     public List<StudentsWithNotesDto> studentsWithNotes(@PathVariable Integer year) {

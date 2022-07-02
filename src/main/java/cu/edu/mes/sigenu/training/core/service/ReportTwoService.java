@@ -21,5 +21,6 @@ public interface ReportTwoService {
 
     List<StudentsWithNotesDto> studentsWithNotes(Integer year);
 
+    List<StudentsWithNotesDto> entryDataByCourse(Integer year);
 
 }

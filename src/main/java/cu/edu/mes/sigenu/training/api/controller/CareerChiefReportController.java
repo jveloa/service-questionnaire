@@ -52,6 +52,15 @@ public class CareerChiefReportController {
 
     }
 
+    @GetMapping("/studentsByConfigurableNotes/{year}/{academicIndex}/{noteSpanish}/{noteMat}/{noteHistory}")
+    @ApiOperation(value = "List of students by index and entrance grades configurable")
+    public List<StudentsWithNotesDto> studentsByConfigurableNotes(@PathVariable Integer year, @PathVariable Float academicIndex
+                                                                 , @PathVariable Float noteSpanish, @PathVariable Float noteMat
+                                                                 , @PathVariable Float noteHistory) {
+        return reportTwoService.studentsByConfigurableNotes(year,academicIndex,noteSpanish,noteMat,noteHistory);
+
+    }
+
     @GetMapping("/studentsWithNotes/{year}")
     @ApiOperation(value = "List of students by index and entrance grades")
     public List<StudentsWithNotesDto> studentsWithNotes(@PathVariable Integer year) {

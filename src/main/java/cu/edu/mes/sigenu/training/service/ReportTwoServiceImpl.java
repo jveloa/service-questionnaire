@@ -261,15 +261,22 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
                 for (int j = 0; j < entryEvaluationVOList.size(); j++) {
 
-                    if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español") && entryEvaluationVOList.get(j).getMark() > 0) {
+                    if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español")
+                            && entryEvaluationVOList.get(j).getMark() > 0) {
+
                         aveSpanish += entryEvaluationVOList.get(j).getMark();
                         noteSpanish.add(entryEvaluationVOList.get(j).getMark());
                         countSpanish++;
-                    } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática") && entryEvaluationVOList.get(j).getMark() > 0) {
+
+                    } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática")
+                               && entryEvaluationVOList.get(j).getMark() > 0) {
+
                         aveMat += entryEvaluationVOList.get(j).getMark();
                         noteMat.add(entryEvaluationVOList.get(j).getMark());
                         countMat++;
+
                     } else if (entryEvaluationVOList.get(j).getMark() > 0) {
+
                         aveHistory += entryEvaluationVOList.get(j).getMark();
                         noteHistory.add(entryEvaluationVOList.get(j).getMark());
                         countHistory++;
@@ -296,6 +303,75 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         return listReport;
     }
 
+    @Override
+    public List<StudentsWithNotesDto> studentsByConfigurableNotes(Integer year, float academicIndex
+                                                                    , float noteSpanish, float noteMat, float noteHistory) {
+        boolean count = true;
+        int aux = 0;
+        List<StudentsWithNotesDto> listReport = new ArrayList<>();
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+
+        for (int i = 0; i < list.size(); i++) {
+
+            Map<String, Float> listAux = new HashMap<String, Float>();
+            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            List<EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
+
+            if (studentSigenu.getAcademicIndex() >= academicIndex && studentSigenu.getAcademicIndex() != 0) {
+
+
+                for (int j = 0; j < entryEvaluationVOList.size(); j++) {
+                    count = true;
+
+                    if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español")
+                            && entryEvaluationVOList.get(j).getMark() >= noteSpanish
+                            && entryEvaluationVOList.get(j).getMark() != 0) {
+
+                            count = false;
+
+
+                    } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática")
+                            && entryEvaluationVOList.get(j).getMark() >= noteMat
+                            && entryEvaluationVOList.get(j).getMark() != 0) {
+
+                            count = false;
+
+                    } else if (entryEvaluationVOList.get(j).getMark() >= noteHistory
+                            && entryEvaluationVOList.get(j).getMark() != 0
+                            && entryEvaluationVOList.get(j).getEntrySubjectName().equals("Historia")) {
+
+                             count = false;
+                    }
+
+                    if (count)
+                        j = entryEvaluationVOList.size();
+
+                 }
+                if (!count){
+                    listAux.put("Índice acádemico", studentSigenu.getAcademicIndex());
+                    while (aux < 3){
+                        listAux.put(entryEvaluationVOList.get(aux).getEntrySubjectName().toString()
+                                , entryEvaluationVOList.get(aux).getMark());
+                        aux++;
+
+                    }
+                    aux = 0;
+                    StudentsWithNotesDto item = StudentsWithNotesDto.builder()
+                            .name((studentSigenu.getName() + " "
+                                    + studentSigenu.getLastName())
+                                    .replace("  ", " "))
+                            .notesList(listAux)
+                            .build();
+
+                    listReport.add(item);
+                }
+
+            }
+        }
+
+        return listReport;
+    }
+
     public StudentsWithNotesDto addNotes(List <Float> note, float average, String name, int size){
 
         float min = Collections.min(note);
@@ -315,17 +391,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         return item;
     }
 
-    public float noteMax(float currentNote, float noteStudent){
-        float noteMax = 0;
-        if(noteStudent >= currentNote)
-            noteMax = currentNote;
-        else
-            noteMax = currentNote;
-
-        return noteMax;
-    }
-
-    public StudentVO getInfoStudent(String studentId) {
+     public StudentVO getInfoStudent(String studentId) {
         try {
             return Client.getStudentSubsystem().getStudent(studentId);
         } catch (RemoteException e) {

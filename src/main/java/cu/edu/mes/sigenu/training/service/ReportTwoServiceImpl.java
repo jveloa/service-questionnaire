@@ -372,6 +372,24 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         return listReport;
     }
 
+    @Override
+    public List<String> studentsByEntrySource(Integer year, String entrySource) {
+
+        List<String> listReport = new ArrayList<>();
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+
+        for (int i = 0; i < list.size(); i++){
+
+            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            if (studentSigenu.getEntrySource().getName().equals(entrySource))
+                listReport.add((studentSigenu.getName() +" "
+                    + studentSigenu.getLastName())
+                                   .replace("  "," "));
+
+        }
+        return listReport;
+    }
+
     public StudentsWithNotesDto addNotes(List <Float> note, float average, String name, int size){
 
         float min = Collections.min(note);

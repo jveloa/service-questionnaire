@@ -63,7 +63,12 @@ public class ReportServiceImpl implements ReportService {
 
             } else {
                 sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
+                StudentVO studentSigenu = getInfoStudent(studentAnswer.getStudentSigenuId());
                 StudentSportDto item = StudentSportDto.builder()
+                                                      .name((studentSigenu.getName() + " " +
+                                                                studentSigenu.getLastName())
+                                                                             .replace("  "," ")
+                                                           )
                                                       .studentSigenuId(studentAnswer.getStudentSigenuId())
                                                       .sports(sports)
                                                       .build();
@@ -90,7 +95,12 @@ public class ReportServiceImpl implements ReportService {
 
             } else {
                 arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
+                StudentVO studentSigenu = getInfoStudent(studentAnswer.getStudentSigenuId());
                 StudentArtDto item = StudentArtDto.builder()
+                                                  .name((studentSigenu.getName() + " " +
+                                                            studentSigenu.getLastName())
+                                                                         .replace("  "," ")
+                                                       )
                                                   .studentSigenuId(studentAnswer.getStudentSigenuId())
                                                   .arts(arts)
                                                   .build();

@@ -29,4 +29,5 @@ public interface ReportTwoService {
                                                             , float noteSpanish, float noteMat, float noteHistory);
 
 
-    }
+    List<String> studentsByEntrySource(Integer year, String entrySource);
+}

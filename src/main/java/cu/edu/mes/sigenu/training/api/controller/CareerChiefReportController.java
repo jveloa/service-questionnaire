@@ -158,4 +158,10 @@ public class CareerChiefReportController {
     public float studentWhoOnlyReadSchool(@PathVariable Integer year) {
         return ReportThreeService.studentWhoOnlyReadSchool(year);
     }
+
+    @GetMapping("/studentsByEntrySource/{year}/{entrySource}")
+    @ApiOperation(value = "Return all students by entry source")
+    public List<String> studentsByEntrySource(@PathVariable Integer year,@PathVariable String entrySource) {
+        return reportTwoService.studentsByEntrySource(year,entrySource);
+    }
 }

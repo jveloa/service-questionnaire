@@ -1,9 +1,9 @@
 package cu.edu.mes.sigenu.training.service;
 
-import cu.edu.mes.sigenu.training.core.dto.question.DeportArtListDto;
-import cu.edu.mes.sigenu.training.core.dto.question.ResponsabilityReportDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentArtDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentSportDto;
+import cu.edu.mes.sigenu.training.core.dto.report.DeportArtListDto;
+import cu.edu.mes.sigenu.training.core.dto.report.ResponsabilityReportDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentArtDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentSportDto;
 import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
 import cu.edu.mes.sigenu.training.core.repository.StudentAnswerRepository;
 import cu.edu.mes.sigenu.training.core.service.ReportService;

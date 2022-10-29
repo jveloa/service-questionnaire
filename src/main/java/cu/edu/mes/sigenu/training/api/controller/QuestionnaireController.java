@@ -2,7 +2,7 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 
 
-import cu.edu.mes.sigenu.training.core.dto.question.QuestionnaireDto;
+import cu.edu.mes.sigenu.training.core.dto.QuestionnaireDto;
 
 import cu.edu.mes.sigenu.training.core.model.Questionnaire;
 import cu.edu.mes.sigenu.training.core.service.QuestionnaireService;

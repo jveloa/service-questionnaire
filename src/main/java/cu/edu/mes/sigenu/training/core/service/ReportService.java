@@ -2,10 +2,10 @@ package cu.edu.mes.sigenu.training.core.service;
 
 
 
-import cu.edu.mes.sigenu.training.core.dto.question.DeportArtListDto;
-import cu.edu.mes.sigenu.training.core.dto.question.ResponsabilityReportDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentArtDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentSportDto;
+import cu.edu.mes.sigenu.training.core.dto.report.DeportArtListDto;
+import cu.edu.mes.sigenu.training.core.dto.report.ResponsabilityReportDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentArtDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentSportDto;
 
 import java.util.List;
 

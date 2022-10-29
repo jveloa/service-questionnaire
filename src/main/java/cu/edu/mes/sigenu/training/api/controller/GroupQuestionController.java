@@ -2,7 +2,7 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 
 
-import cu.edu.mes.sigenu.training.core.dto.question.GroupQuestionDto;
+import cu.edu.mes.sigenu.training.core.dto.GroupQuestionDto;
 import cu.edu.mes.sigenu.training.core.model.GroupQuestion;
 import cu.edu.mes.sigenu.training.core.service.GroupQuestionService;
 import io.swagger.annotations.Api;

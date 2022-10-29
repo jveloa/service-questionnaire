@@ -2,9 +2,9 @@ package cu.edu.mes.sigenu.training.core.service;
 
 
 
-import cu.edu.mes.sigenu.training.core.dto.question.StudentNotComputerDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentsAnswerByAnswerByQuestionDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentsWithNotesDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentNotComputerDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentsAnswerByAnswerByQuestionDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentsWithNotesDto;
 
 import java.util.List;
 import java.util.Map;

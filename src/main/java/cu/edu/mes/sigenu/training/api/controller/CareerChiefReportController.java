@@ -3,9 +3,9 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 
 
-import cu.edu.mes.sigenu.training.core.dto.question.StudentNotComputerDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentsAnswerByAnswerByQuestionDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentsWithNotesDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentNotComputerDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentsAnswerByAnswerByQuestionDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentsWithNotesDto;
 import cu.edu.mes.sigenu.training.core.service.ReportThreeService;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import io.swagger.annotations.Api;

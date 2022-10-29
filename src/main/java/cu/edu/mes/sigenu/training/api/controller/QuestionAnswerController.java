@@ -1,6 +1,6 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
-import cu.edu.mes.sigenu.training.core.dto.question.QuestionAnswerDto;
+import cu.edu.mes.sigenu.training.core.dto.QuestionAnswerDto;
 import cu.edu.mes.sigenu.training.core.model.QuestionAnswer;
 import cu.edu.mes.sigenu.training.core.service.QuestionAnswerService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;

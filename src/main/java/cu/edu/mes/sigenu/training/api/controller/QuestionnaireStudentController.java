@@ -1,10 +1,8 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
 
-import cu.edu.mes.sigenu.training.core.dto.question.QuestionnaireStudentDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentAnswerDto;
+import cu.edu.mes.sigenu.training.core.dto.QuestionnaireStudentDto;
 import cu.edu.mes.sigenu.training.core.model.QuestionnarieStudent;
-import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
 import cu.edu.mes.sigenu.training.core.service.QuestionnaireStudentService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import io.swagger.annotations.Api;

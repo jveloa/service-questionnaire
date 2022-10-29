@@ -1,6 +1,5 @@
-package cu.edu.mes.sigenu.training.core.dto.question;
+package cu.edu.mes.sigenu.training.core.dto;
 
-import cu.edu.mes.sigenu.training.core.model.Questionnaire;
 import lombok.Data;
 
 import java.util.Date;

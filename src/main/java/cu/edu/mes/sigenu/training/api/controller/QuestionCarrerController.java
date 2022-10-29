@@ -1,9 +1,7 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
 
-import cu.edu.mes.sigenu.training.core.dto.question.GroupQuestionDto;
-import cu.edu.mes.sigenu.training.core.dto.question.QuestionCarrerDto;
-import cu.edu.mes.sigenu.training.core.model.GroupQuestion;
+import cu.edu.mes.sigenu.training.core.dto.QuestionCarrerDto;
 import cu.edu.mes.sigenu.training.core.model.QuestionCarrer;
 import cu.edu.mes.sigenu.training.core.service.QuestionCarrerService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;

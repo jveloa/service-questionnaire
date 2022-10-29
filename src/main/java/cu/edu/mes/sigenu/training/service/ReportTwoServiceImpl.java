@@ -1,18 +1,16 @@
 package cu.edu.mes.sigenu.training.service;
 
 
-import cu.edu.mes.sigenu.training.core.dto.question.StudentNotComputerDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentsAnswerByAnswerByQuestionDto;
-import cu.edu.mes.sigenu.training.core.dto.question.StudentsWithNotesDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentNotComputerDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentsAnswerByAnswerByQuestionDto;
+import cu.edu.mes.sigenu.training.core.dto.report.StudentsWithNotesDto;
 import cu.edu.mes.sigenu.training.core.model.*;
 import cu.edu.mes.sigenu.training.core.repository.*;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import cu.edu.mes.sigenu.training.core.utils.Client;
 import cu.edu.mes.subsystem.student.vo.StudentVO;
 
-import cu.edu.mes.vo.EntryEvaluationDataVO;
 import cu.edu.mes.vo.EntryEvaluationVO;
-import cu.edu.mes.vo.EntrySourceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

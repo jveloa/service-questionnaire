@@ -1,5 +1,4 @@
-package cu.edu.mes.sigenu.training.core.dto.question;
-
+package cu.edu.mes.sigenu.training.core.dto.report;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,8 +7,8 @@ import java.util.List;
 
 @Builder
 @Data
-public class StudentSportDto {
+public class StudentArtDto {
     private String name;
     private String studentSigenuId;
-    private List<String> sports;
+    private List<String> arts;
 }

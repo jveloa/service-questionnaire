@@ -2,6 +2,7 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 
 
+import cu.edu.mes.sigenu.training.core.dto.QuestionnaireQuestionDto;
 import cu.edu.mes.sigenu.training.core.service.QuestionnaireQuestionService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import io.swagger.annotations.Api;
@@ -13,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Api(tags = "Questionnaire Question endpoint controller")
 @RequestMapping(value = "/questionnaire-question",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -20,6 +23,12 @@ public class QuestionnaireQuestionController {
 
     @Autowired
     private QuestionnaireQuestionService questionnaireQuestionService;
+
+    @GetMapping("/{questionnaireId}/")
+    @ApiOperation(value = "Get all question by a questionnaire")
+    public List<QuestionnaireQuestionDto> get(@PathVariable Integer questionnaireId){
+        return questionnaireQuestionService.getQuestionsByQuestionnaire(questionnaireId);
+    }
 
     @PostMapping("/{questionnaire_id}/{question_id}")
     @ResponseStatus(HttpStatus.CREATED)

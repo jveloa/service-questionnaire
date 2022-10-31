@@ -1,6 +1,6 @@
 package cu.edu.mes.sigenu.training.core.dto;
 
-import cu.edu.mes.sigenu.training.core.model.Question;
+
 import lombok.Builder;
 import lombok.Data;
 

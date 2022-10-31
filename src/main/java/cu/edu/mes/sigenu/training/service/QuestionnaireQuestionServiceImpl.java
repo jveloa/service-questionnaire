@@ -1,9 +1,6 @@
 package cu.edu.mes.sigenu.training.service;
 
-import cu.edu.mes.sigenu.training.core.dto.AnswerDto;
-import cu.edu.mes.sigenu.training.core.dto.QuestionDto;
-import cu.edu.mes.sigenu.training.core.dto.QuestionnaireQuestionDto;
-import cu.edu.mes.sigenu.training.core.model.Answer;
+import cu.edu.mes.sigenu.training.core.dto.*;
 import cu.edu.mes.sigenu.training.core.model.Question;
 import cu.edu.mes.sigenu.training.core.model.Questionnaire;
 import cu.edu.mes.sigenu.training.core.service.QuestionService;
@@ -31,7 +28,8 @@ public class QuestionnaireQuestionServiceImpl implements QuestionnaireQuestionSe
 
         Questionnaire questionnaire = questionnaireService.findById(questionnaire_id);
         Question question = questionService.findById(question_id);
-        question.getQuestionnaireList().add(questionnaire);
+        question.getQuestionnaireList()
+                .add(questionnaire);
         questionService.save(question);
 
     }
@@ -41,25 +39,52 @@ public class QuestionnaireQuestionServiceImpl implements QuestionnaireQuestionSe
 
         Questionnaire questionnaire = questionnaireService.findById(questionnaire_id);
         Question question = questionService.findById(question_id);
-        question.getQuestionnaireList().remove(questionnaire);
+        question.getQuestionnaireList()
+                .remove(questionnaire);
         questionService.update(question);
 
     }
 
     @Override
-    public List<QuestionnaireQuestionDto> getQuestionsByQuestionnaire(Integer questionnaireId) {
-        List<QuestionnaireQuestionDto> questionnaireQuestionList = new ArrayList<>();
+    public List<QuestionnaireQuestionByGroupDto> getQuestionsByQuestionnaire(Integer questionnaireId) {
+        List<QuestionnaireQuestionByGroupDto> questionnaireQuestionByGroupDto = new ArrayList();
         Questionnaire questionnaire = questionnaireService.findById(questionnaireId);
         ModelMapper modelMapper = new ModelMapper();
-        for (Question question:questionnaire.getQuestionList()){
-            questionnaireQuestionList
-                .add(QuestionnaireQuestionDto.builder()
-                                             .question(modelMapper.map(question,QuestionDto.class))
-                                             .answerList(question.getQuestionAnswerList().stream()
-                                                                 .map(item -> modelMapper.map(item.getAnswerId(),AnswerDto.class))
-                                                                 .collect(Collectors.toList()))
-                                             .build());
+        for (Question question : questionnaire.getQuestionList()) {
+
+            List<QuestionnaireQuestionDto> questionnaireQuestionDto = null;
+
+            for(QuestionnaireQuestionByGroupDto item : questionnaireQuestionByGroupDto ){
+
+                if(question.getGroupQuestionId().getId().equals(item.getGroupQuestionDto().getId())){
+                    questionnaireQuestionDto = item.getQuestionnaireQuestionDto();
+                    questionnaireQuestionDto
+                        .add(QuestionnaireQuestionDto.builder()
+                                                     .question(modelMapper.map(question, QuestionDto.class))
+                                                     .answerList(question.getQuestionAnswerList().stream()
+                                                                         .map(var -> modelMapper.map(var.getAnswerId(), AnswerDto.class))
+                                                                         .collect(Collectors.toList()))
+                                                     .build()
+                                                );
+                }
+            }
+
+            if(questionnaireQuestionDto == null) {
+                questionnaireQuestionDto = new ArrayList<>();
+                questionnaireQuestionDto.add(QuestionnaireQuestionDto.builder()
+                                                                     .question(modelMapper.map(question, QuestionDto.class))
+                                                                     .answerList(question.getQuestionAnswerList().stream()
+                                                                                         .map(var -> modelMapper.map(var.getAnswerId(), AnswerDto.class))
+                                                                                         .collect(Collectors.toList()))
+                                                                     .build());
+
+                questionnaireQuestionByGroupDto
+                    .add(QuestionnaireQuestionByGroupDto.builder()
+                                                        .groupQuestionDto(modelMapper.map(question.getGroupQuestionId(), GroupQuestionDto.class))
+                                                        .questionnaireQuestionDto(questionnaireQuestionDto)
+                                                        .build());
+            }
         }
-        return questionnaireQuestionList;
+        return questionnaireQuestionByGroupDto;
     }
 }

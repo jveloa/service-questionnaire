@@ -4,7 +4,9 @@ package cu.edu.mes.sigenu.training.api.controller;
 import cu.edu.mes.sigenu.training.core.dto.QuestionCarrerDto;
 import cu.edu.mes.sigenu.training.core.model.QuestionCarrer;
 import cu.edu.mes.sigenu.training.core.service.QuestionCarrerService;
+import cu.edu.mes.sigenu.training.core.service.SigenuService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
+import cu.edu.mes.vo.CareerVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,6 +30,9 @@ public class QuestionCarrerController {
     @Autowired
     private QuestionCarrerService questionCarrerService;
 
+    @Autowired
+    private SigenuService sigenuService;
+
     @GetMapping("")
     @ApiOperation(value = "Get a List with all question carrer")
     public List<QuestionCarrerDto> list(){
@@ -41,6 +46,12 @@ public class QuestionCarrerController {
                                    .map(item -> modelMapper.map(item,QuestionCarrerDto.class))
                                    .collect(Collectors.toList());
 
+    }
+
+    @GetMapping("/career")
+    @ApiOperation(value = "Get a List with all career")
+    public List<CareerVO> listCareer(){
+        return sigenuService.getCareersSigenu();
     }
 
     @GetMapping("/{id}")

@@ -4,9 +4,11 @@ package cu.edu.mes.sigenu.training.service;
 import cu.edu.mes.sigenu.training.core.model.QuestionnarieStudent;
 import cu.edu.mes.sigenu.training.core.repository.QuestionnaireStudentRepository;
 import cu.edu.mes.sigenu.training.core.service.QuestionnaireStudentService;
+import cu.edu.mes.sigenu.training.core.service.SigenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
 @Service
@@ -14,6 +16,9 @@ public class QuestionnaireStudentServiceImpl implements QuestionnaireStudentServ
 
     @Autowired
     private QuestionnaireStudentRepository questionnaireStudentRepository;
+
+    @Autowired
+    private SigenuService sigenuService;
 
     @Override
     public List<QuestionnarieStudent> listAllByStudent(String sigenuId) {
@@ -28,13 +33,10 @@ public class QuestionnaireStudentServiceImpl implements QuestionnaireStudentServ
             return new QuestionnarieStudent();
     }
 
-    /*@Override
-    public QuestionnarieStudent findByStudentSigenuId(String sigenuId) {
-        return questionnaireStudentRepository.findByStudentSigenuId(sigenuId);
-    }*/
-
     @Override
-    public QuestionnarieStudent save(QuestionnarieStudent questionnarieStudent) {
+    public QuestionnarieStudent save(QuestionnarieStudent questionnarieStudent, String identification) {
+        String studentSigenu = sigenuService.getStudentIdByIdentification(identification);
+        questionnarieStudent.setStudentSigenuId(studentSigenu);
         return questionnaireStudentRepository.save(questionnarieStudent);
     }
 

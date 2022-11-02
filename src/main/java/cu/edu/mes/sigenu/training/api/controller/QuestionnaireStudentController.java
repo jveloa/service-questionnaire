@@ -61,7 +61,7 @@ public class QuestionnaireStudentController {
         try{
             ModelMapper modelMapper = new ModelMapper();
             QuestionnarieStudent questionnarieStudent = modelMapper.map(item,QuestionnarieStudent.class);
-            questionnaireStudentService.save(questionnarieStudent);
+            questionnaireStudentService.save(questionnarieStudent,item.getIdentification());
         }catch (Exception e){
             return ResponseEntity.ok(new ApiResponse(false,"Error: questionnaire student hasn't created"));
         }

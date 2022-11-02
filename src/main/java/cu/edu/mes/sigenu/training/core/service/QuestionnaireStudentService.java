@@ -2,7 +2,6 @@ package cu.edu.mes.sigenu.training.core.service;
 
 
 import cu.edu.mes.sigenu.training.core.model.QuestionnarieStudent;
-import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public interface QuestionnaireStudentService {
 
     QuestionnarieStudent findById(Integer id);
 
-    QuestionnarieStudent save(QuestionnarieStudent questionnarieStudent);
+    QuestionnarieStudent save(QuestionnarieStudent questionnarieStudent,String identification);
 
     QuestionnarieStudent update(QuestionnarieStudent questionnarieStudent);
 

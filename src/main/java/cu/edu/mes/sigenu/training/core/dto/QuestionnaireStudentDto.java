@@ -8,6 +8,7 @@ import java.util.Date;
 public class QuestionnaireStudentDto {
 
     private String studentSigenuId;
+    private String identification;
     private Date doneDate;
     private Integer id;
     private QuestionnaireDto questionnarieId;

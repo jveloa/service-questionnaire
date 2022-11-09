@@ -1,7 +1,11 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
 import cu.edu.mes.sigenu.training.core.dto.StudentAnswerDto;
+import cu.edu.mes.sigenu.training.core.model.QuestionAnswer;
 import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
+import cu.edu.mes.sigenu.training.core.service.QuestionAnswerService;
+import cu.edu.mes.sigenu.training.core.service.QuestionnaireQuestionService;
+import cu.edu.mes.sigenu.training.core.service.SigenuService;
 import cu.edu.mes.sigenu.training.core.service.StudentAnswerService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import io.swagger.annotations.Api;
@@ -15,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,8 +27,15 @@ import java.util.stream.Collectors;
 @Api(tags = "Student Answer enpoint controller")
 @RequestMapping(value = "/student-answer",produces = MediaType.APPLICATION_JSON_VALUE)
 public class StudentAnswerController {
+
     @Autowired
     private StudentAnswerService studentAnswerService;
+
+    @Autowired
+    private QuestionAnswerService questionAnswerService;
+
+    @Autowired
+    private SigenuService sigenuService;
 
     @GetMapping("/student/{sigenuId}")
     @ApiOperation(value = "Get a List with all student answer by a student")
@@ -61,11 +73,25 @@ public class StudentAnswerController {
     @ApiOperation(value = "Create student answer")
     public ResponseEntity<ApiResponse> save(@RequestBody List<StudentAnswerDto> items){
         try{
+
             ModelMapper modelMapper = new ModelMapper();
-            List<StudentAnswer> studentAnswerList = items.stream()
-                                                         .map(item -> modelMapper.map(item,StudentAnswer.class))
-                                                         .collect(Collectors.toList());
+            List<StudentAnswer> studentAnswerList = new ArrayList<>();
+            String idSigenu = sigenuService.getStudentIdByIdentification(items.get(0).getIdentification());
+
+            for (StudentAnswerDto studentAnswerDtos:items) {
+                StudentAnswer studentAnswer = new StudentAnswer();
+                studentAnswer.setStudentSigenuId(idSigenu);
+                QuestionAnswer questionAnswer = modelMapper.map(studentAnswerDtos.getQuestionAnswerId(),QuestionAnswer.class);
+
+
+                int id = questionAnswerService.findByQuestionIdAnswerId(questionAnswer.getQuestionId(),questionAnswer.getAnswerId()).getId();
+                questionAnswer.setId(id);
+                studentAnswer.setQuestionAnswerId(questionAnswer);
+                studentAnswerList.add(studentAnswer);
+
+            }
             studentAnswerService.save(studentAnswerList);
+
         }catch (Exception e){
             return ResponseEntity.ok(new ApiResponse(false,"Error: Student answers hasn't created"));
         }

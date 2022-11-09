@@ -1,5 +1,7 @@
 package cu.edu.mes.sigenu.training.core.repository;
 
+import cu.edu.mes.sigenu.training.core.model.Answer;
+import cu.edu.mes.sigenu.training.core.model.Question;
 import cu.edu.mes.sigenu.training.core.model.QuestionAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -29,7 +31,7 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer,I
             + "where date_part('year',qs.done_date) = ?1 and q.id = 56 and a.id = ?2 and q.group_question_id = 4  group by qa.id", nativeQuery=true)
     int totalAnswerByQuestionByStudyHours(int year,int answerId);
 
-
+    QuestionAnswer getByQuestionIdAndAnswerId(Question questionId, Answer answerId);
 
 
 

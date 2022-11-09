@@ -1,5 +1,7 @@
 package cu.edu.mes.sigenu.training.service;
 
+import cu.edu.mes.sigenu.training.core.model.Answer;
+import cu.edu.mes.sigenu.training.core.model.Question;
 import cu.edu.mes.sigenu.training.core.model.QuestionAnswer;
 import cu.edu.mes.sigenu.training.core.repository.QuestionAnswerRepository;
 import cu.edu.mes.sigenu.training.core.service.QuestionAnswerService;
@@ -25,6 +27,11 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
             return questionAnswerRepository.findById(id).get();
         else
             return new QuestionAnswer();
+    }
+
+    @Override
+    public QuestionAnswer findByQuestionIdAnswerId(Question questionId, Answer answerId){
+        return questionAnswerRepository.getByQuestionIdAndAnswerId(questionId, answerId);
     }
 
     @Override

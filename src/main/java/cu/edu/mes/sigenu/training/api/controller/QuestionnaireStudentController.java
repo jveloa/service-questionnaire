@@ -37,7 +37,7 @@ public class QuestionnaireStudentController {
         TypeMap<QuestionnarieStudent, QuestionnaireStudentDto> propertyMapper = modelMapper.createTypeMap(QuestionnarieStudent.class, QuestionnaireStudentDto.class);
         propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionnarieId().getName(),
                 (destination, value) -> destination.getQuestionnarieId().setName((String)value)));
-       propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionnarieId().getDescription(),
+        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionnarieId().getDescription(),
                 (destination, value) -> destination.getQuestionnarieId().setDescription((String) value)));
         return questionnaireStudentService.listAllByStudent(sigenuId).stream()
                 .map(item -> modelMapper.map(item,QuestionnaireStudentDto.class))

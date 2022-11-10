@@ -2,11 +2,10 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 import cu.edu.mes.sigenu.training.core.dto.StudentAnswerDto;
 import cu.edu.mes.sigenu.training.core.model.QuestionAnswer;
+import cu.edu.mes.sigenu.training.core.model.Questionnaire;
+import cu.edu.mes.sigenu.training.core.model.QuestionnarieStudent;
 import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
-import cu.edu.mes.sigenu.training.core.service.QuestionAnswerService;
-import cu.edu.mes.sigenu.training.core.service.QuestionnaireQuestionService;
-import cu.edu.mes.sigenu.training.core.service.SigenuService;
-import cu.edu.mes.sigenu.training.core.service.StudentAnswerService;
+import cu.edu.mes.sigenu.training.core.service.*;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +37,9 @@ public class StudentAnswerController {
 
     @Autowired
     private SigenuService sigenuService;
+
+    @Autowired
+    private QuestionnaireStudentService questionnaireStudentService;
 
     @GetMapping("/student/{sigenuId}")
     @ApiOperation(value = "Get a List with all student answer by a student")
@@ -68,10 +72,11 @@ public class StudentAnswerController {
 
     }
 
-    @PostMapping("")
+    @PostMapping("/questionnaire/{questionnaireId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create student answer")
-    public ResponseEntity<ApiResponse> save(@RequestBody List<StudentAnswerDto> items){
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseEntity<ApiResponse> save(@RequestBody List<StudentAnswerDto> items,@PathVariable Integer questionnaireId){
         try{
 
             ModelMapper modelMapper = new ModelMapper();
@@ -91,6 +96,13 @@ public class StudentAnswerController {
 
             }
             studentAnswerService.save(studentAnswerList);
+            QuestionnarieStudent questionnarieStudent = new QuestionnarieStudent();
+            questionnarieStudent.setStudentSigenuId(idSigenu);
+            Questionnaire questionnaire = new Questionnaire();
+            questionnaire.setId(questionnaireId);
+            questionnarieStudent.setQuestionnarieId(questionnaire);
+            questionnarieStudent.setDoneDate(Date.from(Instant.now()));
+            questionnaireStudentService.save(questionnarieStudent,items.get(0).getIdentification());
 
         }catch (Exception e){
             return ResponseEntity.ok(new ApiResponse(false,"Error: Student answers hasn't created"));

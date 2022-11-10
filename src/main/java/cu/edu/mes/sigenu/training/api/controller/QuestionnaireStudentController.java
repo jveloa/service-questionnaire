@@ -4,6 +4,7 @@ package cu.edu.mes.sigenu.training.api.controller;
 import cu.edu.mes.sigenu.training.core.dto.QuestionnaireStudentDto;
 import cu.edu.mes.sigenu.training.core.model.QuestionnarieStudent;
 import cu.edu.mes.sigenu.training.core.service.QuestionnaireStudentService;
+import cu.edu.mes.sigenu.training.core.service.SigenuService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,9 @@ public class QuestionnaireStudentController {
 
     @Autowired
     private QuestionnaireStudentService questionnaireStudentService;
+
+    @Autowired
+    private SigenuService sigenuService;
 
     @GetMapping("/student/{sigenuId}")
     @ApiOperation(value = "Get a List with all student questionnaire by a student")
@@ -52,6 +57,18 @@ public class QuestionnaireStudentController {
         QuestionnarieStudent item = questionnaireStudentService.findById(id);
         return modelMapper.map(item, QuestionnaireStudentDto.class);
 
+    }
+
+    @GetMapping("/student-exist/{identification}")
+    @ApiOperation(value = "Check a student exist in sigenu")
+    public ResponseEntity<ApiResponse> getExistStudent(@PathVariable String identification) {
+        String sigenuId;
+        try {
+             sigenuId = sigenuService.getStudentIdByIdentification(identification);
+        } catch (Exception e) {
+            return ResponseEntity.ok(new ApiResponse(false, "Error: questionnaire student hasn't created"));
+        }
+        return ResponseEntity.ok(new ApiResponse(true, sigenuId));
     }
 
     @PostMapping("")

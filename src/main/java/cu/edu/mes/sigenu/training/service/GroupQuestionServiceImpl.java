@@ -1,6 +1,6 @@
 package cu.edu.mes.sigenu.training.service;
 
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
+
 import cu.edu.mes.sigenu.training.core.model.GroupQuestion;
 import cu.edu.mes.sigenu.training.core.repository.GroupQuestionRepository;
 import cu.edu.mes.sigenu.training.core.service.GroupQuestionService;

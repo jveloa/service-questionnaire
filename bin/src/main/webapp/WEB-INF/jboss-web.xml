@@ -1,6 +1,0 @@
-<jboss-web>
-	<class-loading>
-		<loader-repository>jboss.loader:loader=sigenu-app-1.0</loader-repository>
-	</class-loading>
-	<security-domain>java:/jaas/sigenu</security-domain>
-</jboss-web>

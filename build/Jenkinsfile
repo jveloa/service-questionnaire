@@ -38,7 +38,7 @@ pipeline {
         stage('Package') {
             steps {
                 sh "mvn -Dmaven.test.failure.ignore=true package -Dgittag=${env.versionNumber}"
-                sh "jar xf target/docentcontrol-1.0.0.jar"
+                sh "jar xf target/training-1.0.0.jar"
             }
         }
 
@@ -47,9 +47,9 @@ pipeline {
                 script {
                     docker.withTool('docker') {
                         docker.withRegistry('https://sigenu-registry.cujae.edu.cu', 'registry-credentials-id') {
-                                def image = docker.build("sigenu/sigenu-docentcontrol", [
+                                def image = docker.build("sigenu/sigenu-training", [
                                     "-f ${env.WORKSPACE}/Dockerfile",
-                                    "--build-arg JAR_FILE=./target/docentcontrol-1.0.0.jar",
+                                    "--build-arg JAR_FILE=./target/training-1.0.0.jar",
                                     "--build-arg SB_PROFILE=qa",
                                     "--pull",
                                     "--no-cache",

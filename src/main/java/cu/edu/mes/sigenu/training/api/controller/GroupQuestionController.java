@@ -61,10 +61,8 @@ public class GroupQuestionController {
         return ResponseEntity.ok(new ApiResponse(true,"Group Question created successfully"));
     }
 
-
-
     @ResponseStatus(HttpStatus.CREATED)
-    @PatchMapping("")
+    @PutMapping("")
     @ApiOperation(value = "Update group question registered")
     public ResponseEntity<ApiResponse> update(@ApiParam(value = "Values for updating", name = "Body") @RequestBody GroupQuestionDto item) {
         try {

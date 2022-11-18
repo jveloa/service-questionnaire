@@ -63,7 +63,7 @@ public class QuestionnaireController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PatchMapping("")
+    @PutMapping("")
     @ApiOperation(value = "Update questionnaire registered")
     public ResponseEntity<ApiResponse> update(@ApiParam(value = "Values for updating", name = "Body") @RequestBody QuestionnaireDto item) {
         try {

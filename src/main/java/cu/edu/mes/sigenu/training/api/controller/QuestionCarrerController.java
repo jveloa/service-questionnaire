@@ -82,7 +82,7 @@ public class QuestionCarrerController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PatchMapping("")
+    @PutMapping("")
     @ApiOperation(value = "Update question carrer registered")
     public ResponseEntity<ApiResponse> update(@ApiParam(value = "Values for updating", name = "Body") @RequestBody QuestionCarrerDto item) {
         try {

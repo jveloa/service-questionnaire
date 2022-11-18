@@ -71,7 +71,7 @@ public class QuestionAnswerController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PatchMapping("")
+    @PutMapping("")
     @ApiOperation(value = "Update question answer registered")
     public ResponseEntity<ApiResponse> update(@ApiParam(value = "Values for updating", name = "Body") @RequestBody QuestionAnswerDto item) {
         try {

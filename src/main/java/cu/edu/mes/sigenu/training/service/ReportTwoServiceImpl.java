@@ -37,8 +37,8 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
 
     @Override
-    public List<StudentNotComputerDto> studentNotComputerList(Integer year) {
-        List<StudentAnswer> list = studentAnswerRepository.studentNotComputer(year);
+    public List<StudentNotComputerDto> studentNotComputerList(Integer year, Integer id) {
+        List<StudentAnswer> list = studentAnswerRepository.studentNotComputer(year,id);
         List<StudentNotComputerDto> listReport = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i ++) {
@@ -47,7 +47,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                                                                 .name((studentSigenu.getName() +" "
                                                                         + studentSigenu.getLastName())
                                                                         .replace("  "," "))
-                                                                .studentSigenuId(list.get(i).getStudentSigenuId().toString())
+                                                                .studentSigenuId(studentSigenu.getIdentification())
                                                                 .build();
             listReport.add(item);
         }

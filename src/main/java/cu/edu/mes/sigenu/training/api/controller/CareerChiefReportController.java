@@ -31,10 +31,10 @@ public class CareerChiefReportController {
     @Autowired
     private ReportThreeService ReportThreeService;
 
-    @GetMapping("/studentNotComputerList/{year}")
+    @GetMapping("/studentNotComputerList/{year}/{id}")
     @ApiOperation(value = "Return all students who do not have a computer")
-    public List<StudentNotComputerDto> studentNotComputerList(@PathVariable Integer year) {
-        return reportTwoService.studentNotComputerList(year);
+    public List<StudentNotComputerDto> studentNotComputerList(@PathVariable Integer year, @PathVariable Integer id) {
+        return reportTwoService.studentNotComputerList(year,id);
 
     }
 

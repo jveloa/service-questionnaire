@@ -140,8 +140,9 @@ public interface StudentAnswerRepository extends JpaRepository <StudentAnswer,In
 			+ "inner join Question q on qa.questionId = q.id "
 			+ "inner join Answer a on qa.answerId = a.id "
 			+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
-			+ "where year(qs.doneDate) = ?1 and a.id = 69 and q.groupQuestionId = 8")
-	List<StudentAnswer> studentNotComputer(int year);
+			+ "inner join Questionnaire qu on qu.id = qs.questionnarieId "
+			+ "where year(qs.doneDate) = ?1 and qu.id = ?2 and a.id = 69 and q.groupQuestionId = 8")
+	List<StudentAnswer> studentNotComputer(int year,int id);
 
     @Query( nativeQuery = true,
             value = "SELECT *" +

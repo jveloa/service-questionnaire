@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface ReportTwoService {
 
-    List<StudentNotComputerDto> studentNotComputerList(Integer year);
+    List<StudentNotComputerDto> studentNotComputerList(Integer year, Integer id);
 
     List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(Integer year);
 

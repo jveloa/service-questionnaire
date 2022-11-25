@@ -1,6 +1,7 @@
 package cu.edu.mes.sigenu.training.service;
 
 
+import cu.edu.mes.sigenu.training.core.dto.report.PercentsStudyHoursByAnswerDto;
 import cu.edu.mes.sigenu.training.core.dto.report.StudentNotComputerDto;
 import cu.edu.mes.sigenu.training.core.dto.report.StudentsAnswerByAnswerByQuestionDto;
 import cu.edu.mes.sigenu.training.core.dto.report.StudentsWithNotesDto;
@@ -44,11 +45,11 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         for (int i = 0; i < list.size(); i ++) {
             StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
             StudentNotComputerDto item = StudentNotComputerDto.builder()
-                                                                .name((studentSigenu.getName() +" "
-                                                                        + studentSigenu.getLastName())
-                                                                        .replace("  "," "))
-                                                                .studentSigenuId(studentSigenu.getIdentification())
-                                                                .build();
+                    .name((studentSigenu.getName() +" "
+                            + studentSigenu.getLastName())
+                            .replace("  "," "))
+                    .studentSigenuId(studentSigenu.getIdentification())
+                    .build();
             listReport.add(item);
         }
 
@@ -71,16 +72,16 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
             for (int j = 0; j < list.size(); j++){
                 part = questionAnswerRepository.totalAnswerByQuestion(year,questions.get(i).getId()
-                                                                      ,list.get(j).getAnswerId().getId());
+                        ,list.get(j).getAnswerId().getId());
                 float percents = (part / total) * 100;
                 Answer answer = answerRepository.findIAnswerName(list.get(j).getAnswerId().getId());
                 listAux.put(answer.getAnswer().toString(),percents);
 
             }
             StudentsAnswerByAnswerByQuestionDto item = StudentsAnswerByAnswerByQuestionDto.builder()
-                                                                .nameQuestion(questions.get(i).getQuestion().toString())
-                                                                .answerList(listAux)
-                                                                .build();
+                    .nameQuestion(questions.get(i).getQuestion().toString())
+                    .answerList(listAux)
+                    .build();
             listReport.add(item);
 
 
@@ -92,17 +93,25 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public Map<String, Float> percentsStudyHoursByAnswer(Integer year) {
+    public List<PercentsStudyHoursByAnswerDto> percentsStudyHoursByAnswer(Integer year, Integer id) {
+        float total = questionRepository.totalQuestionByStudyHours(year, id) ;
+        List<PercentsStudyHoursByAnswerDto> listReport = new ArrayList<>();
+        if(year == 0 || id == 0 || total == 0){
+            return listReport;
+        }
+        else {
+            List<QuestionAnswer> list = questionAnswerRepository.findQuestionAnswerByQuestionByStudyHours();
 
-        Map<String,Float> listReport = new HashMap<String, Float>();
-        float total = questionRepository.totalQuestionByStudyHours(year);
-        List<QuestionAnswer> list = questionAnswerRepository.findQuestionAnswerByQuestionByStudyHours();
+            for (int i = 0; i < list.size(); i++) {
 
-        for (int i = 0; i < list.size(); i++){
-
-            float part = questionAnswerRepository.totalAnswerByQuestionByStudyHours(year,list.get(i).getAnswerId().getId());
-            float percents = part / total * 100;
-            listReport.put(list.get(i).getAnswerId().getAnswer().toString(),percents);
+                float part = questionAnswerRepository.totalAnswerByQuestionByStudyHours(year, list.get(i).getAnswerId().getId(), id);
+                float percents = part / total * 100;
+                PercentsStudyHoursByAnswerDto item = PercentsStudyHoursByAnswerDto.builder()
+                        .question(list.get(i).getAnswerId().getAnswer().toString())
+                        .value(percents)
+                        .build();
+                listReport.add(item);
+            }
         }
 
         return listReport;
@@ -126,7 +135,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         return listReport;
     }
 
-   @Override
+    @Override
     public List<StudentsWithNotesDto> studentsWithNotes(Integer year) {
 
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
@@ -140,15 +149,15 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             List <EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
 
             for (int j = 0; j < entryEvaluationVOList.size(); j++)
-            listAux.put(entryEvaluationVOList.get(j).getEntrySubjectName().toString()
+                listAux.put(entryEvaluationVOList.get(j).getEntrySubjectName().toString()
                         ,entryEvaluationVOList.get(j).getMark());
 
             StudentsWithNotesDto item  = StudentsWithNotesDto.builder()
-                                                                .name((studentSigenu.getName() +" "
-                                                                        + studentSigenu.getLastName())
-                                                                        .replace("  "," "))
-                                                                .notesList(listAux)
-                                                                .build();
+                    .name((studentSigenu.getName() +" "
+                            + studentSigenu.getLastName())
+                            .replace("  "," "))
+                    .notesList(listAux)
+                    .build();
 
             listReport.add(item);
 
@@ -267,7 +276,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                         countSpanish++;
 
                     } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática")
-                               && entryEvaluationVOList.get(j).getMark() > 0) {
+                            && entryEvaluationVOList.get(j).getMark() > 0) {
 
                         aveMat += entryEvaluationVOList.get(j).getMark();
                         noteMat.add(entryEvaluationVOList.get(j).getMark());
@@ -303,7 +312,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
     @Override
     public List<StudentsWithNotesDto> studentsByConfigurableNotes(Integer year, float academicIndex
-                                                                    , float noteSpanish, float noteMat, float noteHistory) {
+            , float noteSpanish, float noteMat, float noteHistory) {
         boolean count = true;
         int aux = 0;
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
@@ -325,26 +334,26 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                             && entryEvaluationVOList.get(j).getMark() >= noteSpanish
                             && entryEvaluationVOList.get(j).getMark() != 0) {
 
-                            count = false;
+                        count = false;
 
 
                     } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática")
                             && entryEvaluationVOList.get(j).getMark() >= noteMat
                             && entryEvaluationVOList.get(j).getMark() != 0) {
 
-                            count = false;
+                        count = false;
 
                     } else if (entryEvaluationVOList.get(j).getMark() >= noteHistory
                             && entryEvaluationVOList.get(j).getMark() != 0
                             && entryEvaluationVOList.get(j).getEntrySubjectName().equals("Historia")) {
 
-                             count = false;
+                        count = false;
                     }
 
                     if (count)
                         j = entryEvaluationVOList.size();
 
-                 }
+                }
                 if (!count){
                     listAux.put("Índice acádemico", studentSigenu.getAcademicIndex());
                     while (aux < 3){
@@ -381,8 +390,8 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
             if (studentSigenu.getEntrySource().getName().equals(entrySource))
                 listReport.add((studentSigenu.getName() +" "
-                    + studentSigenu.getLastName())
-                                   .replace("  "," "));
+                        + studentSigenu.getLastName())
+                        .replace("  "," "));
 
         }
         return listReport;
@@ -400,14 +409,14 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         listAux.put("Mínimo",min);
 
         StudentsWithNotesDto item  = StudentsWithNotesDto.builder()
-                                                            .name(name)
-                                                            .notesList(listAux)
-                                                            .build();
+                .name(name)
+                .notesList(listAux)
+                .build();
 
         return item;
     }
 
-     public StudentVO getInfoStudent(String studentId) {
+    public StudentVO getInfoStudent(String studentId) {
         try {
             return Client.getStudentSubsystem().getStudent(studentId);
         } catch (RemoteException e) {

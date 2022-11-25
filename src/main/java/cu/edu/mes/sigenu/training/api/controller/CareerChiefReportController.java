@@ -3,6 +3,7 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 
 
+import cu.edu.mes.sigenu.training.core.dto.report.PercentsStudyHoursByAnswerDto;
 import cu.edu.mes.sigenu.training.core.dto.report.StudentNotComputerDto;
 import cu.edu.mes.sigenu.training.core.dto.report.StudentsAnswerByAnswerByQuestionDto;
 import cu.edu.mes.sigenu.training.core.dto.report.StudentsWithNotesDto;
@@ -80,10 +81,10 @@ public class CareerChiefReportController {
         return reportTwoService.entryDataByCourseByPlaceEgress(year,placeEgress);
     }
 
-    @GetMapping("/percentsStudyHoursByAnswer/{year}")
+    @GetMapping("/percentsStudyHoursByAnswer/{year}/{id}")
     @ApiOperation(value = "Percent of the frequency of students who dedicate different ranges of hours per week to study.")
-    public Map<String,Float> percentsStudyHoursByAnswer(@PathVariable Integer year) {
-        return reportTwoService.percentsStudyHoursByAnswer(year);
+    public List<PercentsStudyHoursByAnswerDto> percentsStudyHoursByAnswer(@PathVariable Integer year, @PathVariable Integer id) {
+        return reportTwoService.percentsStudyHoursByAnswer(year,id);
 
     }
 

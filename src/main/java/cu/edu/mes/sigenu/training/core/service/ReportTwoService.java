@@ -2,10 +2,7 @@ package cu.edu.mes.sigenu.training.core.service;
 
 
 
-import cu.edu.mes.sigenu.training.core.dto.report.PercentsStudyHoursByAnswerDto;
-import cu.edu.mes.sigenu.training.core.dto.report.StudentNotComputerDto;
-import cu.edu.mes.sigenu.training.core.dto.report.StudentsAnswerByAnswerByQuestionDto;
-import cu.edu.mes.sigenu.training.core.dto.report.StudentsWithNotesDto;
+import cu.edu.mes.sigenu.training.core.dto.report.*;
 
 import java.util.List;
 import java.util.Map;
@@ -14,21 +11,22 @@ public interface ReportTwoService {
 
     List<StudentNotComputerDto> studentNotComputerList(Integer year, Integer id);
 
-    List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(Integer year);
+    List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(Integer year,Integer id);
 
     List<PercentsStudyHoursByAnswerDto> percentsStudyHoursByAnswer(Integer year, Integer id);
 
-    List<String> studentsByPlaceEgress(Integer year, String placeEgress);
+    List<String> studentsByPlaceEgress(Integer year, String placeEgress, Integer id);
 
-    List<StudentsWithNotesDto> studentsWithNotes(Integer year);
+    List<StudentsNotesDto> studentsWithNotes(Integer year, Integer id);
 
-    List<StudentsWithNotesDto> entryDataByCourse(Integer year);
+    List<StudentsWithNotesDto> entryDataByCourse(Integer year, Integer id);
 
-    List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String placeEgress);
+    List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String placeEgress, Integer id);
 
-    List<StudentsWithNotesDto> studentsByConfigurableNotes(Integer year, float academicIndex
-                                                            , float noteSpanish, float noteMat, float noteHistory);
+    List<StudentsNotesDto> studentsByConfigurableNotes(Integer year, float academicIndex
+                                                            , float noteSpanish, float noteMat, float noteHistory
+                                                           ,Integer id);
 
 
-    List<String> studentsByEntrySource(Integer year, String entrySource);
+    List<String> studentsByEntrySource(Integer year, String entrySource, Integer id);
 }

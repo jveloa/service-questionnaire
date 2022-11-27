@@ -1,10 +1,7 @@
 package cu.edu.mes.sigenu.training.service;
 
 
-import cu.edu.mes.sigenu.training.core.dto.report.PercentsStudyHoursByAnswerDto;
-import cu.edu.mes.sigenu.training.core.dto.report.StudentNotComputerDto;
-import cu.edu.mes.sigenu.training.core.dto.report.StudentsAnswerByAnswerByQuestionDto;
-import cu.edu.mes.sigenu.training.core.dto.report.StudentsWithNotesDto;
+import cu.edu.mes.sigenu.training.core.dto.report.*;
 import cu.edu.mes.sigenu.training.core.model.*;
 import cu.edu.mes.sigenu.training.core.repository.*;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
@@ -57,30 +54,51 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(Integer year) {
+    public List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(Integer year, Integer id) {
 
         float total = 0;
         float part = 0;
+        float percentMuch = 0;
+        float percentLittle = 0;
+        float percentNot = 0;
+        float percentNever = 0;
         List<StudentsAnswerByAnswerByQuestionDto> listReport = new ArrayList<>();
-        List<Question> questions = questionRepository.findIQuestionsByGroupQuestion(year);
+        List<Question> questions = questionRepository.findIQuestionsByGroupQuestion(year,id);
 
 
         for (int i = 0; i < questions.size(); i++ ){
-            total = questionRepository.totalQuestionByStudyForms(year,questions.get(i).getId());
-            List<QuestionAnswer> list = questionAnswerRepository.findQuestionAnswerByQuestion(questions.get(i).getId());
-            Map<String,Float> listAux = new HashMap<String, Float>();
+            total = questionRepository.totalQuestionByStudyForms(year,questions.get(i).getId(),id);
+            List<QuestionAnswer> list = questionAnswerRepository.findQuestionAnswerByQuestion(questions.get(i).getId(),id);
+
 
             for (int j = 0; j < list.size(); j++){
                 part = questionAnswerRepository.totalAnswerByQuestion(year,questions.get(i).getId()
-                        ,list.get(j).getAnswerId().getId());
+                        ,list.get(j).getAnswerId().getId(),id);
                 float percents = (part / total) * 100;
-                Answer answer = answerRepository.findIAnswerName(list.get(j).getAnswerId().getId());
-                listAux.put(answer.getAnswer().toString(),percents);
+                Answer answer = answerRepository.findIAnswerName(list.get(j).getAnswerId().getId(),id);
+
+                if (answer.getAnswer().equals("Mucho")) {
+                    percentMuch = percents;
+
+                } else if (answer.getAnswer().equals("Nunca")) {
+                    percentNever = percents;
+
+                } else if (answer.getAnswer().equals("No sé")){
+                    percentNot = percents;
+
+                }else if (answer.getAnswer().equals("Un poco")){
+                    percentLittle = percents;
+
+                }
+
 
             }
             StudentsAnswerByAnswerByQuestionDto item = StudentsAnswerByAnswerByQuestionDto.builder()
                     .nameQuestion(questions.get(i).getQuestion().toString())
-                    .answerList(listAux)
+                    .percentMuch(percentMuch)
+                    .percentLittle(percentLittle)
+                    .percentNot(percentNot)
+                    .percentNever(percentNever)
                     .build();
             listReport.add(item);
 
@@ -118,10 +136,10 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<String> studentsByPlaceEgress(Integer year,String placeEgress) {
+    public List<String> studentsByPlaceEgress(Integer year,String placeEgress,Integer id) {
 
         List<String> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
 
         for (int i = 0; i < list.size(); i++){
 
@@ -136,27 +154,46 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<StudentsWithNotesDto> studentsWithNotes(Integer year) {
+    public List<StudentsNotesDto> studentsWithNotes(Integer year, Integer id) {
 
-        List<StudentsWithNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+        float noteAve = 0;
+        float noteMat = 0;
+        float noteHistory = 0;
+        float noteSpanish = 0;
+
+        List<StudentsNotesDto> listReport = new ArrayList<>();
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
 
         for (int i = 0; i < list.size(); i++){
 
-            Map<String,Float> listAux = new HashMap<String, Float>();
+
             StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
-            listAux.put("Índice acádemico",studentSigenu.getAcademicIndex());
+            noteAve = studentSigenu.getAcademicIndex();
             List <EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
 
-            for (int j = 0; j < entryEvaluationVOList.size(); j++)
-                listAux.put(entryEvaluationVOList.get(j).getEntrySubjectName().toString()
-                        ,entryEvaluationVOList.get(j).getMark());
+            for (int j = 0; j < entryEvaluationVOList.size(); j++){
 
-            StudentsWithNotesDto item  = StudentsWithNotesDto.builder()
+                if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español") && entryEvaluationVOList.get(j).getMark() > 0) {
+                    noteSpanish = entryEvaluationVOList.get(j).getMark();
+
+                } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática") && entryEvaluationVOList.get(j).getMark() > 0) {
+                    noteMat = entryEvaluationVOList.get(j).getMark();
+
+                } else if (entryEvaluationVOList.get(j).getMark() > 0){
+                    noteHistory = entryEvaluationVOList.get(j).getMark();
+
+                }
+
+            }
+
+            StudentsNotesDto item  = StudentsNotesDto.builder()
                     .name((studentSigenu.getName() +" "
                             + studentSigenu.getLastName())
                             .replace("  "," "))
-                    .notesList(listAux)
+                    .noteAve(noteAve)
+                    .noteMat(noteMat)
+                    .noteHistory(noteHistory)
+                    .noteSpanish(noteSpanish)
                     .build();
 
             listReport.add(item);
@@ -168,7 +205,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
 
     @Override
-    public List<StudentsWithNotesDto> entryDataByCourse(Integer year) {
+    public List<StudentsWithNotesDto> entryDataByCourse(Integer year, Integer id) {
 
         float aveAcademic = 0;
         float aveSpanish = 0;
@@ -180,7 +217,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         int countMat = 0;
 
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year, id);
         List <Float> noteAcademic = new ArrayList<>();
         List <Float> noteSpanish = new ArrayList<>();
         List <Float> noteMat = new ArrayList<>();
@@ -218,6 +255,8 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
         }
 
+        StudentsWithNotesDto index = addNotes(noteAcademic,aveAcademic,"Índice Academico",countAcademic);
+        listReport.add(index);
 
         StudentsWithNotesDto spanish = addNotes(noteSpanish,aveSpanish,"Español",countSpanish);
         listReport.add(spanish);
@@ -228,14 +267,13 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         StudentsWithNotesDto history = addNotes(noteHistory,aveHistory,"Historia",countHistory);
         listReport.add(history);
 
-        StudentsWithNotesDto index = addNotes(noteAcademic,aveAcademic,"Índice Academico",countAcademic);
-        listReport.add(index);
+
 
         return listReport;
     }
 
     @Override
-    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String placeEgress) {
+    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String placeEgress,Integer id) {
 
         float aveAcademic = 0;
         float aveSpanish = 0;
@@ -247,7 +285,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         int countMat = 0;
 
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
         List <Float> noteAcademic = new ArrayList<>();
         List <Float> noteSpanish = new ArrayList<>();
         List <Float> noteMat = new ArrayList<>();
@@ -311,16 +349,22 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<StudentsWithNotesDto> studentsByConfigurableNotes(Integer year, float academicIndex
-            , float noteSpanish, float noteMat, float noteHistory) {
+    public List<StudentsNotesDto> studentsByConfigurableNotes(Integer year, float academicIndex
+            , float noteSpanish, float noteMat, float noteHistory,Integer id) {
         boolean count = true;
-        int aux = 0;
-        List<StudentsWithNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+        //int aux = 0;
+
+        float noteAve = 0;
+        float mat = 0;
+        float history = 0;
+        float spanish = 0;
+
+        List<StudentsNotesDto> listReport = new ArrayList<>();
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
 
         for (int i = 0; i < list.size(); i++) {
 
-            Map<String, Float> listAux = new HashMap<String, Float>();
+
             StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
             List<EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
 
@@ -355,19 +399,37 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
                 }
                 if (!count){
-                    listAux.put("Índice acádemico", studentSigenu.getAcademicIndex());
-                    while (aux < 3){
+                    noteAve = studentSigenu.getAcademicIndex();
+
+                    for (int j = 0; j < entryEvaluationVOList.size(); j++){
+
+                        if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español") && entryEvaluationVOList.get(j).getMark() > 0) {
+                            spanish = entryEvaluationVOList.get(j).getMark();
+
+                        } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática") && entryEvaluationVOList.get(j).getMark() > 0) {
+                            mat = entryEvaluationVOList.get(j).getMark();
+
+                        } else if (entryEvaluationVOList.get(j).getMark() > 0){
+                            history = entryEvaluationVOList.get(j).getMark();
+
+                        }
+
+                    }
+                    /*while (aux < 3){
                         listAux.put(entryEvaluationVOList.get(aux).getEntrySubjectName().toString()
                                 , entryEvaluationVOList.get(aux).getMark());
                         aux++;
 
                     }
-                    aux = 0;
-                    StudentsWithNotesDto item = StudentsWithNotesDto.builder()
+                    aux = 0;*/
+                    StudentsNotesDto item = StudentsNotesDto.builder()
                             .name((studentSigenu.getName() + " "
                                     + studentSigenu.getLastName())
                                     .replace("  ", " "))
-                            .notesList(listAux)
+                            .noteAve(noteAve)
+                            .noteMat(mat)
+                            .noteHistory(history)
+                            .noteSpanish(spanish)
                             .build();
 
                     listReport.add(item);
@@ -380,10 +442,10 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<String> studentsByEntrySource(Integer year, String entrySource) {
+    public List<String> studentsByEntrySource(Integer year, String entrySource,Integer id) {
 
         List<String> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDoneDate(year);
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
 
         for (int i = 0; i < list.size(); i++){
 
@@ -402,15 +464,12 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         float min = Collections.min(note);
         float max = Collections.max(note);
         float ave = average / size;
-        Map<String,Float> listAux = new HashMap<String, Float>();
-
-        listAux.put("Promedio",ave);
-        listAux.put("Máximo",max);
-        listAux.put("Mínimo",min);
 
         StudentsWithNotesDto item  = StudentsWithNotesDto.builder()
                 .name(name)
-                .notesList(listAux)
+                .numberAve(ave)
+                .numberMax(max)
+                .numberMin(min)
                 .build();
 
         return item;

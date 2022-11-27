@@ -3,10 +3,7 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 
 
-import cu.edu.mes.sigenu.training.core.dto.report.PercentsStudyHoursByAnswerDto;
-import cu.edu.mes.sigenu.training.core.dto.report.StudentNotComputerDto;
-import cu.edu.mes.sigenu.training.core.dto.report.StudentsAnswerByAnswerByQuestionDto;
-import cu.edu.mes.sigenu.training.core.dto.report.StudentsWithNotesDto;
+import cu.edu.mes.sigenu.training.core.dto.report.*;
 import cu.edu.mes.sigenu.training.core.service.ReportThreeService;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import io.swagger.annotations.Api;
@@ -39,46 +36,46 @@ public class CareerChiefReportController {
 
     }
 
-    @GetMapping("/percentsStudyFomrsByAnswer/{year}")
+    @GetMapping("/percentsStudyFomrsByAnswer/{year}/{id}")
     @ApiOperation(value = "Percent of the frequency with which students use each form of study by academic year")
-    public List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(@PathVariable Integer year) {
-        return reportTwoService.percentsStudyFomrsByAnswer(year);
+    public List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(@PathVariable Integer year, @PathVariable Integer id) {
+        return reportTwoService.percentsStudyFomrsByAnswer(year,id);
 
     }
 
-    @GetMapping("/entryDataByCourse/{year}")
+    @GetMapping("/entryDataByCourse/{year}/{id}")
     @ApiOperation(value = "Returns the data entry by course")
-    public List<StudentsWithNotesDto> entryDataByCourse(@PathVariable Integer year) {
-        return reportTwoService.entryDataByCourse(year);
+    public List<StudentsWithNotesDto> entryDataByCourse(@PathVariable Integer year, @PathVariable Integer id) {
+        return reportTwoService.entryDataByCourse(year,id);
 
     }
 
-    @GetMapping("/studentsByConfigurableNotes/{year}/{academicIndex}/{noteSpanish}/{noteMat}/{noteHistory}")
+    @GetMapping("/studentsByConfigurableNotes/{year}/{academicIndex}/{noteSpanish}/{noteMat}/{noteHistory}/{id}")
     @ApiOperation(value = "List of students by index and entrance grades configurable")
-    public List<StudentsWithNotesDto> studentsByConfigurableNotes(@PathVariable Integer year, @PathVariable Float academicIndex
+    public List<StudentsNotesDto> studentsByConfigurableNotes(@PathVariable Integer year, @PathVariable Float academicIndex
                                                                  , @PathVariable Float noteSpanish, @PathVariable Float noteMat
-                                                                 , @PathVariable Float noteHistory) {
-        return reportTwoService.studentsByConfigurableNotes(year,academicIndex,noteSpanish,noteMat,noteHistory);
+                                                                 , @PathVariable Float noteHistory, @PathVariable Integer id) {
+        return reportTwoService.studentsByConfigurableNotes(year,academicIndex,noteSpanish,noteMat,noteHistory,id);
 
     }
 
-    @GetMapping("/studentsWithNotes/{year}")
+    @GetMapping("/studentsWithNotes/{year}/{id}")
     @ApiOperation(value = "List of students by index and entrance grades")
-    public List<StudentsWithNotesDto> studentsWithNotes(@PathVariable Integer year) {
-        return reportTwoService.studentsWithNotes(year);
+    public List<StudentsNotesDto> studentsWithNotes(@PathVariable Integer year, @PathVariable Integer id) {
+        return reportTwoService.studentsWithNotes(year,id);
 
     }
 
-    @GetMapping("/studentsByPlaceEgress/{year}/{placeEgress}")
+    @GetMapping("/studentsByPlaceEgress/{year}/{placeEgress}/{id}")
     @ApiOperation(value = "Return all students by place of egress")
-    public List<String> studentsByPlaceEgress(@PathVariable Integer year,@PathVariable String placeEgress) {
-        return reportTwoService.studentsByPlaceEgress(year,placeEgress);
+    public List<String> studentsByPlaceEgress(@PathVariable Integer year,@PathVariable String placeEgress,@PathVariable Integer id) {
+        return reportTwoService.studentsByPlaceEgress(year,placeEgress,id);
     }
 
-    @GetMapping("/entryDataByCourseByPlaceEgress/{year}/{placeEgress}")
+    @GetMapping("/entryDataByCourseByPlaceEgress/{year}/{placeEgress}/{id}")
     @ApiOperation(value = "Returns entry data by place of egress.")
-    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(@PathVariable Integer year,@PathVariable String placeEgress) {
-        return reportTwoService.entryDataByCourseByPlaceEgress(year,placeEgress);
+    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(@PathVariable Integer year,@PathVariable String placeEgress, @PathVariable Integer id) {
+        return reportTwoService.entryDataByCourseByPlaceEgress(year,placeEgress,id);
     }
 
     @GetMapping("/percentsStudyHoursByAnswer/{year}/{id}")
@@ -160,9 +157,9 @@ public class CareerChiefReportController {
         return ReportThreeService.studentWhoOnlyReadSchool(year);
     }
 
-    @GetMapping("/studentsByEntrySource/{year}/{entrySource}")
+    @GetMapping("/studentsByEntrySource/{year}/{entrySource}/{id}")
     @ApiOperation(value = "Return all students by entry source")
-    public List<String> studentsByEntrySource(@PathVariable Integer year,@PathVariable String entrySource) {
-        return reportTwoService.studentsByEntrySource(year,entrySource);
+    public List<String> studentsByEntrySource(@PathVariable Integer year,@PathVariable String entrySource, @PathVariable Integer id) {
+        return reportTwoService.studentsByEntrySource(year,entrySource,id);
     }
 }

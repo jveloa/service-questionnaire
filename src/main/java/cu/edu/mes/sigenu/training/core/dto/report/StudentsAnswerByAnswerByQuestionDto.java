@@ -12,7 +12,10 @@ import java.util.Map;
 public class StudentsAnswerByAnswerByQuestionDto {
 
     private String nameQuestion;
-    private Map<String,Float> answerList;
+    private Float percentMuch;
+    private Float percentLittle;
+    private Float percentNot;
+    private Float percentNever;
 
 
 }

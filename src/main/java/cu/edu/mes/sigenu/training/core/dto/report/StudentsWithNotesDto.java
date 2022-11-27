@@ -10,5 +10,7 @@ import java.util.Map;
 @Data
 public class StudentsWithNotesDto {
     private String name;
-    private  Map<String,Float> notesList;
+    private  Float  numberAve;
+    private  Float  numberMax;
+    private  Float  numberMin;
 }

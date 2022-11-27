@@ -12,8 +12,12 @@ public interface AnswerRepository extends JpaRepository<Answer,Integer>, JpaSpec
 
 
 
-    @Query("select a from Answer a where a.id = ?1 ")
-    Answer findIAnswerName(int answerId);
+    @Query("select a from Answer a "
+            + "inner join QuestionAnswer qa on a.id = qa.id "
+            + "inner join StudentAnswer sa on qa.id = sa.questionAnswerId "
+            + "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
+            + "inner join Questionnaire q on q.id = qs.questionnarieId where a.id = ?1 and q.id = ?2")
+    Answer findIAnswerName(int answerId,int id);
 
 
 

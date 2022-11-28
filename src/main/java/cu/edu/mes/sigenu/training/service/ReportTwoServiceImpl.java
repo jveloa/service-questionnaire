@@ -218,54 +218,58 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
         List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year, id);
-        List <Float> noteAcademic = new ArrayList<>();
-        List <Float> noteSpanish = new ArrayList<>();
-        List <Float> noteMat = new ArrayList<>();
-        List <Float> noteHistory = new ArrayList<>();
+        if(year == 0 || id == 0 || list.isEmpty())
+            return listReport;
 
-        for (int i = 0; i < list.size(); i++){
 
-            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
-            if (studentSigenu.getAcademicIndex() > 0){
+            List<Float> noteAcademic = new ArrayList<>();
+            List<Float> noteSpanish = new ArrayList<>();
+            List<Float> noteMat = new ArrayList<>();
+            List<Float> noteHistory = new ArrayList<>();
 
-                aveAcademic += studentSigenu.getAcademicIndex();
-                noteAcademic.add(studentSigenu.getAcademicIndex());
-                countAcademic++;
-            }
+            for (int i = 0; i < list.size(); i++) {
 
-            List <EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
+                StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+                if (studentSigenu.getAcademicIndex() > 0) {
 
-            for (int j = 0; j < entryEvaluationVOList.size(); j++) {
+                    aveAcademic += studentSigenu.getAcademicIndex();
+                    noteAcademic.add(studentSigenu.getAcademicIndex());
+                    countAcademic++;
+                }
 
-                if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español") && entryEvaluationVOList.get(j).getMark() > 0) {
-                    aveSpanish += entryEvaluationVOList.get(j).getMark();
-                    noteSpanish.add(entryEvaluationVOList.get(j).getMark());
-                    countSpanish++;
-                } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática") && entryEvaluationVOList.get(j).getMark() > 0) {
-                    aveMat += entryEvaluationVOList.get(j).getMark();
-                    noteMat.add(entryEvaluationVOList.get(j).getMark());
-                    countMat++;
-                } else if (entryEvaluationVOList.get(j).getMark() > 0){
-                    aveHistory += entryEvaluationVOList.get(j).getMark();
-                    noteHistory.add(entryEvaluationVOList.get(j).getMark());
-                    countHistory++;
+                List<EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
+
+                for (int j = 0; j < entryEvaluationVOList.size(); j++) {
+
+                    if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español") && entryEvaluationVOList.get(j).getMark() > 0) {
+                        aveSpanish += entryEvaluationVOList.get(j).getMark();
+                        noteSpanish.add(entryEvaluationVOList.get(j).getMark());
+                        countSpanish++;
+                    } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática") && entryEvaluationVOList.get(j).getMark() > 0) {
+                        aveMat += entryEvaluationVOList.get(j).getMark();
+                        noteMat.add(entryEvaluationVOList.get(j).getMark());
+                        countMat++;
+                    } else if (entryEvaluationVOList.get(j).getMark() > 0) {
+                        aveHistory += entryEvaluationVOList.get(j).getMark();
+                        noteHistory.add(entryEvaluationVOList.get(j).getMark());
+                        countHistory++;
+                    }
+
                 }
 
             }
 
-        }
+            StudentsWithNotesDto index = addNotes(noteAcademic, aveAcademic, "Índice Académico", countAcademic);
+            listReport.add(index);
 
-        StudentsWithNotesDto index = addNotes(noteAcademic,aveAcademic,"Índice Academico",countAcademic);
-        listReport.add(index);
+            StudentsWithNotesDto spanish = addNotes(noteSpanish, aveSpanish, "Español", countSpanish);
+            listReport.add(spanish);
 
-        StudentsWithNotesDto spanish = addNotes(noteSpanish,aveSpanish,"Español",countSpanish);
-        listReport.add(spanish);
+            StudentsWithNotesDto mat = addNotes(noteMat, aveMat, "Matemática", countMat);
+            listReport.add(mat);
 
-        StudentsWithNotesDto mat = addNotes(noteMat,aveMat,"Matemática",countMat);
-        listReport.add(mat);
-
-        StudentsWithNotesDto history = addNotes(noteHistory,aveHistory,"Historia",countHistory);
-        listReport.add(history);
+            StudentsWithNotesDto history = addNotes(noteHistory, aveHistory, "Historia", countHistory);
+            listReport.add(history);
 
 
 
@@ -342,7 +346,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             StudentsWithNotesDto history = addNotes(noteHistory, aveHistory, "Historia", countHistory);
             listReport.add(history);
 
-            StudentsWithNotesDto index = addNotes(noteAcademic, aveAcademic, "Índice Academico", countAcademic);
+            StudentsWithNotesDto index = addNotes(noteAcademic, aveAcademic, "Índice Académico", countAcademic);
             listReport.add(index);
         }
         return listReport;

@@ -81,6 +81,10 @@ public class QuestionnaireController {
     @ApiOperation(value = "Delete questionnaire registered")
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
         try {
+            Questionnaire questionnaire = questionnaireService.findById(id);
+            if (!questionnaire.getQuestionnarieStudentList().isEmpty()){
+                return ResponseEntity.ok(new ApiResponse(false, "Questionnaire has already been taken"));
+            }
             questionnaireService.delete(id);
         } catch (Exception e) {
             if(e instanceof DataIntegrityViolationException)

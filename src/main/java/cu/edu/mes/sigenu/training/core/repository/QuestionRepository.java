@@ -10,7 +10,7 @@ import cu.edu.mes.sigenu.training.core.model.Question;
 import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer>, JpaSpecificationExecutor<Question> {
-	
+
 	Question findByQuestion(String question);
 
 	@Query("select distinct q from Question q inner join QuestionAnswer qa on q.id = qa.questionId "
@@ -46,6 +46,9 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>, Jp
 			+ "where date_part('year',qs.done_date) = ?1 and qu.id = ?2 and q.id = 56 and q.group_question_id = 4", nativeQuery=true)
 	int totalQuestionByStudyHours(int year,int id);
 
+	List<Question> getAllByQuestionCarrerListIsNullOrderById();
+
+	List<Question> getAllByQuestionCarrerListIsNotNullOrderById();
 }
 
 

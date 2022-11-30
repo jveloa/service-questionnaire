@@ -1,8 +1,13 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import cu.edu.mes.sigenu.training.core.dto.QuestionDto;
+import cu.edu.mes.sigenu.training.core.dto.QuestionWithCareerDto;
+import cu.edu.mes.sigenu.training.core.model.Question;
+import cu.edu.mes.sigenu.training.core.service.QuestionService;
+import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,13 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import cu.edu.mes.sigenu.training.core.dto.QuestionDto;
-import cu.edu.mes.sigenu.training.core.model.Question;
-import cu.edu.mes.sigenu.training.core.service.QuestionService;
-import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "Question endpoint controller")
@@ -58,6 +59,32 @@ public class QuestionController {
 				  .map(item -> modelMapper.map(item, QuestionDto.class))
 				  .collect(Collectors.toList());
 	}
+
+    @GetMapping("/questionWithoutCareer")
+    @ApiOperation(value = "List questions without career")
+    public List<QuestionDto> listQuestionWithoutCareer() {
+        ModelMapper modelMapper = new ModelMapper();
+        return questionService.listAllWithoutCareer()
+                              .stream()
+                              .map(item -> modelMapper.map(item, QuestionDto.class))
+                              .collect(Collectors.toList());
+    }
+
+    @GetMapping("/questionWithCareer")
+    @ApiOperation(value = "List questions with career")
+    public List<QuestionWithCareerDto> listQuestionWithCareer() {
+        List<QuestionWithCareerDto> questionWithCareerDtos = new ArrayList<>();
+        List<Question> questions = questionService.listAllWithCareer();
+        for (Question question : questions) {
+            questionWithCareerDtos.add(QuestionWithCareerDto.builder()
+                                                            .id(question.getId())
+                                                            .question(question.getQuestion())
+                                                            .groupQuestionId(question.getGroupQuestionId().getId())
+                                                            .questionCarrerId(question.getQuestionCarrerList().get(0).getCareerSigenuId())
+                                                            .build());
+        }
+        return questionWithCareerDtos;
+    }
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PutMapping("")

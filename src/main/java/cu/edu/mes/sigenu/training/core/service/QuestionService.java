@@ -6,7 +6,11 @@ import cu.edu.mes.sigenu.training.core.model.Question;
 
 public interface QuestionService {
 	List<Question> listAll();
-	
+
+	List<Question> listAllWithoutCareer();
+
+	List<Question> listAllWithCareer();
+
 	Question findByName(String name);
 	
 	Question findById(Integer id);

@@ -20,7 +20,17 @@ public class QuestionServiceImpl implements QuestionService {
 		return questionRepository.findAll();
 	}
 
-	@Override
+    @Override
+    public List<Question> listAllWithoutCareer() {
+        return questionRepository.getAllByQuestionCarrerListIsNullOrderById();
+    }
+
+    @Override
+    public List<Question> listAllWithCareer() {
+        return questionRepository.getAllByQuestionCarrerListIsNotNullOrderById();
+    }
+
+    @Override
 	public Question findById(Integer id) {
 		return questionRepository.findById(id).get();
 	}

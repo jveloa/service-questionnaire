@@ -10,6 +10,7 @@ import cu.edu.mes.subsystem.student.vo.StudentVO;
 
 import cu.edu.mes.vo.EntryEvaluationVO;
 import cu.edu.mes.vo.EntrySourceVO;
+import cu.edu.mes.vo.ScholasticOriginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -137,15 +138,19 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<String> studentsByPlaceEgress(Integer year,String placeEgress,Integer id) {
+    public List<String> studentsByPlaceEgress(Integer year,String idPlaceEgress,Integer id) {
 
         List<String> listReport = new ArrayList<>();
+
+        if(year == 0 || id == 0)
+            return listReport;
+
         List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
 
         for (int i = 0; i < list.size(); i++){
 
             StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
-            if (studentSigenu.getScholasticOrigin().getName().equals(placeEgress))
+            if (studentSigenu.getScholasticOrigin().getIdScholasticOrigin().equals(idPlaceEgress))
                 listReport.add((studentSigenu.getName() +" "
                         + studentSigenu.getLastName())
                         .replace("  "," "));
@@ -497,6 +502,26 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                 EntrySourceAuxDto item  = EntrySourceAuxDto.builder()
                         .name(e.getName())
                         .idEntrysource(e.getIdEntrySource())
+                        .build();
+                list.add(item);
+            }
+            return list;
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<EntrySourceAuxDto> getAllPlaceEgress() {
+        List<EntrySourceAuxDto> list = new ArrayList<>();
+        try {
+            Collection<ScholasticOriginVO> scholasticOrigin = (Collection<ScholasticOriginVO>) Client.getScholasticOriginCatalog().getAllActive();
+            Iterator<ScholasticOriginVO> iterator = scholasticOrigin.iterator();
+            while (iterator.hasNext()){
+                ScholasticOriginVO e = iterator.next();
+                EntrySourceAuxDto item  = EntrySourceAuxDto.builder()
+                        .name(e.getName())
+                        .idEntrysource(e.getIdScholasticOrigin())
                         .build();
                 list.add(item);
             }

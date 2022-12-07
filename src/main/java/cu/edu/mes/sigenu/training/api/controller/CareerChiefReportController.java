@@ -66,10 +66,10 @@ public class CareerChiefReportController {
 
     }
 
-    @GetMapping("/studentsByPlaceEgress/{year}/{placeEgress}/{id}")
+    @GetMapping("/studentsByPlaceEgress/{year}/{idPlaceEgress}/{id}")
     @ApiOperation(value = "Return all students by place of egress")
-    public List<String> studentsByPlaceEgress(@PathVariable Integer year,@PathVariable String placeEgress,@PathVariable Integer id) {
-        return reportTwoService.studentsByPlaceEgress(year,placeEgress,id);
+    public List<String> studentsByPlaceEgress(@PathVariable Integer year,@PathVariable String idPlaceEgress,@PathVariable Integer id) {
+        return reportTwoService.studentsByPlaceEgress(year,idPlaceEgress,id);
     }
 
     @GetMapping("/entryDataByCourseByPlaceEgress/{year}/{placeEgress}/{id}")
@@ -163,9 +163,15 @@ public class CareerChiefReportController {
         return reportTwoService.studentsByEntrySource(year,idEntrySource,id);
     }
 
-    @GetMapping("/studentsAllEntrySource/")
+    @GetMapping("/allEntrySource/")
     @ApiOperation(value = "Return all  entry source")
     public List<EntrySourceAuxDto> getAllEntrySource() {
         return reportTwoService.getAllEntrySource();
+    }
+
+    @GetMapping("/allPlaceEgress/")
+    @ApiOperation(value = "Return all  place egress")
+    public List<EntrySourceAuxDto> getAllPlaceEgress() {
+        return reportTwoService.getAllPlaceEgress();
     }
 }

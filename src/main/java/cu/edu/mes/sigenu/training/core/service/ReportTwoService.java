@@ -15,7 +15,7 @@ public interface ReportTwoService {
 
     List<PercentsStudyHoursByAnswerDto> percentsStudyHoursByAnswer(Integer year, Integer id);
 
-    List<String> studentsByPlaceEgress(Integer year, String placeEgress, Integer id);
+    List<String> studentsByPlaceEgress(Integer year, String idPlaceEgress, Integer id);
 
     List<StudentsNotesDto> studentsWithNotes(Integer year, Integer id);
 
@@ -31,4 +31,6 @@ public interface ReportTwoService {
     List<String> studentsByEntrySource(Integer year, String idEntrySource, Integer id);
 
     List<EntrySourceAuxDto> getAllEntrySource();
+
+    List<EntrySourceAuxDto> getAllPlaceEgress();
 }

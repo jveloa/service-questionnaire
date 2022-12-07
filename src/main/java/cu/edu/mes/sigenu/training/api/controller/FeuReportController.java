@@ -32,10 +32,10 @@ public class FeuReportController {
 
     }
 
-    @GetMapping("/studentSportList/{year}")
+    @GetMapping("/studentSportList/{year}/{questionnarieId}")
     @ApiOperation(value = "Get all the students who play sports and which ones")
-    public List<StudentSportDto> studentSportList(@PathVariable Integer year) {
-        return reportService.studentSportList(year);
+    public List<StudentSportDto> studentSportList(@PathVariable Integer year, @PathVariable Integer questionnarieId) {
+        return reportService.studentSportList(year,questionnarieId);
 
     }
 

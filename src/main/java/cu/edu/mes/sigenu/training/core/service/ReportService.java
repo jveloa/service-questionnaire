@@ -13,7 +13,7 @@ public interface ReportService {
 
     List<ResponsabilityReportDto> responsabilityReport(Integer year);
 
-    List<StudentSportDto> studentSportList(Integer year);
+    List<StudentSportDto> studentSportList(Integer year, Integer questionnarieId);
 
     List<StudentArtDto> studentArtList(Integer year);
 

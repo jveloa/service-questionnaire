@@ -8,6 +8,7 @@ import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
 import cu.edu.mes.sigenu.training.core.repository.StudentAnswerRepository;
 import cu.edu.mes.sigenu.training.core.service.ReportService;
 import cu.edu.mes.sigenu.training.core.utils.Client;
+import cu.edu.mes.subsystem.student.vo.BasicStudentVO;
 import cu.edu.mes.subsystem.student.vo.StudentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,15 +48,19 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<StudentSportDto> studentSportList(Integer year) {
-        List<StudentAnswer> list = studentAnswerRepository.studentSportList(year);
+    public List<StudentSportDto> studentSportList(Integer year,Integer questionnarieId) {
+
+        List<StudentAnswer> list = studentAnswerRepository.studentSportList(year,questionnarieId);
+        BasicStudentVO studentSigenu = null ;
         List<StudentSportDto> listStudent = new ArrayList<>();
         for (StudentAnswer studentAnswer : list) {
             List<String> sports = new ArrayList<>();
 
             if (!listStudent.isEmpty() && listStudent.get(listStudent.size() - 1)
                                                      .getStudentSigenuId()
-                                                     .equals(studentAnswer.getStudentSigenuId())) {
+                                                     .equals(studentSigenu.getIdentification())
+                                                    && studentSigenu.getIdStudent()
+                                                    .equals(studentAnswer.getStudentSigenuId())) {
 
                 listStudent.get(listStudent.size() - 1)
                            .getSports()
@@ -63,13 +68,13 @@ public class ReportServiceImpl implements ReportService {
 
             } else {
                 sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
-                StudentVO studentSigenu = getInfoStudent(studentAnswer.getStudentSigenuId());
+                     studentSigenu = getInfoBasicStudent(studentAnswer.getStudentSigenuId());
                 StudentSportDto item = StudentSportDto.builder()
                                                       .name((studentSigenu.getName() + " " +
                                                                 studentSigenu.getLastName())
                                                                              .replace("  "," ")
                                                            )
-                                                      .studentSigenuId(studentAnswer.getStudentSigenuId())
+                                                      .studentSigenuId(studentSigenu.getIdentification())
                                                       .sports(sports)
                                                       .build();
                 listStudent.add(item);
@@ -77,6 +82,8 @@ public class ReportServiceImpl implements ReportService {
         }
         return listStudent;
     }
+
+
 
     @Override
     public List<StudentArtDto> studentArtList(Integer year) {
@@ -143,5 +150,15 @@ public class ReportServiceImpl implements ReportService {
         }
         return null;
     }
+
+    public BasicStudentVO getInfoBasicStudent(String studentId) {
+        try {
+            return Client.getStudentSubsystem().getSingleStudent(studentId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

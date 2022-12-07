@@ -157,9 +157,15 @@ public class CareerChiefReportController {
         return ReportThreeService.studentWhoOnlyReadSchool(year);
     }
 
-    @GetMapping("/studentsByEntrySource/{year}/{entrySource}/{id}")
+    @GetMapping("/studentsByEntrySource/{year}/{idEntrySource}/{id}")
     @ApiOperation(value = "Return all students by entry source")
-    public List<String> studentsByEntrySource(@PathVariable Integer year,@PathVariable String entrySource, @PathVariable Integer id) {
-        return reportTwoService.studentsByEntrySource(year,entrySource,id);
+    public List<String> studentsByEntrySource(@PathVariable Integer year,@PathVariable String idEntrySource, @PathVariable Integer id) {
+        return reportTwoService.studentsByEntrySource(year,idEntrySource,id);
+    }
+
+    @GetMapping("/studentsAllEntrySource/")
+    @ApiOperation(value = "Return all  entry source")
+    public List<EntrySourceAuxDto> getAllEntrySource() {
+        return reportTwoService.getAllEntrySource();
     }
 }

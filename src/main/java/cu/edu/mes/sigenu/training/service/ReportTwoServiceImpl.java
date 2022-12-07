@@ -9,6 +9,7 @@ import cu.edu.mes.sigenu.training.core.utils.Client;
 import cu.edu.mes.subsystem.student.vo.StudentVO;
 
 import cu.edu.mes.vo.EntryEvaluationVO;
+import cu.edu.mes.vo.EntrySourceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -222,54 +223,54 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             return listReport;
 
 
-            List<Float> noteAcademic = new ArrayList<>();
-            List<Float> noteSpanish = new ArrayList<>();
-            List<Float> noteMat = new ArrayList<>();
-            List<Float> noteHistory = new ArrayList<>();
+        List<Float> noteAcademic = new ArrayList<>();
+        List<Float> noteSpanish = new ArrayList<>();
+        List<Float> noteMat = new ArrayList<>();
+        List<Float> noteHistory = new ArrayList<>();
 
-            for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
 
-                StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
-                if (studentSigenu.getAcademicIndex() > 0) {
+            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            if (studentSigenu.getAcademicIndex() > 0) {
 
-                    aveAcademic += studentSigenu.getAcademicIndex();
-                    noteAcademic.add(studentSigenu.getAcademicIndex());
-                    countAcademic++;
-                }
+                aveAcademic += studentSigenu.getAcademicIndex();
+                noteAcademic.add(studentSigenu.getAcademicIndex());
+                countAcademic++;
+            }
 
-                List<EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
+            List<EntryEvaluationVO> entryEvaluationVOList = (List<EntryEvaluationVO>) studentSigenu.getEntryEvaluations();
 
-                for (int j = 0; j < entryEvaluationVOList.size(); j++) {
+            for (int j = 0; j < entryEvaluationVOList.size(); j++) {
 
-                    if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español") && entryEvaluationVOList.get(j).getMark() > 0) {
-                        aveSpanish += entryEvaluationVOList.get(j).getMark();
-                        noteSpanish.add(entryEvaluationVOList.get(j).getMark());
-                        countSpanish++;
-                    } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática") && entryEvaluationVOList.get(j).getMark() > 0) {
-                        aveMat += entryEvaluationVOList.get(j).getMark();
-                        noteMat.add(entryEvaluationVOList.get(j).getMark());
-                        countMat++;
-                    } else if (entryEvaluationVOList.get(j).getMark() > 0) {
-                        aveHistory += entryEvaluationVOList.get(j).getMark();
-                        noteHistory.add(entryEvaluationVOList.get(j).getMark());
-                        countHistory++;
-                    }
-
+                if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español") && entryEvaluationVOList.get(j).getMark() > 0) {
+                    aveSpanish += entryEvaluationVOList.get(j).getMark();
+                    noteSpanish.add(entryEvaluationVOList.get(j).getMark());
+                    countSpanish++;
+                } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática") && entryEvaluationVOList.get(j).getMark() > 0) {
+                    aveMat += entryEvaluationVOList.get(j).getMark();
+                    noteMat.add(entryEvaluationVOList.get(j).getMark());
+                    countMat++;
+                } else if (entryEvaluationVOList.get(j).getMark() > 0) {
+                    aveHistory += entryEvaluationVOList.get(j).getMark();
+                    noteHistory.add(entryEvaluationVOList.get(j).getMark());
+                    countHistory++;
                 }
 
             }
 
-            StudentsWithNotesDto index = addNotes(noteAcademic, aveAcademic, "Índice Académico", countAcademic);
-            listReport.add(index);
+        }
 
-            StudentsWithNotesDto spanish = addNotes(noteSpanish, aveSpanish, "Español", countSpanish);
-            listReport.add(spanish);
+        StudentsWithNotesDto index = addNotes(noteAcademic, aveAcademic, "Índice Académico", countAcademic);
+        listReport.add(index);
 
-            StudentsWithNotesDto mat = addNotes(noteMat, aveMat, "Matemática", countMat);
-            listReport.add(mat);
+        StudentsWithNotesDto spanish = addNotes(noteSpanish, aveSpanish, "Español", countSpanish);
+        listReport.add(spanish);
 
-            StudentsWithNotesDto history = addNotes(noteHistory, aveHistory, "Historia", countHistory);
-            listReport.add(history);
+        StudentsWithNotesDto mat = addNotes(noteMat, aveMat, "Matemática", countMat);
+        listReport.add(mat);
+
+        StudentsWithNotesDto history = addNotes(noteHistory, aveHistory, "Historia", countHistory);
+        listReport.add(history);
 
 
 
@@ -419,13 +420,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                         }
 
                     }
-                    /*while (aux < 3){
-                        listAux.put(entryEvaluationVOList.get(aux).getEntrySubjectName().toString()
-                                , entryEvaluationVOList.get(aux).getMark());
-                        aux++;
 
-                    }
-                    aux = 0;*/
                     StudentsNotesDto item = StudentsNotesDto.builder()
                             .name((studentSigenu.getName() + " "
                                     + studentSigenu.getLastName())
@@ -446,15 +441,19 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<String> studentsByEntrySource(Integer year, String entrySource,Integer id) {
+    public List<String> studentsByEntrySource(Integer year, String idEntrySource,Integer id) {
 
         List<String> listReport = new ArrayList<>();
+
+        if(year == 0 || id == 0)
+            return listReport;
+
         List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
 
         for (int i = 0; i < list.size(); i++){
 
             StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
-            if (studentSigenu.getEntrySource().getName().equals(entrySource))
+            if (studentSigenu.getEntrySource().getIdEntrySource().equals(idEntrySource))
                 listReport.add((studentSigenu.getName() +" "
                         + studentSigenu.getLastName())
                         .replace("  "," "));
@@ -482,6 +481,26 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     public StudentVO getInfoStudent(String studentId) {
         try {
             return Client.getStudentSubsystem().getStudent(studentId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<EntrySourceAuxDto> getAllEntrySource() {
+        List<EntrySourceAuxDto> list = new ArrayList<>();
+        try {
+            Collection<EntrySourceVO> entrySource = (Collection<EntrySourceVO>) Client.getEntrySourceCatalog().getAllActive();
+            Iterator<EntrySourceVO> iterator = entrySource.iterator();
+           while (iterator.hasNext()){
+               EntrySourceVO e = iterator.next();
+                EntrySourceAuxDto item  = EntrySourceAuxDto.builder()
+                        .name(e.getName())
+                        .idEntrysource(e.getIdEntrySource())
+                        .build();
+                list.add(item);
+            }
+            return list;
         } catch (RemoteException e) {
             e.printStackTrace();
         }

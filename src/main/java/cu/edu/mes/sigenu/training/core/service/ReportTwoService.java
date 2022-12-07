@@ -28,5 +28,7 @@ public interface ReportTwoService {
                                                            ,Integer id);
 
 
-    List<String> studentsByEntrySource(Integer year, String entrySource, Integer id);
+    List<String> studentsByEntrySource(Integer year, String idEntrySource, Integer id);
+
+    List<EntrySourceAuxDto> getAllEntrySource();
 }

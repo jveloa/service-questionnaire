@@ -6,6 +6,7 @@ import cu.edu.mes.sigenu.training.core.model.*;
 import cu.edu.mes.sigenu.training.core.repository.*;
 import cu.edu.mes.sigenu.training.core.service.ReportTwoService;
 import cu.edu.mes.sigenu.training.core.utils.Client;
+import cu.edu.mes.subsystem.student.vo.BasicStudentVO;
 import cu.edu.mes.subsystem.student.vo.StudentVO;
 
 import cu.edu.mes.vo.EntryEvaluationVO;
@@ -42,7 +43,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         List<StudentNotComputerDto> listReport = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i ++) {
-            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            BasicStudentVO studentSigenu = getInfoBasicStudent(list.get(i).getStudentSigenuId());
             StudentNotComputerDto item = StudentNotComputerDto.builder()
                     .name((studentSigenu.getName() +" "
                             + studentSigenu.getLastName())
@@ -486,6 +487,15 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     public StudentVO getInfoStudent(String studentId) {
         try {
             return Client.getStudentSubsystem().getStudent(studentId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public BasicStudentVO getInfoBasicStudent(String studentId) {
+        try {
+            return Client.getStudentSubsystem().getSingleStudent(studentId);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

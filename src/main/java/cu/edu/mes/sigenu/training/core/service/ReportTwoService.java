@@ -21,7 +21,7 @@ public interface ReportTwoService {
 
     List<StudentsWithNotesDto> entryDataByCourse(Integer year, Integer id);
 
-    List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String placeEgress, Integer id);
+    List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String idPlaceEgress, Integer id);
 
     List<StudentsNotesDto> studentsByConfigurableNotes(Integer year, float academicIndex
                                                             , float noteSpanish, float noteMat, float noteHistory

@@ -72,10 +72,10 @@ public class CareerChiefReportController {
         return reportTwoService.studentsByPlaceEgress(year,idPlaceEgress,id);
     }
 
-    @GetMapping("/entryDataByCourseByPlaceEgress/{year}/{placeEgress}/{id}")
+    @GetMapping("/entryDataByCourseByPlaceEgress/{year}/{idPlaceEgress}/{id}")
     @ApiOperation(value = "Returns entry data by place of egress.")
-    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(@PathVariable Integer year,@PathVariable String placeEgress, @PathVariable Integer id) {
-        return reportTwoService.entryDataByCourseByPlaceEgress(year,placeEgress,id);
+    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(@PathVariable Integer year,@PathVariable String idPlaceEgress, @PathVariable Integer id) {
+        return reportTwoService.entryDataByCourseByPlaceEgress(year,idPlaceEgress,id);
     }
 
     @GetMapping("/percentsStudyHoursByAnswer/{year}/{id}")

@@ -283,7 +283,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String placeEgress,Integer id) {
+    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String idPlaceEgress,Integer id) {
 
         float aveAcademic = 0;
         float aveSpanish = 0;
@@ -304,7 +304,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         for (int i = 0; i < list.size(); i++) {
 
             StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
-            if (studentSigenu.getScholasticOrigin().getName().equals(placeEgress)) {
+            if (studentSigenu.getScholasticOrigin().getIdScholasticOrigin().equals(idPlaceEgress)) {
                 if (studentSigenu.getAcademicIndex() > 0) {
 
                     aveAcademic += studentSigenu.getAcademicIndex();

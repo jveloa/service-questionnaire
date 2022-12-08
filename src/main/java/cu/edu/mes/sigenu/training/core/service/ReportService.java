@@ -15,7 +15,7 @@ public interface ReportService {
 
     List<StudentSportDto> studentSportList(Integer year, Integer questionnarieId);
 
-    List<StudentArtDto> studentArtList(Integer year);
+    List<StudentArtDto> studentArtList(Integer year, Integer questionnarieId);
 
     DeportArtListDto deportArtListByStudent(String studentSigenuId);
 }

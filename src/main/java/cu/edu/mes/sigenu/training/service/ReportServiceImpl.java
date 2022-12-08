@@ -51,7 +51,7 @@ public class ReportServiceImpl implements ReportService {
     public List<StudentSportDto> studentSportList(Integer year,Integer questionnarieId) {
 
         List<StudentAnswer> list = studentAnswerRepository.studentSportList(year,questionnarieId);
-        BasicStudentVO studentSigenu = null ;
+        BasicStudentVO studentSigenu = null;
         List<StudentSportDto> listStudent = new ArrayList<>();
         for (StudentAnswer studentAnswer : list) {
             List<String> sports = new ArrayList<>();
@@ -86,15 +86,18 @@ public class ReportServiceImpl implements ReportService {
 
 
     @Override
-    public List<StudentArtDto> studentArtList(Integer year) {
-        List<StudentAnswer> list = studentAnswerRepository.studentArtList(year);
+    public List<StudentArtDto> studentArtList(Integer year, Integer questionnarieId) {
+        List<StudentAnswer> list = studentAnswerRepository.studentArtList(year,questionnarieId);
+        BasicStudentVO studentSigenu = null;
         List<StudentArtDto> listStudent = new ArrayList<>();
         for (StudentAnswer studentAnswer : list) {
             List<String> arts = new ArrayList<>();
 
             if (!listStudent.isEmpty() && listStudent.get(listStudent.size() - 1)
                                                      .getStudentSigenuId()
-                                                     .equals(studentAnswer.getStudentSigenuId())) {
+                                                        .equals(studentSigenu.getIdentification())
+                                                                && studentSigenu.getIdStudent()
+                                                                .equals(studentAnswer.getStudentSigenuId())) {
 
                 listStudent.get(listStudent.size() - 1)
                            .getArts()
@@ -102,13 +105,13 @@ public class ReportServiceImpl implements ReportService {
 
             } else {
                 arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
-                StudentVO studentSigenu = getInfoStudent(studentAnswer.getStudentSigenuId());
+                     studentSigenu = getInfoBasicStudent(studentAnswer.getStudentSigenuId());
                 StudentArtDto item = StudentArtDto.builder()
                                                   .name((studentSigenu.getName() + " " +
                                                             studentSigenu.getLastName())
                                                                          .replace("  "," ")
                                                        )
-                                                  .studentSigenuId(studentAnswer.getStudentSigenuId())
+                                                  .studentSigenuId(studentSigenu.getIdentification())
                                                   .arts(arts)
                                                   .build();
                 listStudent.add(item);

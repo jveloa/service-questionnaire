@@ -25,10 +25,10 @@ public class FeuReportController {
     @Autowired
     private ReportService reportService;
 
-    @GetMapping("/responsabilityReport/{year}")
+    @GetMapping("/responsabilityReport/{year}/{questionnarieId}")
     @ApiOperation(value = "List of students who are interested in occupying responsibilities")
-    public List<ResponsabilityReportDto> responsabilityReport(@PathVariable Integer year) {
-        return reportService.responsabilityReport(year);
+    public List<ResponsabilityReportDto> responsabilityReport(@PathVariable Integer year, @PathVariable Integer questionnarieId) {
+        return reportService.responsabilityReport(year,questionnarieId);
 
     }
 

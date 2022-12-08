@@ -152,12 +152,13 @@ public interface StudentAnswerRepository extends JpaRepository <StudentAnswer,In
 					" join answer on question_answer.answer_id = answer.id" +
 					" join group_question on  question.group_question_id = group_question.id" +
 					" join questionnarie_student on student_answer.student_sigenu_id = questionnarie_student.student_sigenu_id" +
+					" join questionnaire on questionnaire.id = questionnarie_student.questionnarie_id " +
 					" where (question.question = 'Tienes interés en apoyar en la dirección de las organizaciones estudiantiles '" +
 					" or question.question = 'Experiencias en dirección de FEEM o UJC'" +
 					" or question.question = 'Organización política a la que perteneces' )" +
-					" and date_part('year',questionnarie_student.done_date) = :year" +
+					" and date_part('year',questionnarie_student.done_date) = :year and questionnaire.id = :questionnarieId " +
 					" order by student_answer.student_sigenu_id")
-	public List<StudentAnswer> responsibilityReport(@Param("year") Integer year);
+	public List<StudentAnswer> responsibilityReport(@Param("year") Integer year, @Param("questionnarieId") Integer questionnarieId);
 
 	@Query(nativeQuery = true,
 			value = "SELECT *" +

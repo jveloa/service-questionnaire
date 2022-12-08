@@ -23,17 +23,60 @@ public class ReportServiceImpl implements ReportService {
     private StudentAnswerRepository studentAnswerRepository;
 
     @Override
-    public List<ResponsabilityReportDto> responsabilityReport(Integer year) {
-        List<StudentAnswer> list = studentAnswerRepository.responsibilityReport(year);
+    public List<ResponsabilityReportDto> responsabilityReport(Integer year, Integer questionnarieId) {
+        List<StudentAnswer> list = studentAnswerRepository.responsibilityReport(year,questionnarieId);
+        List<ResponsabilityReportDto> listReport = new ArrayList<>();
+
+         String answerInterest = "";
+         String answerExp = "";
+         String answerOrg = "";
+         int count = 0;
+
+        for (int i = 0; i < list.size(); i += 3) {
+            count = i+3;
+            BasicStudentVO studentSigenu = getInfoBasicStudent(list.get(i).getStudentSigenuId());
+            for (int j = i; j < count; j++){
+                if (list.get(j).getQuestionAnswerId().getQuestionId().getQuestion().contains("Tienes interés")){
+                    answerInterest = list.get(j).getQuestionAnswerId().getAnswerId().getAnswer();
+                }
+                else if (list.get(j).getQuestionAnswerId().getQuestionId().getQuestion().contains("Experiencias")){
+                     answerExp = list.get(j).getQuestionAnswerId().getAnswerId().getAnswer();
+                }
+                else if (list.get(j).getQuestionAnswerId().getQuestionId().getQuestion().contains("Organización")){
+                    answerOrg = list.get(j).getQuestionAnswerId().getAnswerId().getAnswer();
+                }
+
+
+            }
+            ResponsabilityReportDto item = ResponsabilityReportDto.builder()
+                    .name((studentSigenu.getName() +" "
+                            + studentSigenu.getLastName())
+                            .replace("  "," "))
+                    .studentSigenuId(studentSigenu.getIdentification())
+                    .answerInterest(answerInterest)
+                    .answerExp(answerExp)
+                    .answerOrg(answerOrg)
+                    .build();
+            listReport.add(item);
+
+
+        }
+
+        return listReport;
+    }
+
+    /*@Override
+    public List<ResponsabilityReportDto> responsabilityReport(Integer year, Integer questionnarieId) {
+        List<StudentAnswer> list = studentAnswerRepository.responsibilityReport(year,questionnarieId);
         List<ResponsabilityReportDto> listReport = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i += 3) {
-            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            BasicStudentVO studentSigenu = getInfoBasicStudent(list.get(i).getStudentSigenuId());
             ResponsabilityReportDto item = ResponsabilityReportDto.builder()
                                                                   .name((studentSigenu.getName() +" "
                                                                             + studentSigenu.getLastName())
                                                                                   .replace("  "," "))
-                                                                  .studentSigenuId(list.get(i).getStudentSigenuId())
+                                                                  .studentSigenuId(studentSigenu.getIdentification())
                                                                   .questionInterest(list.get(i).getQuestionAnswerId().getQuestionId().getQuestion())
                                                                   .answerInterest(list.get(i).getQuestionAnswerId().getAnswerId().getAnswer())
                                                                   .questionExp(list.get(i + 1).getQuestionAnswerId().getQuestionId().getQuestion())
@@ -45,7 +88,7 @@ public class ReportServiceImpl implements ReportService {
         }
 
         return listReport;
-    }
+    }*/
 
     @Override
     public List<StudentSportDto> studentSportList(Integer year,Integer questionnarieId) {

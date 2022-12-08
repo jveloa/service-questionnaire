@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ReportService {
 
-    List<ResponsabilityReportDto> responsabilityReport(Integer year);
+    List<ResponsabilityReportDto> responsabilityReport(Integer year, Integer questionnarieId);
 
     List<StudentSportDto> studentSportList(Integer year, Integer questionnarieId);
 

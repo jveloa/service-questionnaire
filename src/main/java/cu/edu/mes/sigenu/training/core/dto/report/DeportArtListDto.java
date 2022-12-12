@@ -8,6 +8,8 @@ import java.util.List;
 @Builder
 @Data
 public class DeportArtListDto {
+    private String name;
+    private String studentSigenuId;
     private List<String> sports;
     private List<String> arts;
 

@@ -46,10 +46,10 @@ public class FeuReportController {
 
     }
 
-    @GetMapping("/deportArtListByStudent/{studentSigenuId}")
+    @GetMapping("/deportArtListByStudent/{year}/{questionnarieId}")
     @ApiOperation(value = "get all the sports and arts that a student practices")
-    public DeportArtListDto deportArtListByStudent(@PathVariable String studentSigenuId) {
-        return reportService.deportArtListByStudent(studentSigenuId);
+    public List<DeportArtListDto> deportArtListByStudent(@PathVariable Integer year,@PathVariable Integer questionnarieId) {
+        return reportService.deportArtListByStudent(year,questionnarieId);
 
     }
 

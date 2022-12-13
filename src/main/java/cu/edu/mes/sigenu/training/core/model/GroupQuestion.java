@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "GroupQuestion.findAll", query = "SELECT g FROM GroupQuestion g")
     , @NamedQuery(name = "GroupQuestion.findById", query = "SELECT g FROM GroupQuestion g WHERE g.id = :id")
     , @NamedQuery(name = "GroupQuestion.findByDescription", query = "SELECT g FROM GroupQuestion g WHERE g.description = :description")
-    , @NamedQuery(name = "GroupQuestion.findByNameGroup", query = "SELECT g FROM GroupQuestion g WHERE g.nameGroup = :nameGroup")})
+    , @NamedQuery(name = "GroupQuestion.findByNameGroup", query = "SELECT g FROM GroupQuestion g WHERE g.nameGroup = :nameGroup")
+    , @NamedQuery(name = "GroupQuestion.findByOrganizationOrder", query = "SELECT g FROM GroupQuestion g WHERE g.organizationOrder = :organizationOrder")})
 public class GroupQuestion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,6 +47,8 @@ public class GroupQuestion implements Serializable {
     @Basic(optional = false)
     @Column(name = "name_group")
     private String nameGroup;
+    @Column(name = "organization_order")
+    private Integer organizationOrder;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupQuestionId")
     private List<Question> questionList;
 
@@ -83,6 +86,14 @@ public class GroupQuestion implements Serializable {
 
     public void setNameGroup(String nameGroup) {
         this.nameGroup = nameGroup;
+    }
+
+    public Integer getOrganizationOrder() {
+        return organizationOrder;
+    }
+
+    public void setOrganizationOrder(Integer organizationOrder) {
+        this.organizationOrder = organizationOrder;
     }
 
     @XmlTransient

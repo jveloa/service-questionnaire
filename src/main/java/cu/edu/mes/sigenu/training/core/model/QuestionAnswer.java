@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -41,6 +42,8 @@ public class QuestionAnswer implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "questionAnswerId")
+    private CorrectAnswer correctAnswer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionAnswerId")
     private List<StudentAnswer> studentAnswerList;
     @JoinColumn(name = "answer_id", referencedColumnName = "id")
@@ -63,6 +66,14 @@ public class QuestionAnswer implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public CorrectAnswer getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(CorrectAnswer correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 
     @XmlTransient

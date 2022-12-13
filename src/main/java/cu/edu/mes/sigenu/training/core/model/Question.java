@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q")
     , @NamedQuery(name = "Question.findById", query = "SELECT q FROM Question q WHERE q.id = :id")
-    , @NamedQuery(name = "Question.findByQuestion", query = "SELECT q FROM Question q WHERE q.question = :question")})
+    , @NamedQuery(name = "Question.findByQuestion", query = "SELECT q FROM Question q WHERE q.question = :question")
+    , @NamedQuery(name = "Question.findByIsEvaluationQuestion", query = "SELECT q FROM Question q WHERE q.isEvaluationQuestion = :isEvaluationQuestion")})
 public class Question implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,6 +47,9 @@ public class Question implements Serializable {
     @Basic(optional = false)
     @Column(name = "question")
     private String question;
+    @Basic(optional = false)
+    @Column(name = "is_evaluation_question")
+    private boolean isEvaluationQuestion;
     @JoinTable(name = "questionnaire_question", joinColumns = {
         @JoinColumn(name = "question_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "questionnaire_id", referencedColumnName = "id")})
@@ -66,9 +70,10 @@ public class Question implements Serializable {
         this.id = id;
     }
 
-    public Question(Integer id, String question) {
+    public Question(Integer id, String question, boolean isEvaluationQuestion) {
         this.id = id;
         this.question = question;
+        this.isEvaluationQuestion = isEvaluationQuestion;
     }
 
     public Integer getId() {
@@ -85,6 +90,14 @@ public class Question implements Serializable {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    public boolean getIsEvaluationQuestion() {
+        return isEvaluationQuestion;
+    }
+
+    public void setIsEvaluationQuestion(boolean isEvaluationQuestion) {
+        this.isEvaluationQuestion = isEvaluationQuestion;
     }
 
     @XmlTransient

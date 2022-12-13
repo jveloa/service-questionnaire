@@ -38,8 +38,8 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
 
     @Override
-    public List<StudentNotComputerDto> studentNotComputerList(Integer year, Integer id) {
-        List<StudentAnswer> list = studentAnswerRepository.studentNotComputer(year,id);
+    public List<StudentNotComputerDto> studentNotComputerList(Integer year, Integer questionnarieId) {
+        List<StudentAnswer> list = studentAnswerRepository.studentNotComputer(year,questionnarieId);
         List<StudentNotComputerDto> listReport = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i ++) {
@@ -57,7 +57,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(Integer year, Integer id) {
+    public List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(Integer year, Integer questionnarieId) {
 
         float total = 0;
         float part = 0;
@@ -66,19 +66,19 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         float percentNot = 0;
         float percentNever = 0;
         List<StudentsAnswerByAnswerByQuestionDto> listReport = new ArrayList<>();
-        List<Question> questions = questionRepository.findIQuestionsByGroupQuestion(year,id);
+        List<Question> questions = questionRepository.findIQuestionsByGroupQuestion(year,questionnarieId);
 
 
         for (int i = 0; i < questions.size(); i++ ){
-            total = questionRepository.totalQuestionByStudyForms(year,questions.get(i).getId(),id);
-            List<QuestionAnswer> list = questionAnswerRepository.findQuestionAnswerByQuestion(questions.get(i).getId(),id);
+            total = questionRepository.totalQuestionByStudyForms(year,questions.get(i).getId(),questionnarieId);
+            List<QuestionAnswer> list = questionAnswerRepository.findQuestionAnswerByQuestion(questions.get(i).getId(),questionnarieId);
 
 
             for (int j = 0; j < list.size(); j++){
                 part = questionAnswerRepository.totalAnswerByQuestion(year,questions.get(i).getId()
-                        ,list.get(j).getAnswerId().getId(),id);
+                        ,list.get(j).getAnswerId().getId(),questionnarieId);
                 float percents = (part / total) * 100;
-                Answer answer = answerRepository.findIAnswerName(list.get(j).getAnswerId().getId(),id);
+                Answer answer = answerRepository.findIAnswerName(list.get(j).getAnswerId().getId(),questionnarieId);
 
                 if (answer.getAnswer().equals("Mucho")) {
                     percentMuch = percents;
@@ -114,10 +114,10 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<PercentsStudyHoursByAnswerDto> percentsStudyHoursByAnswer(Integer year, Integer id) {
-        float total = questionRepository.totalQuestionByStudyHours(year, id) ;
+    public List<PercentsStudyHoursByAnswerDto> percentsStudyHoursByAnswer(Integer year, Integer questionnarieId) {
+        float total = questionRepository.totalQuestionByStudyHours(year, questionnarieId) ;
         List<PercentsStudyHoursByAnswerDto> listReport = new ArrayList<>();
-        if(year == 0 || id == 0 || total == 0){
+        if(year == 0 || questionnarieId == 0 || total == 0){
             return listReport;
         }
         else {
@@ -125,7 +125,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
             for (int i = 0; i < list.size(); i++) {
 
-                float part = questionAnswerRepository.totalAnswerByQuestionByStudyHours(year, list.get(i).getAnswerId().getId(), id);
+                float part = questionAnswerRepository.totalAnswerByQuestionByStudyHours(year, list.get(i).getAnswerId().getId(), questionnarieId);
                 float percents = part / total * 100;
                 PercentsStudyHoursByAnswerDto item = PercentsStudyHoursByAnswerDto.builder()
                         .question(list.get(i).getAnswerId().getAnswer().toString())
@@ -139,14 +139,14 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<String> studentsByPlaceEgress(Integer year,String idPlaceEgress,Integer id) {
+    public List<String> studentsByPlaceEgress(Integer year,String idPlaceEgress,Integer questionnarieId) {
 
         List<String> listReport = new ArrayList<>();
 
-        if(year == 0 || id == 0)
+        if(year == 0 || questionnarieId == 0)
             return listReport;
 
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
 
         for (int i = 0; i < list.size(); i++){
 
@@ -161,7 +161,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<StudentsNotesDto> studentsWithNotes(Integer year, Integer id) {
+    public List<StudentsNotesDto> studentsWithNotes(Integer year, Integer questionnarieId) {
 
         float noteAve = 0;
         float noteMat = 0;
@@ -169,7 +169,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         float noteSpanish = 0;
 
         List<StudentsNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
 
         for (int i = 0; i < list.size(); i++){
 
@@ -212,7 +212,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
 
     @Override
-    public List<StudentsWithNotesDto> entryDataByCourse(Integer year, Integer id) {
+    public List<StudentsWithNotesDto> entryDataByCourse(Integer year, Integer questionnarieId) {
 
         float aveAcademic = 0;
         float aveSpanish = 0;
@@ -224,8 +224,8 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         int countMat = 0;
 
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year, id);
-        if(year == 0 || id == 0 || list.isEmpty())
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year, questionnarieId);
+        if(year == 0 || questionnarieId == 0 || list.isEmpty())
             return listReport;
 
 
@@ -284,7 +284,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String idPlaceEgress,Integer id) {
+    public List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String idPlaceEgress,Integer questionnarieId) {
 
         float aveAcademic = 0;
         float aveSpanish = 0;
@@ -296,7 +296,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         int countMat = 0;
 
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
         List <Float> noteAcademic = new ArrayList<>();
         List <Float> noteSpanish = new ArrayList<>();
         List <Float> noteMat = new ArrayList<>();
@@ -361,7 +361,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
     @Override
     public List<StudentsNotesDto> studentsByConfigurableNotes(Integer year, float academicIndex
-            , float noteSpanish, float noteMat, float noteHistory,Integer id) {
+            , float noteSpanish, float noteMat, float noteHistory,Integer questionnarieId) {
         boolean count = true;
         //int aux = 0;
 
@@ -371,7 +371,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         float spanish = 0;
 
         List<StudentsNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
 
         for (int i = 0; i < list.size(); i++) {
 
@@ -447,14 +447,14 @@ public class ReportTwoServiceImpl implements ReportTwoService {
     }
 
     @Override
-    public List<String> studentsByEntrySource(Integer year, String idEntrySource,Integer id) {
+    public List<String> studentsByEntrySource(Integer year, String idEntrySource,Integer questionnarieId) {
 
         List<String> listReport = new ArrayList<>();
 
-        if(year == 0 || id == 0)
+        if(year == 0 || questionnarieId == 0)
             return listReport;
 
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,id);
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
 
         for (int i = 0; i < list.size(); i++){
 

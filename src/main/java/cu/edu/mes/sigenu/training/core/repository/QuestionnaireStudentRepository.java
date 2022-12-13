@@ -15,7 +15,7 @@ public interface QuestionnaireStudentRepository extends JpaRepository<Questionna
     @Query("select qs from QuestionnarieStudent qs "
             + "inner join Questionnaire q on q.id = qs.questionnarieId "
             + "where year(qs.doneDate) = ?1 and q.id = ?2")
-    List<QuestionnarieStudent> findAllByDate(int year, int id);
+    List<QuestionnarieStudent> findAllByDate(int year, int questionnarieId);
 
     @Query("select qs from QuestionnarieStudent qs where year(qs.doneDate) = ?1")
     List<QuestionnarieStudent> findAllByDoneDate(int year);

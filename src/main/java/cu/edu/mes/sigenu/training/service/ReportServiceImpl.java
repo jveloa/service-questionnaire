@@ -165,24 +165,39 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public DeportArtListDto deportArtListByStudent(String studentSigenuId) {
-        List<StudentAnswer> list = studentAnswerRepository.deportArtListByStudent(studentSigenuId);
-
+    public List<DeportArtListDto> deportArtListByStudent(Integer year, Integer questionnarieId) {
+        List<StudentAnswer> list = studentAnswerRepository.deportArtListByStudent(year,questionnarieId);
+        List<DeportArtListDto> listStudent = new ArrayList<>();
         List<String> sports = new ArrayList<>();
         List<String> arts = new ArrayList<>();
+        BasicStudentVO studentSigenu = null;
+        int aux = 0;
+
+
 
         for (StudentAnswer studentAnswer:list) {
+
+             studentSigenu = getInfoBasicStudent(studentAnswer.getStudentSigenuId());
 
             if (studentAnswer.getQuestionAnswerId().getQuestionId().getGroupQuestionId().getNameGroup().equals("Deportes")) {
                 sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
             } else
                 arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
 
+            if(aux == list.size()- 1){
+                listStudent.add(addDeportArtList(studentSigenu,sports,arts));
+            }
+
+            else if (!(studentSigenu.getIdStudent().equals(list.get(aux+1).getStudentSigenuId())))
+            {
+
+                listStudent.add(addDeportArtList(studentSigenu,sports,arts));
+                sports = new ArrayList<>();
+                arts = new ArrayList<>();
+            }
+            aux ++;
         }
-        return DeportArtListDto.builder()
-                               .arts(arts)
-                               .sports(sports)
-                               .build();
+        return listStudent;
     }
 
 
@@ -206,5 +221,16 @@ public class ReportServiceImpl implements ReportService {
         return null;
     }
 
+    public DeportArtListDto addDeportArtList(BasicStudentVO studentSigenu,List<String> sports,List<String> arts) {
+        DeportArtListDto item = DeportArtListDto.builder()
+                .name((studentSigenu.getName() + " " +
+                        studentSigenu.getLastName())
+                        .replace("  ", " "))
+                .studentSigenuId(studentSigenu.getIdentification())
+                .arts(arts)
+                .sports(sports)
+                .build();
+        return item;
+    }
 
 }

@@ -142,7 +142,7 @@ public interface StudentAnswerRepository extends JpaRepository <StudentAnswer,In
 			+ "inner join QuestionnarieStudent qs on qs.studentSigenuId = sa.studentSigenuId "
 			+ "inner join Questionnaire qu on qu.id = qs.questionnarieId "
 			+ "where year(qs.doneDate) = ?1 and qu.id = ?2 and a.id = 69 and q.groupQuestionId = 8")
-	List<StudentAnswer> studentNotComputer(int year,int id);
+	List<StudentAnswer> studentNotComputer(int year,int questionnarieId);
 
 	@Query( nativeQuery = true,
 			value = "SELECT *" +
@@ -199,11 +199,12 @@ public interface StudentAnswerRepository extends JpaRepository <StudentAnswer,In
 					" join answer on question_answer.answer_id = answer.id" +
 					" join group_question on  question.group_question_id = group_question.id" +
 					" join questionnarie_student on student_answer.student_sigenu_id = questionnarie_student.student_sigenu_id " +
-					" where student_answer.student_sigenu_id = :student_sigenu_id and" +
+					" join questionnaire on questionnaire.id = questionnarie_student.questionnarie_id " +
+					" where questionnaire.id = :questionnarieId and date_part('year',questionnarie_student.done_date) = :year and" +
 					" answer.answer = 'Si' and " +
 					"(group_question.name_group = 'Manifestaciones artísticas' " +
 					" or group_question.name_group = 'Deportes')")
-	public List<StudentAnswer> deportArtListByStudent(@Param("student_sigenu_id") String studentSigenuId);
+	public List<StudentAnswer> deportArtListByStudent(@Param("year") Integer year,@Param("questionnarieId") Integer questionnarieId);
 
 	@Query("select sa from StudentAnswer sa "
 			+ "inner join QuestionAnswer qa on sa.questionAnswerId = qa.id "

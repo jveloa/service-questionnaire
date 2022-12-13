@@ -9,26 +9,26 @@ import java.util.Map;
 
 public interface ReportTwoService {
 
-    List<StudentNotComputerDto> studentNotComputerList(Integer year, Integer id);
+    List<StudentNotComputerDto> studentNotComputerList(Integer year, Integer questionnarieId);
 
-    List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(Integer year,Integer id);
+    List<StudentsAnswerByAnswerByQuestionDto> percentsStudyFomrsByAnswer(Integer year,Integer questionnarieId);
 
-    List<PercentsStudyHoursByAnswerDto> percentsStudyHoursByAnswer(Integer year, Integer id);
+    List<PercentsStudyHoursByAnswerDto> percentsStudyHoursByAnswer(Integer year, Integer questionnarieId);
 
-    List<String> studentsByPlaceEgress(Integer year, String idPlaceEgress, Integer id);
+    List<String> studentsByPlaceEgress(Integer year, String idPlaceEgress, Integer questionnarieId);
 
-    List<StudentsNotesDto> studentsWithNotes(Integer year, Integer id);
+    List<StudentsNotesDto> studentsWithNotes(Integer year, Integer questionnarieId);
 
-    List<StudentsWithNotesDto> entryDataByCourse(Integer year, Integer id);
+    List<StudentsWithNotesDto> entryDataByCourse(Integer year, Integer questionnarieId);
 
-    List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String idPlaceEgress, Integer id);
+    List<StudentsWithNotesDto> entryDataByCourseByPlaceEgress(Integer year, String idPlaceEgress, Integer questionnarieId);
 
     List<StudentsNotesDto> studentsByConfigurableNotes(Integer year, float academicIndex
                                                             , float noteSpanish, float noteMat, float noteHistory
-                                                           ,Integer id);
+                                                           ,Integer questionnarieId);
 
 
-    List<String> studentsByEntrySource(Integer year, String idEntrySource, Integer id);
+    List<String> studentsByEntrySource(Integer year, String idEntrySource, Integer questionnarieId);
 
     List<EntrySourceAuxDto> getAllEntrySource();
 

@@ -41,7 +41,7 @@ ALTER SEQUENCE public.answer_id_seq OWNED BY public.answer.id;
 CREATE TABLE public.correct_answer
 (
     id                 integer NOT NULL,
-    question_answer_id integer NOT NULL
+    question_answer_id integer
 );
 
 

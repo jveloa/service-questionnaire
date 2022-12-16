@@ -1,13 +1,11 @@
 package cu.edu.mes.sigenu.training.core.repository;
 
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-
 import cu.edu.mes.sigenu.training.core.model.Question;
-import cu.edu.mes.sigenu.training.core.model.StudentAnswer;
+import org.springframework.data.repository.query.Param;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer>, JpaSpecificationExecutor<Question> {
 
@@ -49,6 +47,17 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>, Jp
 	List<Question> getAllByQuestionCarrerListIsNullOrderById();
 
 	List<Question> getAllByQuestionCarrerListIsNotNullOrderById();
+
+    @Query( nativeQuery = true,
+            value = "select * " +
+                "from question " +
+                "join questionnaire_question on questionnaire_question.question_id = question.id " +
+                "join questionnaire on questionnaire.id = questionnaire_question.questionnaire_id " +
+                "join group_question on group_question.id = question.group_question_id " +
+                "where questionnaire.id = :questionnarieId " +
+                "order by group_question.organization_order "
+    )
+    List<Question> findByQuestionnaireIdOrderByGroup(@Param("questionnarieId") Integer Id);
 }
 
 

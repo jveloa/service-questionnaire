@@ -48,9 +48,9 @@ public class QuestionnaireQuestionServiceImpl implements QuestionnaireQuestionSe
     @Override
     public List<QuestionnaireQuestionByGroupDto> getQuestionsByQuestionnaire(Integer questionnaireId) {
         List<QuestionnaireQuestionByGroupDto> questionnaireQuestionByGroupDto = new ArrayList();
-        Questionnaire questionnaire = questionnaireService.findById(questionnaireId);
+        List<Question> questionList = questionService.getQuestionByQuestionnaire(questionnaireId);
         ModelMapper modelMapper = new ModelMapper();
-        for (Question question : questionnaire.getQuestionList()) {
+        for (Question question : questionList) {
 
             List<QuestionnaireQuestionDto> questionnaireQuestionDto = null;
 

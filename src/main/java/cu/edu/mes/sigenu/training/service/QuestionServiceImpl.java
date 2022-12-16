@@ -31,6 +31,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public List<Question> getQuestionByQuestionnaire(Integer questionnaireId) {
+        return questionRepository.findByQuestionnaireIdOrderByGroup(questionnaireId);
+    }
+
+    @Override
 	public Question findById(Integer id) {
 		return questionRepository.findById(id).get();
 	}

@@ -11,6 +11,8 @@ public interface QuestionService {
 
 	List<Question> listAllWithCareer();
 
+	List<Question> getQuestionByQuestionnaire(Integer questionnaireId);
+
 	Question findByName(String name);
 	
 	Question findById(Integer id);

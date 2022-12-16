@@ -42,6 +42,7 @@ public class GroupQuestionServiceImpl implements GroupQuestionService {
         GroupQuestion itemDB = findById(groupQuestion.getId());
         itemDB.setDescription(groupQuestion.getDescription());
         itemDB.setNameGroup(groupQuestion.getNameGroup());
+        itemDB.setOrganizationOrder(groupQuestion.getOrganizationOrder());
         return groupQuestionRepository.save(itemDB);
     }
 

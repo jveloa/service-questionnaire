@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Questionnaire.findAll", query = "SELECT q FROM Questionnaire q")
     , @NamedQuery(name = "Questionnaire.findById", query = "SELECT q FROM Questionnaire q WHERE q.id = :id")
     , @NamedQuery(name = "Questionnaire.findByName", query = "SELECT q FROM Questionnaire q WHERE q.name = :name")
-    , @NamedQuery(name = "Questionnaire.findByDescription", query = "SELECT q FROM Questionnaire q WHERE q.description = :description")})
+    , @NamedQuery(name = "Questionnaire.findByCareerSigenuId", query = "SELECT q FROM Questionnaire q WHERE q.careerSigenuId = :careerSigenuId")})
 public class Questionnaire implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,8 +45,9 @@ public class Questionnaire implements Serializable {
     @Basic(optional = false)
     @Column(name = "name")
     private String name;
-    @Column(name = "description")
-    private String description;
+    @Basic(optional = false)
+    @Column(name = "career_sigenu_id")
+    private String careerSigenuId;
     @ManyToMany(mappedBy = "questionnaireList")
     private List<Question> questionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionnarieId")
@@ -59,9 +60,10 @@ public class Questionnaire implements Serializable {
         this.id = id;
     }
 
-    public Questionnaire(Integer id, String name) {
+    public Questionnaire(Integer id, String name, String careerSigenuId) {
         this.id = id;
         this.name = name;
+        this.careerSigenuId = careerSigenuId;
     }
 
     public Integer getId() {
@@ -80,12 +82,12 @@ public class Questionnaire implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCareerSigenuId() {
+        return careerSigenuId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCareerSigenuId(String careerSigenuId) {
+        this.careerSigenuId = careerSigenuId;
     }
 
     @XmlTransient

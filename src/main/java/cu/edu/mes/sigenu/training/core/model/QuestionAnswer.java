@@ -42,7 +42,7 @@ public class QuestionAnswer implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "questionAnswerId")
+    @OneToOne(mappedBy = "questionAnswerId")
     private CorrectAnswer correctAnswer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionAnswerId")
     private List<StudentAnswer> studentAnswerList;

@@ -47,7 +47,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     public Questionnaire update(Questionnaire questionnaire) {
         Questionnaire itemDB = findById(questionnaire.getId());
-        itemDB.setDescription(questionnaire.getDescription());
         itemDB.setName(questionnaire.getName());
         return questionnaireRepository.save(itemDB);
     }

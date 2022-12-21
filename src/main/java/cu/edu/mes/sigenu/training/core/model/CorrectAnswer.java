@@ -38,7 +38,7 @@ public class CorrectAnswer implements Serializable {
     @Column(name = "id")
     private Integer id;
     @JoinColumn(name = "question_answer_id", referencedColumnName = "id")
-    @OneToOne(optional = false)
+    @OneToOne
     private QuestionAnswer questionAnswerId;
 
     public CorrectAnswer() {

@@ -204,9 +204,9 @@ ALTER SEQUENCE public.question_id_seq OWNED BY public.question.id;
 
 CREATE TABLE public.questionnaire
 (
-    id          integer           NOT NULL,
-    name        character varying NOT NULL,
-    description character varying
+    id               integer           NOT NULL,
+    name             character varying NOT NULL,
+    career_sigenu_id character varying NOT NULL
 );
 
 
@@ -528,6 +528,14 @@ ALTER TABLE ONLY public.student_answer
 
 ALTER TABLE ONLY public.correct_answer
     ADD CONSTRAINT unq_correct_answer UNIQUE (question_answer_id);
+
+
+--
+-- Name: unq_questionnaire; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.questionnaire
+    ADD CONSTRAINT unq_questionnaire UNIQUE (career_sigenu_id);
 
 
 --

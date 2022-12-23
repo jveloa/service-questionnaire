@@ -7,6 +7,7 @@ import cu.edu.mes.sigenu.training.core.service.QuestionCarrerService;
 import cu.edu.mes.sigenu.training.core.service.SigenuService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import cu.edu.mes.vo.CareerVO;
+import cu.edu.mes.vo.NationalCareerVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,8 +52,19 @@ public class QuestionCarrerController {
 
     @GetMapping("/career")
     @ApiOperation(value = "Get a List with all career")
-    public List<CareerVO> listCareer(){
-        return sigenuService.getCareersSigenu();
+    public List<NationalCareerVO> listCareer(){
+        List<CareerVO> careerVOList= sigenuService.getCareersSigenu();
+        List<NationalCareerVO> nationalCareers = new ArrayList<>();
+
+        for (CareerVO careerVO:careerVOList) {
+
+            if(!nationalCareers.stream().anyMatch(n -> n.getIdNationalCareer().equals(careerVO.getNationalCareerVO().getIdNationalCareer()))){
+                nationalCareers.add(careerVO.getNationalCareerVO());
+            }
+        }
+
+        return nationalCareers;
+
     }
 
     @GetMapping("/{id}")

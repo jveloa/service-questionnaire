@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@Api(tags = "Feu Report enpoint controller")
+@Api(tags = "Feu Report endpoint controller")
 @RequestMapping(value = "/reportFeu",produces = MediaType.APPLICATION_JSON_VALUE)
 public class FeuReportController {
 

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@Api(tags = "Questionnaire student enpoint controller")
+@Api(tags = "Questionnaire student endpoint controller")
 @RequestMapping(value = "/questionnaire-student",produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionnaireStudentController {
 

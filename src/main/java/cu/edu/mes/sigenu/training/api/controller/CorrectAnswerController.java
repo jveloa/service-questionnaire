@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@Api(tags = "Correct Answer controller")
+@Api(tags = "Correct Answer endpoint controller")
 @RequestMapping(value = "/correct-asnwer", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CorrectAnswerController {
 

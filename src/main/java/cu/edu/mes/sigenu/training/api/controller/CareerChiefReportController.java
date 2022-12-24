@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Api(tags = "Career Chief Report enpoint controller")
+@Api(tags = "Career Chief Report endpoint controller")
 @RequestMapping(value = "/reportCareerChief",produces = MediaType.APPLICATION_JSON_VALUE)
 public class CareerChiefReportController {
 

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@Api(tags = "Answer enpoint controller")
+@Api(tags = "Answer endpoint controller")
 @RequestMapping(value = "/answer", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AnswerController {
 

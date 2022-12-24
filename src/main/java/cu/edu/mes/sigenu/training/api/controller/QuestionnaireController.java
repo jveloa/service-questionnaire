@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@Api(tags = "Questionnaire enpoint controller")
+@Api(tags = "Questionnaire endpoint controller")
 @RequestMapping(value = "/questionnaire",produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionnaireController {
 

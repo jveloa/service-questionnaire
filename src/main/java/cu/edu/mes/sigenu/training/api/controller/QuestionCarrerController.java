@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@Api(tags = "Question Carrer enpoint controller")
+@Api(tags = "Question Carrer endpoint controller")
 @RequestMapping(value = "/question-carrer",produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionCarrerController {
     @Autowired

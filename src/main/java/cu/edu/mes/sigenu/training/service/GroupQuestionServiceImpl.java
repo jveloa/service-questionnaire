@@ -5,6 +5,7 @@ import cu.edu.mes.sigenu.training.core.model.GroupQuestion;
 import cu.edu.mes.sigenu.training.core.repository.GroupQuestionRepository;
 import cu.edu.mes.sigenu.training.core.service.GroupQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class GroupQuestionServiceImpl implements GroupQuestionService {
 
     @Override
     public List<GroupQuestion> listAll() {
-        return groupQuestionRepository.findAll();
+        return groupQuestionRepository.findAll(Sort.by(Sort.Direction.ASC,"organizationOrder"));
     }
 
     @Override

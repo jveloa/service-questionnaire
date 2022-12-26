@@ -203,7 +203,7 @@ public interface StudentAnswerRepository extends JpaRepository <StudentAnswer,In
 					" where questionnaire.id = :questionnarieId and date_part('year',questionnarie_student.done_date) = :year and" +
 					" answer.answer = 'Si' and " +
 					"(group_question.name_group = 'Manifestaciones artísticas' " +
-					" or group_question.name_group = 'Deportes')")
+					" or group_question.name_group = 'Deportes') order by student_answer.student_sigenu_id")
 	public List<StudentAnswer> deportArtListByStudent(@Param("year") Integer year,@Param("questionnarieId") Integer questionnarieId);
 
 	@Query("select sa from StudentAnswer sa "

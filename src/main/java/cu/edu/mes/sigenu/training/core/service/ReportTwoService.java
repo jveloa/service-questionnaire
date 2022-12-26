@@ -33,4 +33,7 @@ public interface ReportTwoService {
     List<EntrySourceAuxDto> getAllEntrySource();
 
     List<EntrySourceAuxDto> getAllPlaceEgress();
+
+    List<String> getAllYears(Integer questionnarieId);
+
 }

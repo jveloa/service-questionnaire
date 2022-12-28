@@ -38,5 +38,7 @@ public interface ReportTwoService {
 
     CareerOptionsDto studentCareerOptions(Integer year, Integer questionnarieId);
 
+    Double percentsStudentsUjcByYear(Integer year, Integer questionnarieId);
+
 
 }

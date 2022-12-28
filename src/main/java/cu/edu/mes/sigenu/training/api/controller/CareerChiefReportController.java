@@ -188,4 +188,11 @@ public class CareerChiefReportController {
 
     }
 
+    @GetMapping("/percentsStudentsUjcByYear/{year}/{questionnarieId}")
+    @ApiOperation(value = "Percentage of students who belong to the ujc by year")
+    public double percentsStudentsUjcByYear(@PathVariable Integer year, @PathVariable Integer questionnarieId) {
+        return reportTwoService.percentsStudentsUjcByYear(year,questionnarieId);
+
+    }
+
 }

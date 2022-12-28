@@ -608,5 +608,16 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
         return item;
     }
+
+    @Override
+    public Double percentsStudentsUjcByYear(Integer year, Integer questionnarieId) {
+
+        float total = questionRepository.totalQuestionByStudentsUjc(year,questionnarieId);
+        float part = questionAnswerRepository.totalAnswerByQuestionByStudentsUjc(year,questionnarieId);
+        double percents = part * 100 / total;
+        percents = Math.round(percents * 100d) / 100d;
+
+        return percents;
+    }
 }
 

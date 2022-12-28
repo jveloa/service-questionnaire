@@ -181,4 +181,11 @@ public class CareerChiefReportController {
         return reportTwoService.getAllYears(questionnarieId);
     }
 
+    @GetMapping("/studentCareerOptions/{year}/{questionnarieId}")
+    @ApiOperation(value = "Number of the different options in which students selected the career by year")
+    public CareerOptionsDto studentCareerOptions(@PathVariable Integer year, @PathVariable Integer questionnarieId) {
+        return reportTwoService.studentCareerOptions(year,questionnarieId);
+
+    }
+
 }

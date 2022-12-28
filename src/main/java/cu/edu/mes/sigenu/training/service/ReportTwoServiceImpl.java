@@ -308,7 +308,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
         for (int i = 0; i < list.size(); i++) {
 
-             studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
             if (studentSigenu.getScholasticOrigin().getIdScholasticOrigin().equals(idPlaceEgress)) {
                 if (studentSigenu.getAcademicIndex() > 0) {
 
@@ -572,4 +572,41 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
         return questionRepository.getAllYear(questionnarieId);
     }
+
+    @Override
+    public CareerOptionsDto studentCareerOptions(Integer year, Integer questionnarieId) {
+        Integer quantityOptionOne = 0;
+        Integer quantityOptionTwo = 0;
+        Integer quantityOptionThree = 0;
+        Integer quantityOptionPlusThree = 0;
+
+
+        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
+
+        for (int i = 0; i < list.size(); i++){
+
+
+            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+            if (studentSigenu.getOption() == 1)
+                quantityOptionOne++;
+            else if (studentSigenu.getOption() == 2)
+                quantityOptionTwo++;
+            else if (studentSigenu.getOption() == 3)
+                quantityOptionThree++;
+            else if (studentSigenu.getOption() > 3)
+                quantityOptionPlusThree++;
+        }
+
+        CareerOptionsDto item  = CareerOptionsDto.builder()
+                .quantityOptionOne(quantityOptionOne)
+                .quantityOptionTwo(quantityOptionTwo)
+                .quantityOptionThree(quantityOptionThree)
+                .quantityOptionPlusThree(quantityOptionPlusThree)
+                .build();
+
+
+
+        return item;
+    }
 }
+

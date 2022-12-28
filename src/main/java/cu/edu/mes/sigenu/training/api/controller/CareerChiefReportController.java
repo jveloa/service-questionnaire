@@ -174,4 +174,11 @@ public class CareerChiefReportController {
     public List<EntrySourceAuxDto> getAllPlaceEgress() {
         return reportTwoService.getAllPlaceEgress();
     }
+
+    @GetMapping("/allYear/{questionnarieId}")
+    @ApiOperation(value = "Return all years")
+    public List<String> getAllYears(@PathVariable Integer questionnarieId) {
+        return reportTwoService.getAllYears(questionnarieId);
+    }
+
 }

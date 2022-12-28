@@ -30,6 +30,11 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>, Jp
 			+ "where date_part('year',qs.doneDate) = ?1 and q.groupQuestionId = 11 and qu.id = ?2")
 	List<Question> findIQuestionsByGroupQuestion(int year,int questionnarieId);
 
+	@Query("select distinct qs.doneDate from QuestionnarieStudent qs "
+			+ "inner join Questionnaire q on q.id = qs.questionnarieId.id "
+			+ "where q.id = ?1 order by qs.doneDate")
+	List<String> getAllYear(int questionnarieId);
+
 	@Query(value = " select count(q.id) from student_answer sa inner join question_answer qa on sa.question_answer_id = qa.id  "
 			+ "inner join question q on qa.question_id = q.id inner join answer a on qa.answer_id = a.id "
 			+ "inner join questionnarie_student qs on qs.student_sigenu_id = sa.student_sigenu_id "

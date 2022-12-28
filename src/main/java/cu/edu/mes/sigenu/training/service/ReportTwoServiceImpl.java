@@ -180,16 +180,16 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
             for (int j = 0; j < entryEvaluationVOList.size(); j++){
 
-                if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español") && entryEvaluationVOList.get(j).getMark() > 0) {
+                if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Español")) {
                     noteSpanish = entryEvaluationVOList.get(j).getMark();
 
-                } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática") && entryEvaluationVOList.get(j).getMark() > 0) {
+                } else if (entryEvaluationVOList.get(j).getEntrySubjectName().equals("Matemática")) {
                     noteMat = entryEvaluationVOList.get(j).getMark();
 
-                } else if (entryEvaluationVOList.get(j).getMark() > 0){
+                } else
                     noteHistory = entryEvaluationVOList.get(j).getMark();
 
-                }
+
 
             }
 
@@ -204,6 +204,8 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                     .build();
 
             listReport.add(item);
+
+
 
         }
 
@@ -295,6 +297,8 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         int countHistory = 0;
         int countMat = 0;
 
+        StudentVO studentSigenu = new StudentVO();
+
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
         List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
         List <Float> noteAcademic = new ArrayList<>();
@@ -304,7 +308,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
         for (int i = 0; i < list.size(); i++) {
 
-            StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
+             studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
             if (studentSigenu.getScholasticOrigin().getIdScholasticOrigin().equals(idPlaceEgress)) {
                 if (studentSigenu.getAcademicIndex() > 0) {
 
@@ -343,7 +347,20 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             }
         }
 
-        if (noteAcademic.size() > 0 ) {
+        /*if (noteAcademic.size() > 0 ) {
+            StudentsWithNotesDto spanish = addNotes(noteSpanish, aveSpanish, "Español", countSpanish);
+            listReport.add(spanish);
+
+            StudentsWithNotesDto mat = addNotes(noteMat, aveMat, "Matemática", countMat);
+            listReport.add(mat);
+
+            StudentsWithNotesDto history = addNotes(noteHistory, aveHistory, "Historia", countHistory);
+            listReport.add(history);
+
+            StudentsWithNotesDto index = addNotes(noteAcademic, aveAcademic, "Índice Académico", countAcademic);
+            listReport.add(index);
+        }*/
+        if (!(noteAcademic.isEmpty()) || !(noteHistory.isEmpty()) || !(noteMat.isEmpty()) || !(noteSpanish.isEmpty()) ) {
             StudentsWithNotesDto spanish = addNotes(noteSpanish, aveSpanish, "Español", countSpanish);
             listReport.add(spanish);
 
@@ -470,9 +487,17 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
     public StudentsWithNotesDto addNotes(List <Float> note, float average, String name, int size){
 
-        float min = Collections.min(note);
-        float max = Collections.max(note);
-        float ave = average / size;
+        float min = 0;
+        float max = 0;
+        float ave = 0;
+
+        if (note.size() > 0){
+            min = Collections.min(note);
+            max = Collections.max(note);
+            ave = average / size;
+        }
+
+
 
         StudentsWithNotesDto item  = StudentsWithNotesDto.builder()
                 .name(name)
@@ -507,8 +532,8 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         try {
             Collection<EntrySourceVO> entrySource = (Collection<EntrySourceVO>) Client.getEntrySourceCatalog().getAllActive();
             Iterator<EntrySourceVO> iterator = entrySource.iterator();
-           while (iterator.hasNext()){
-               EntrySourceVO e = iterator.next();
+            while (iterator.hasNext()){
+                EntrySourceVO e = iterator.next();
                 EntrySourceAuxDto item  = EntrySourceAuxDto.builder()
                         .name(e.getName())
                         .idEntrysource(e.getIdEntrySource())
@@ -540,5 +565,11 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<String> getAllYears(Integer questionnarieId) {
+
+        return questionRepository.getAllYear(questionnarieId);
     }
 }

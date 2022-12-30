@@ -36,4 +36,9 @@ public interface ReportTwoService {
 
     List<String> getAllYears(Integer questionnarieId);
 
+    CareerOptionsDto studentCareerOptions(Integer year, Integer questionnarieId);
+
+    Double percentsStudentsUjcByYear(Integer year, Integer questionnarieId);
+
+
 }

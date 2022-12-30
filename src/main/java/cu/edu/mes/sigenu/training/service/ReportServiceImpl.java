@@ -50,6 +50,7 @@ public class ReportServiceImpl implements ReportService {
             }
             ResponsabilityReportDto item = ResponsabilityReportDto.builder()
                     .name((studentSigenu.getName() +" "
+                            +studentSigenu.getMiddleName()+" "
                             + studentSigenu.getLastName())
                             .replace("  "," "))
                     .studentSigenuId(studentSigenu.getIdentification())
@@ -113,8 +114,9 @@ public class ReportServiceImpl implements ReportService {
                 sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
                      studentSigenu = getInfoBasicStudent(studentAnswer.getStudentSigenuId());
                 StudentSportDto item = StudentSportDto.builder()
-                                                      .name((studentSigenu.getName() + " " +
-                                                                studentSigenu.getLastName())
+                                                      .name((studentSigenu.getName() + " "
+                                                              +studentSigenu.getMiddleName()+" "
+                                                               + studentSigenu.getLastName())
                                                                              .replace("  "," ")
                                                            )
                                                       .studentSigenuId(studentSigenu.getIdentification())
@@ -150,7 +152,8 @@ public class ReportServiceImpl implements ReportService {
                 arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
                      studentSigenu = getInfoBasicStudent(studentAnswer.getStudentSigenuId());
                 StudentArtDto item = StudentArtDto.builder()
-                                                  .name((studentSigenu.getName() + " " +
+                                                  .name((studentSigenu.getName() + " "
+                                                          +studentSigenu.getMiddleName()+" "+
                                                             studentSigenu.getLastName())
                                                                          .replace("  "," ")
                                                        )
@@ -223,7 +226,8 @@ public class ReportServiceImpl implements ReportService {
 
     public DeportArtListDto addDeportArtList(BasicStudentVO studentSigenu,List<String> sports,List<String> arts) {
         DeportArtListDto item = DeportArtListDto.builder()
-                .name((studentSigenu.getName() + " " +
+                .name((studentSigenu.getName() + " "
+                        +studentSigenu.getMiddleName()+" "+
                         studentSigenu.getLastName())
                         .replace("  ", " "))
                 .studentSigenuId(studentSigenu.getIdentification())

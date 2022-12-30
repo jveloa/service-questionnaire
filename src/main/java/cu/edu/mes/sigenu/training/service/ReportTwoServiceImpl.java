@@ -46,6 +46,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             BasicStudentVO studentSigenu = getInfoBasicStudent(list.get(i).getStudentSigenuId());
             StudentNotComputerDto item = StudentNotComputerDto.builder()
                     .name((studentSigenu.getName() +" "
+                            +studentSigenu.getMiddleName()+" "
                             + studentSigenu.getLastName())
                             .replace("  "," "))
                     .studentSigenuId(studentSigenu.getIdentification())
@@ -78,6 +79,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                 part = questionAnswerRepository.totalAnswerByQuestion(year,questions.get(i).getId()
                         ,list.get(j).getAnswerId().getId(),questionnarieId);
                 float percents = (part / total) * 100;
+                percents = (float) (Math.round(percents * 100d) / 100d);
                 Answer answer = answerRepository.findIAnswerName(list.get(j).getAnswerId().getId(),questionnarieId);
 
                 if (answer.getAnswer().equals("Mucho")) {
@@ -127,6 +129,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
                 float part = questionAnswerRepository.totalAnswerByQuestionByStudyHours(year, list.get(i).getAnswerId().getId(), questionnarieId);
                 float percents = part / total * 100;
+                percents = (float) (Math.round(percents * 100d) / 100d);
                 PercentsStudyHoursByAnswerDto item = PercentsStudyHoursByAnswerDto.builder()
                         .question(list.get(i).getAnswerId().getAnswer().toString())
                         .value(percents)
@@ -153,6 +156,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
             if (studentSigenu.getScholasticOrigin().getIdScholasticOrigin().equals(idPlaceEgress))
                 listReport.add((studentSigenu.getName() +" "
+                        +studentSigenu.getMiddleName()+" "
                         + studentSigenu.getLastName())
                         .replace("  "," "));
 
@@ -195,6 +199,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
             StudentsNotesDto item  = StudentsNotesDto.builder()
                     .name((studentSigenu.getName() +" "
+                            +studentSigenu.getMiddleName()+" "
                             + studentSigenu.getLastName())
                             .replace("  "," "))
                     .noteAve(noteAve)
@@ -446,6 +451,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
                     StudentsNotesDto item = StudentsNotesDto.builder()
                             .name((studentSigenu.getName() + " "
+                                    +studentSigenu.getMiddleName()+" "
                                     + studentSigenu.getLastName())
                                     .replace("  ", " "))
                             .noteAve(noteAve)
@@ -478,6 +484,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             StudentVO studentSigenu = getInfoStudent(list.get(i).getStudentSigenuId());
             if (studentSigenu.getEntrySource().getIdEntrySource().equals(idEntrySource))
                 listReport.add((studentSigenu.getName() +" "
+                        +studentSigenu.getMiddleName()+" "
                         + studentSigenu.getLastName())
                         .replace("  "," "));
 
@@ -495,6 +502,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
             min = Collections.min(note);
             max = Collections.max(note);
             ave = average / size;
+            ave = (float) (Math.round(ave * 100d) / 100d);
         }
 
 

@@ -51,4 +51,9 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     public void delete(Integer id) {
         questionAnswerRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteByQuestionAnswer(Integer questionId, Integer answerId) {
+        questionAnswerRepository.deleteByQuestionIdAndAnswerId(questionId,answerId);
+    }
 }

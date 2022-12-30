@@ -21,7 +21,7 @@ public interface QuestionService {
 	
 	Question update(Question faq);
 	
-	void delete(Integer id);
+	void delete(Integer id) throws Exception;
 
 	
 }

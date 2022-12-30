@@ -104,4 +104,18 @@ public class QuestionAnswerController {
         return ResponseEntity.ok(new ApiResponse(true, "question answer deleted successfully@"));
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{questionId}/{answerId}")
+    @ApiOperation(value = "Delete question asnwer registered")
+    public ResponseEntity<ApiResponse> delete(@PathVariable Integer questionId,@PathVariable Integer answerId) {
+        try {
+            questionAnswerService.deleteByQuestionAnswer(questionId, answerId);
+        } catch (Exception e) {
+            if(e instanceof DataIntegrityViolationException)
+                return ResponseEntity.ok(new ApiResponse(false, "question answer CAN'T be deleted because has been reference by another entity"));
+            return ResponseEntity.ok(new ApiResponse(false, "question answer CAN'T be deleted"));
+        }
+        return ResponseEntity.ok(new ApiResponse(true, "question answer deleted successfully@"));
+    }
+
 }

@@ -39,18 +39,19 @@ public class QuestionController {
 	@ApiOperation(value = "Create question with career")
     @Transactional(rollbackFor = Exception.class)
 	public ResponseEntity<ApiResponse> save(@RequestBody QuestionWithCareerDto item) {
+	    Question questionResult = null;
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			Question question = modelMapper.map(item, Question.class);
-			Question result = questionService.save(question);
+			questionResult = questionService.save(question);
 			QuestionCarrer questionCarrer = new QuestionCarrer();
-			questionCarrer.setQuestionId(result);
+			questionCarrer.setQuestionId(questionResult);
 			questionCarrer.setCareerSigenuId(item.getQuestionCarrerId());
 			questionCarrerService.save(questionCarrer);
 		} catch (Exception e) {
 			return ResponseEntity.ok(new ApiResponse(false, "Error: Question hasn't been created@"));
 		}
-		return ResponseEntity.ok(new ApiResponse(true, "Question created successfully@"));
+		return ResponseEntity.ok(new ApiResponse(true, "Question created successfully@",questionResult.getId().toString()));
 	}
 
     @PostMapping("")
@@ -75,12 +76,12 @@ public class QuestionController {
 		return modelMapper.map(item, QuestionDto.class);
 	}
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/name/name")
     @ApiOperation(value = "Get question by name")
-    public QuestionDto get(@PathVariable String name){
+    public QuestionDto get(@RequestParam String name){
         ModelMapper modelMapper = new ModelMapper();
-        Question item = questionService.findByName(name);
-        return modelMapper.map(item, QuestionDto.class);
+        Question question = questionService.findByName(name);
+        return modelMapper.map(question, QuestionDto.class);
     }
 	
 	@GetMapping("")

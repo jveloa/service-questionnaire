@@ -35,6 +35,11 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     }
 
     @Override
+    public List<QuestionAnswer> getByQuestionId(Question questionId) {
+        return questionAnswerRepository.getByQuestionId(questionId);
+    }
+
+    @Override
     public QuestionAnswer save(QuestionAnswer questionAnswer) {
         return questionAnswerRepository.save(questionAnswer);
     }
@@ -52,8 +57,4 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
         questionAnswerRepository.deleteById(id);
     }
 
-    @Override
-    public void deleteByQuestionAnswer(Integer questionId, Integer answerId) {
-        questionAnswerRepository.deleteByQuestionIdAndAnswerId(questionId,answerId);
-    }
 }

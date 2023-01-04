@@ -44,10 +44,7 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer,I
 
     QuestionAnswer getByQuestionIdAndAnswerId(Question questionId, Answer answerId);
 
-    void deleteByQuestionIdAndAnswerId(Integer questionId,Integer answerId);
-
-
-
+    List<QuestionAnswer> getByQuestionId(Question questionId);
 
 
 

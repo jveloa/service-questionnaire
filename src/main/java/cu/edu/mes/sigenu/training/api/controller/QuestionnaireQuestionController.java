@@ -1,6 +1,7 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
 
+import cu.edu.mes.sigenu.training.core.dto.QuestionDto;
 import cu.edu.mes.sigenu.training.core.dto.QuestionnaireQuestionByGroupDto;
 import cu.edu.mes.sigenu.training.core.service.QuestionnaireQuestionService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
@@ -28,6 +29,12 @@ public class QuestionnaireQuestionController {
     @ApiOperation(value = "Get all question by a questionnaire")
     public List<QuestionnaireQuestionByGroupDto> get(@PathVariable Integer questionnaireId){
         return questionnaireQuestionService.getQuestionsByQuestionnaire(questionnaireId);
+    }
+
+    @GetMapping("/questionnaire/{questionnaireId}/")
+    @ApiOperation(value = "Get all question by a questionnaire")
+    public List<QuestionDto> getQuestions(@PathVariable Integer questionnaireId){
+        return questionnaireQuestionService.getQuestionsByQuestionnaireId(questionnaireId);
     }
 
     @PostMapping("/{questionnaire_id}/{question_id}")

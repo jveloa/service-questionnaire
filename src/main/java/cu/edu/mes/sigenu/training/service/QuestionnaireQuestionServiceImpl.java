@@ -87,4 +87,13 @@ public class QuestionnaireQuestionServiceImpl implements QuestionnaireQuestionSe
         }
         return questionnaireQuestionByGroupDto;
     }
+
+    public List<QuestionDto> getQuestionsByQuestionnaireId(Integer questionnaire_id){
+        ModelMapper modelMapper = new ModelMapper();
+        Questionnaire questionnaire = questionnaireService.findById(questionnaire_id);
+        return questionnaire.getQuestionList()
+                            .stream()
+                            .map(question -> modelMapper.map(question,QuestionDto.class))
+                            .collect(Collectors.toList());
+    }
 }

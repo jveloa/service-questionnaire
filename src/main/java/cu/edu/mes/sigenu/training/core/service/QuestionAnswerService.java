@@ -18,7 +18,7 @@ public interface QuestionAnswerService {
 
     void delete(Integer id);
 
-    void deleteByQuestionAnswer(Integer questionId,Integer answerId);
-
     QuestionAnswer findByQuestionIdAnswerId(Question questionId, Answer answerId);
+
+    List<QuestionAnswer> getByQuestionId(Question questionId);
 }

@@ -2,7 +2,9 @@ package cu.edu.mes.sigenu.training.api.controller;
 
 import cu.edu.mes.sigenu.training.core.dto.CorrectAnswerDto;
 import cu.edu.mes.sigenu.training.core.dto.QuestionAnswerDto;
+import cu.edu.mes.sigenu.training.core.model.Answer;
 import cu.edu.mes.sigenu.training.core.model.CorrectAnswer;
+import cu.edu.mes.sigenu.training.core.model.Question;
 import cu.edu.mes.sigenu.training.core.model.QuestionAnswer;
 import cu.edu.mes.sigenu.training.core.service.QuestionAnswerService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
@@ -62,6 +64,23 @@ public class QuestionAnswerController {
 
     }
 
+    @GetMapping("/question-id/{id}")
+    @ApiOperation(value = "Get question answer by question id")
+    public List<QuestionAnswerDto> getByQuestionId(@PathVariable Integer id){
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        TypeMap<QuestionAnswer,QuestionAnswerDto> propertyMapper = modelMapper.createTypeMap(QuestionAnswer.class,QuestionAnswerDto.class);
+        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getQuestionId().getId(),QuestionAnswerDto::setQuestionId));
+        propertyMapper.addMappings( mapper -> mapper.map(src -> src.getAnswerId().getId(),QuestionAnswerDto::setAnswerId));
+        TypeMap<CorrectAnswer,CorrectAnswerDto> propertyMapper1 = modelMapper.createTypeMap(CorrectAnswer.class, CorrectAnswerDto.class);
+        propertyMapper1.addMappings(mapper-> mapper.map(src-> src.getQuestionAnswerId().getId(), (destination, value) -> destination.setQuestionAnswerId((Integer) value)));
+        Question question = new Question(id);
+        return questionAnswerService.getByQuestionId(question).stream()
+                                    .map(item -> modelMapper.map(item,QuestionAnswerDto.class))
+                                    .collect(Collectors.toList());
+    }
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create question answer")
@@ -96,20 +115,6 @@ public class QuestionAnswerController {
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
         try {
             questionAnswerService.delete(id);
-        } catch (Exception e) {
-            if(e instanceof DataIntegrityViolationException)
-                return ResponseEntity.ok(new ApiResponse(false, "question answer CAN'T be deleted because has been reference by another entity"));
-            return ResponseEntity.ok(new ApiResponse(false, "question answer CAN'T be deleted"));
-        }
-        return ResponseEntity.ok(new ApiResponse(true, "question answer deleted successfully@"));
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/{questionId}/{answerId}")
-    @ApiOperation(value = "Delete question asnwer registered")
-    public ResponseEntity<ApiResponse> delete(@PathVariable Integer questionId,@PathVariable Integer answerId) {
-        try {
-            questionAnswerService.deleteByQuestionAnswer(questionId, answerId);
         } catch (Exception e) {
             if(e instanceof DataIntegrityViolationException)
                 return ResponseEntity.ok(new ApiResponse(false, "question answer CAN'T be deleted because has been reference by another entity"));

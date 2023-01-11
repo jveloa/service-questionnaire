@@ -58,14 +58,15 @@ public class QuestionController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create question")
     public ResponseEntity<ApiResponse> save(@RequestBody QuestionDto item) {
+        Question questionResult = null;
         try {
             ModelMapper modelMapper = new ModelMapper();
             Question question = modelMapper.map(item, Question.class);
-            questionService.save(question);
+            questionResult = questionService.save(question);
         } catch (Exception e) {
             return ResponseEntity.ok(new ApiResponse(false, "Error: Question hasn't been created@"));
         }
-        return ResponseEntity.ok(new ApiResponse(true, "Question created successfully@"));
+        return ResponseEntity.ok(new ApiResponse(true, "Question created successfully@",questionResult.getId().toString()));
     }
 	
 	@GetMapping("/{id}")

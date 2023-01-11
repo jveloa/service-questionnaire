@@ -78,7 +78,9 @@ public class QuestionServiceImpl implements QuestionService {
         for(QuestionAnswer questionAnswer:question.getQuestionAnswerList()){
             questionAnswerService.delete(questionAnswer.getId());
         }
-        questionCarrerService.delete(question.getQuestionCarrerList().get(0).getId());
+        if(!question.getQuestionCarrerList().isEmpty()) {
+            questionCarrerService.delete(question.getQuestionCarrerList().get(0).getId());
+        }
         questionRepository.deleteById(id);
 	}
 

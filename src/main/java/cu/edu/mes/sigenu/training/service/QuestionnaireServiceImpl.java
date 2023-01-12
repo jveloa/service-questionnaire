@@ -37,11 +37,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
     @Override
     public Questionnaire save(Questionnaire questionnaire) {
-        Questionnaire result =questionnaireRepository.save(questionnaire);
-        List<Question> questionList = questionService.listAllWithoutCareer();
-        questionList.forEach(question -> questionnaireQuestionService.addQuestionToQuestionnaire(questionnaire.getId(),question.getId()));
-        return result;
-
+        return questionnaireRepository.save(questionnaire);
     }
 
     @Override

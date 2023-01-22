@@ -6,6 +6,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Integer>, JpaSpecificationExecutor<Questionnaire> {
 
-
-
 }

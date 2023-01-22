@@ -27,41 +27,55 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Junior
  */
 @Entity
-@Table(name = "questionnarie_student", catalog = "training", schema = "public")
+@Table(name = "questionnaire_student", catalog = "training", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "QuestionnarieStudent.findAll", query = "SELECT q FROM QuestionnarieStudent q")
-    , @NamedQuery(name = "QuestionnarieStudent.findByStudentSigenuId", query = "SELECT q FROM QuestionnarieStudent q WHERE q.studentSigenuId = :studentSigenuId")
-    , @NamedQuery(name = "QuestionnarieStudent.findByDoneDate", query = "SELECT q FROM QuestionnarieStudent q WHERE q.doneDate = :doneDate")
-    , @NamedQuery(name = "QuestionnarieStudent.findById", query = "SELECT q FROM QuestionnarieStudent q WHERE q.id = :id")})
-public class QuestionnarieStudent implements Serializable {
+    @NamedQuery(name = "QuestionnaireStudent.findAll", query = "SELECT q FROM QuestionnaireStudent q")
+    , @NamedQuery(name = "QuestionnaireStudent.findById", query = "SELECT q FROM QuestionnaireStudent q WHERE q.id = :id")
+    , @NamedQuery(name = "QuestionnaireStudent.findByStudentSigenuId", query = "SELECT q FROM QuestionnaireStudent q WHERE q.studentSigenuId = :studentSigenuId")
+    , @NamedQuery(name = "QuestionnaireStudent.findByDoneDate", query = "SELECT q FROM QuestionnaireStudent q WHERE q.doneDate = :doneDate")})
+public class QuestionnaireStudent implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "student_sigenu_id")
     private String studentSigenuId;
     @Column(name = "done_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date doneDate;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
-    @JoinColumn(name = "questionnarie_id", referencedColumnName = "id")
+    @JoinColumn(name = "questionnaire_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Questionnaire questionnarieId;
+    private Questionnaire questionnaireId;
 
-    public QuestionnarieStudent() {
+    public QuestionnaireStudent() {
     }
 
-    public QuestionnarieStudent(Integer id) {
+    public QuestionnaireStudent(Integer id) {
         this.id = id;
     }
 
-    public QuestionnarieStudent(Integer id, String studentSigenuId) {
+    public QuestionnaireStudent(Integer id, String studentSigenuId) {
         this.id = id;
         this.studentSigenuId = studentSigenuId;
+    }
+    
+    public QuestionnaireStudent(Integer id, String studentSigenuId, Date doneDate) {
+        this.id = id;
+        this.studentSigenuId = studentSigenuId;
+        this.doneDate = doneDate;
+    }
+    
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getStudentSigenuId() {
@@ -80,20 +94,12 @@ public class QuestionnarieStudent implements Serializable {
         this.doneDate = doneDate;
     }
 
-    public Integer getId() {
-        return id;
+    public Questionnaire getQuestionnaireId() {
+        return questionnaireId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Questionnaire getQuestionnarieId() {
-        return questionnarieId;
-    }
-
-    public void setQuestionnarieId(Questionnaire questionnarieId) {
-        this.questionnarieId = questionnarieId;
+    public void setQuestionnaireId(Questionnaire questionnaireId) {
+        this.questionnaireId = questionnaireId;
     }
 
     @Override
@@ -106,10 +112,10 @@ public class QuestionnarieStudent implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof QuestionnarieStudent)) {
+        if (!(object instanceof QuestionnaireStudent)) {
             return false;
         }
-        QuestionnarieStudent other = (QuestionnarieStudent) object;
+        QuestionnaireStudent other = (QuestionnaireStudent) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -118,7 +124,6 @@ public class QuestionnarieStudent implements Serializable {
 
     @Override
     public String toString() {
-        return "cu.edu.mes.sigenu.training.core.model.QuestionnarieStudent[ id=" + id + " ]";
+        return "cu.edu.mes.sigenu.training.core.model.QuestionnaireStudent[ id=" + id + " ]";
     }
-    
 }

@@ -1,10 +1,16 @@
 package cu.edu.mes.sigenu.training.core.service;
 
-import cu.edu.mes.sigenu.training.core.model.Answer;
+import java.util.List;
+
 import cu.edu.mes.sigenu.training.core.model.CorrectAnswer;
 
 public interface CorrectAnswerService {
+	
+	List<CorrectAnswer> listAll();
+	
     CorrectAnswer findById(Integer id);
+    
     CorrectAnswer save(CorrectAnswer correctAnswer);
-    void deleteById(Integer Id);
+    
+    void delete(Integer Id);
 }

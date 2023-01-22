@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "QuestionAnswer.findAll", query = "SELECT q FROM QuestionAnswer q")
-    , @NamedQuery(name = "QuestionAnswer.findById", query = "SELECT q FROM QuestionAnswer q WHERE q.id = :id")})
+    , @NamedQuery(name = "QuestionAnswer.findById", query = "SELECT q FROM QuestionAnswer q WHERE q.id = :id")
+    , @NamedQuery(name = "QuestionAnswer.findByIsCanceled", query = "SELECT q FROM QuestionAnswer q WHERE q.isCanceled = :isCanceled")})
 public class QuestionAnswer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,6 +43,9 @@ public class QuestionAnswer implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @Column(name = "is_canceled")
+    private boolean isCanceled;
     @OneToOne(mappedBy = "questionAnswerId")
     private CorrectAnswer correctAnswer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionAnswerId")
@@ -50,7 +54,7 @@ public class QuestionAnswer implements Serializable {
     @ManyToOne(optional = false)
     private Answer answerId;
     @JoinColumn(name = "question_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Question questionId;
 
     public QuestionAnswer() {
@@ -59,6 +63,11 @@ public class QuestionAnswer implements Serializable {
     public QuestionAnswer(Integer id) {
         this.id = id;
     }
+    
+    public QuestionAnswer(Integer id, boolean isCanceled) {
+        this.id = id;
+        this.isCanceled = isCanceled;
+    }
 
     public Integer getId() {
         return id;
@@ -66,6 +75,14 @@ public class QuestionAnswer implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+    
+    public boolean getIsCanceled() {
+        return isCanceled;
+    }
+
+    public void setIsCanceled(boolean isCanceled) {
+        this.isCanceled = isCanceled;
     }
 
     public CorrectAnswer getCorrectAnswer() {
@@ -125,5 +142,4 @@ public class QuestionAnswer implements Serializable {
     public String toString() {
         return "cu.edu.mes.sigenu.training.core.model.QuestionAnswer[ id=" + id + " ]";
     }
-    
 }

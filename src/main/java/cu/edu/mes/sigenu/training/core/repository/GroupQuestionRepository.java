@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface GroupQuestionRepository extends JpaRepository<GroupQuestion, Integer>, JpaSpecificationExecutor<GroupQuestion> {
 
-    GroupQuestion findByNameGroup(String name);
-
+    GroupQuestion findByNameGroup(String nameGroup);
 }

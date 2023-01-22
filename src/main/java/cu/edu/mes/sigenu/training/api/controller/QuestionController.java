@@ -1,10 +1,7 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
 import cu.edu.mes.sigenu.training.core.dto.QuestionDto;
-import cu.edu.mes.sigenu.training.core.dto.QuestionWithCareerDto;
 import cu.edu.mes.sigenu.training.core.model.Question;
-import cu.edu.mes.sigenu.training.core.model.QuestionCarrer;
-import cu.edu.mes.sigenu.training.core.service.QuestionCarrerService;
 import cu.edu.mes.sigenu.training.core.service.QuestionService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import io.swagger.annotations.Api;
@@ -16,10 +13,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,43 +26,15 @@ public class QuestionController {
 	@Autowired
 	private QuestionService questionService;
 
-	@Autowired
-    private QuestionCarrerService questionCarrerService;
-	
-	@PostMapping("/questionWithCareer")
-	@ResponseStatus(HttpStatus.CREATED)
-	@ApiOperation(value = "Create question with career")
-    @Transactional(rollbackFor = Exception.class)
-	public ResponseEntity<ApiResponse> save(@RequestBody QuestionWithCareerDto item) {
-	    Question questionResult = null;
-		try {
-			ModelMapper modelMapper = new ModelMapper();
-			Question question = modelMapper.map(item, Question.class);
-			questionResult = questionService.save(question);
-			QuestionCarrer questionCarrer = new QuestionCarrer();
-			questionCarrer.setQuestionId(questionResult);
-			questionCarrer.setCareerSigenuId(item.getQuestionCarrerId());
-			questionCarrerService.save(questionCarrer);
-		} catch (Exception e) {
-			return ResponseEntity.ok(new ApiResponse(false, "Error: Question hasn't been created@"));
-		}
-		return ResponseEntity.ok(new ApiResponse(true, "Question created successfully@",questionResult.getId().toString()));
+	@GetMapping("")
+	@ApiOperation(value = "Get a list with all questions")
+	public List<QuestionDto> list() {
+		ModelMapper modelMapper = new ModelMapper();
+		return questionService.listAll()
+				              .stream()
+				              .map(item -> modelMapper.map(item, QuestionDto.class))
+				              .collect(Collectors.toList());
 	}
-
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "Create question")
-    public ResponseEntity<ApiResponse> save(@RequestBody QuestionDto item) {
-        Question questionResult = null;
-        try {
-            ModelMapper modelMapper = new ModelMapper();
-            Question question = modelMapper.map(item, Question.class);
-            questionResult = questionService.save(question);
-        } catch (Exception e) {
-            return ResponseEntity.ok(new ApiResponse(false, "Error: Question hasn't been created@"));
-        }
-        return ResponseEntity.ok(new ApiResponse(true, "Question created successfully@",questionResult.getId().toString()));
-    }
 	
 	@GetMapping("/{id}")
 	@ApiOperation(value = "Get question by id")
@@ -76,53 +43,31 @@ public class QuestionController {
 		Question item = questionService.findById(id);
 		return modelMapper.map(item, QuestionDto.class);
 	}
-
-    @GetMapping("/name/name")
-    @ApiOperation(value = "Get question by name")
-    public QuestionDto get(@RequestParam String name){
+	
+	@GetMapping("/name-question/{nameQuestion}")
+    @ApiOperation(value = "Get question by name question")
+    public QuestionDto get(@RequestParam String nameQuestion){
         ModelMapper modelMapper = new ModelMapper();
-        Question question = questionService.findByName(name);
-        return modelMapper.map(question, QuestionDto.class);
+        Question item = questionService.findByNameQuestion(nameQuestion);
+        return modelMapper.map(item, QuestionDto.class);
     }
 	
-	@GetMapping("")
-	@ApiOperation(value = "List questions")
-	public List<QuestionDto> list(){
-		ModelMapper modelMapper = new ModelMapper();
-		return questionService.listAll()
-				  .stream()
-				  .map(item -> modelMapper.map(item, QuestionDto.class))
-				  .collect(Collectors.toList());
-	}
-
-    @GetMapping("/questionWithoutCareer")
-    @ApiOperation(value = "List questions without career")
-    public List<QuestionDto> listQuestionWithoutCareer() {
-        ModelMapper modelMapper = new ModelMapper();
-        return questionService.listAllWithoutCareer()
-                              .stream()
-                              .map(item -> modelMapper.map(item, QuestionDto.class))
-                              .collect(Collectors.toList());
-    }
-
-    @GetMapping("/questionWithCareer")
-    @ApiOperation(value = "List questions with career")
-    public List<QuestionWithCareerDto> listQuestionWithCareer() {
-        List<QuestionWithCareerDto> questionWithCareerDtos = new ArrayList<>();
-        List<Question> questions = questionService.listAllWithCareer();
-        for (Question question : questions) {
-            questionWithCareerDtos.add(QuestionWithCareerDto.builder()
-                                                            .id(question.getId())
-                                                            .question(question.getQuestion())
-                                                            .groupQuestionId(question.getGroupQuestionId().getId())
-                                                            .questionCarrerId(question.getQuestionCarrerList().get(0).getCareerSigenuId())
-                                                            .build());
+	@PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create question")
+    public ResponseEntity<ApiResponse> save(@RequestBody QuestionDto item) {
+        try {
+            ModelMapper modelMapper = new ModelMapper();
+            Question question = modelMapper.map(item, Question.class);
+            questionService.save(question);
+        } catch (Exception e) {
+            return ResponseEntity.ok(new ApiResponse(false, "Error: Question hasn't been created"));
         }
-        return questionWithCareerDtos;
+        return ResponseEntity.ok(new ApiResponse(true, "Question created successfully"));
     }
 	
-	@ResponseStatus(HttpStatus.CREATED)
 	@PutMapping("")
+	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Update question registered")
 	public ResponseEntity<ApiResponse> update(@ApiParam(value = "Values for updating", name = "Body") @RequestBody QuestionDto item) {
 		try {
@@ -130,22 +75,23 @@ public class QuestionController {
 			Question question = modelMapper.map(item, Question.class);
 			questionService.update(question);
 		} catch (Exception e) {
-			return ResponseEntity.ok(new ApiResponse(false, "Error: Question hasn't been updated@"));
+			return ResponseEntity.ok(new ApiResponse(false, "Error: Question hasn't been updated"));
 		}
-		return ResponseEntity.ok(new ApiResponse(true, "Question updated successfully@"));
+		return ResponseEntity.ok(new ApiResponse(true, "Question updated successfully"));
 	}
 	
-	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
 	@ApiOperation(value = "Delete question registered")
 	public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
 		try {
 			questionService.delete(id);
 		} catch (Exception e) {
 			if(e instanceof DataIntegrityViolationException)
-				return ResponseEntity.ok(new ApiResponse(false, "Question CAN'T be deleted because has been reference by another entity"));
-			return ResponseEntity.ok(new ApiResponse(false, "Question CAN'T be deleted"));
+				return ResponseEntity.ok(new ApiResponse(false,
+						"Error: Question can't be deleted because has been reference by another entity"));
+			return ResponseEntity.ok(new ApiResponse(false, "Error: Question can't be deleted"));
 		}
-		return ResponseEntity.ok(new ApiResponse(true, "Question deleted successfully@"));
+		return ResponseEntity.ok(new ApiResponse(true, "Question deleted successfully"));
 	}
 }

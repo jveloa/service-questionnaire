@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AnswerDto {
     private Integer id;
-    private String answer;
+    private String nameAnswer;
 }

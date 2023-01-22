@@ -1,14 +1,13 @@
 package cu.edu.mes.sigenu.training.service;
 
 
-import cu.edu.mes.sigenu.training.core.model.QuestionnarieStudent;
+import cu.edu.mes.sigenu.training.core.model.QuestionnaireStudent;
 import cu.edu.mes.sigenu.training.core.repository.QuestionnaireStudentRepository;
 import cu.edu.mes.sigenu.training.core.service.QuestionnaireStudentService;
 import cu.edu.mes.sigenu.training.core.service.SigenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.rmi.RemoteException;
 import java.util.List;
 
 @Service
@@ -20,38 +19,23 @@ public class QuestionnaireStudentServiceImpl implements QuestionnaireStudentServ
     @Autowired
     private SigenuService sigenuService;
 
-    @Override
-    public List<QuestionnarieStudent> listAllByStudent(String sigenuId) {
-        return questionnaireStudentRepository.findAllByStudentSigenuId(sigenuId);
-    }
+	@Override
+	public List<String> listAllByQuestionnaire(Integer questionnaireId) {
+		return questionnaireStudentRepository.findAllByQuestionnaire(questionnaireId);
+	}
 
-    @Override
-    public QuestionnarieStudent findById(Integer id) {
-        if (questionnaireStudentRepository.existsById(id))
+	@Override
+	public QuestionnaireStudent findById(Integer id) {
+		if (questionnaireStudentRepository.existsById(id))
             return questionnaireStudentRepository.findById(id).get();
         else
-            return new QuestionnarieStudent();
-    }
+            return new QuestionnaireStudent();
+	}
 
-    @Override
-    public QuestionnarieStudent save(QuestionnarieStudent questionnarieStudent, String identification) {
-        String studentSigenu = sigenuService.getStudentIdByIdentification(identification);
-        questionnarieStudent.setStudentSigenuId(studentSigenu);
-        return questionnaireStudentRepository.save(questionnarieStudent);
-    }
-
-    @Override
-    public QuestionnarieStudent update(QuestionnarieStudent questionnarieStudent) {
-        QuestionnarieStudent itemDB = findById(questionnarieStudent.getId());
-        itemDB.setStudentSigenuId(questionnarieStudent.getStudentSigenuId());
-        itemDB.setQuestionnarieId(questionnarieStudent.getQuestionnarieId());
-        itemDB.setDoneDate(questionnarieStudent.getDoneDate());
-        return questionnaireStudentRepository.save(itemDB);
-    }
-
-    @Override
-    public void delete(Integer id) {
-        questionnaireStudentRepository.deleteById(id);
-
-    }
+	@Override
+	public QuestionnaireStudent save(QuestionnaireStudent questionnaireStudent, String identification) {
+		String studentSigenuId = sigenuService.getStudentIdByIdentification(identification);
+        questionnaireStudent.setStudentSigenuId(studentSigenuId);
+        return questionnaireStudentRepository.save(questionnaireStudent);
+	}
 }

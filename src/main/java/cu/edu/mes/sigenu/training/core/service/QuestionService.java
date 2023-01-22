@@ -5,23 +5,18 @@ import java.util.List;
 import cu.edu.mes.sigenu.training.core.model.Question;
 
 public interface QuestionService {
+	
 	List<Question> listAll();
-
-	List<Question> listAllWithoutCareer();
-
-	List<Question> listAllWithCareer();
-
-	List<Question> getQuestionByQuestionnaire(Integer questionnaireId);
-
-	Question findByName(String name);
 	
 	Question findById(Integer id);
 	
-	Question save(Question faq);
+	Question findByNameQuestion(String nameQuestion);
 	
-	Question update(Question faq);
+	Question save(Question question);
 	
-	void delete(Integer id) throws Exception;
+	Question update(Question question);
+	
+	void delete(Integer id);
 
-	
+	List<Question> getQuestionByQuestionnaire(Integer questionnaireId);
 }

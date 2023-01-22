@@ -1,6 +1,5 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
-
 import cu.edu.mes.sigenu.training.core.dto.AnswerDto;
 import cu.edu.mes.sigenu.training.core.model.Answer;
 import cu.edu.mes.sigenu.training.core.service.AnswerService;
@@ -28,7 +27,7 @@ public class AnswerController {
     private AnswerService answerService;
 
     @GetMapping("")
-    @ApiOperation(value = "Get a List with all answer")
+    @ApiOperation(value = "Get a list with all answers")
     public List<AnswerDto> list() {
         ModelMapper modelMapper = new ModelMapper();
         return answerService.listAll()
@@ -60,8 +59,8 @@ public class AnswerController {
         return ResponseEntity.ok(new ApiResponse(true, "Answer created successfully"));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Update answer registered")
     public ResponseEntity<ApiResponse> update(@ApiParam(value = "Values for updating", name = "Body") @RequestBody AnswerDto item) {
         try {
@@ -69,13 +68,13 @@ public class AnswerController {
             Answer answer = modelMapper.map(item, Answer.class);
             answerService.update(answer);
         } catch (Exception e) {
-            return ResponseEntity.ok(new ApiResponse(false, "Error: Answer hasn't been updated@"));
+            return ResponseEntity.ok(new ApiResponse(false, "Error: Answer hasn't been updated"));
         }
-        return ResponseEntity.ok(new ApiResponse(true, "Answer updated successfully@"));
+        return ResponseEntity.ok(new ApiResponse(true, "Answer updated successfully"));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Delete answer registered")
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
         try {
@@ -83,9 +82,10 @@ public class AnswerController {
         } catch (Exception e) {
             if (e instanceof DataIntegrityViolationException)
                 return ResponseEntity.ok(
-                    new ApiResponse(false, "Answer CAN'T be deleted because has been reference by another entity"));
-            return ResponseEntity.ok(new ApiResponse(false, "Answer CAN'T be deleted"));
+                    new ApiResponse(false, 
+                    		"Error: Answer can't be deleted because has been reference by another entity"));
+            return ResponseEntity.ok(new ApiResponse(false, "Error: Answer can't be deleted"));
         }
-        return ResponseEntity.ok(new ApiResponse(true, "Answer deleted successfully@"));
+        return ResponseEntity.ok(new ApiResponse(true, "Answer deleted successfully"));
     }
 }

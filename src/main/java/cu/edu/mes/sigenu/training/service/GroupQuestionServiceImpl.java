@@ -21,16 +21,16 @@ public class GroupQuestionServiceImpl implements GroupQuestionService {
     }
 
     @Override
-    public GroupQuestion findByName(String name) {
-        return groupQuestionRepository.findByNameGroup(name);
-    }
-
-    @Override
     public GroupQuestion findById(Integer id) {
         if (groupQuestionRepository.existsById(id))
           return groupQuestionRepository.findById(id).get();
         else
             return new GroupQuestion();
+    }
+    
+    @Override
+    public GroupQuestion findByNameGroup(String name) {
+        return groupQuestionRepository.findByNameGroup(name);
     }
 
     @Override
@@ -40,15 +40,15 @@ public class GroupQuestionServiceImpl implements GroupQuestionService {
 
     @Override
     public GroupQuestion update(GroupQuestion groupQuestion) {
-        GroupQuestion itemDB = findById(groupQuestion.getId());
-        itemDB.setDescription(groupQuestion.getDescription());
-        itemDB.setNameGroup(groupQuestion.getNameGroup());
-        itemDB.setOrganizationOrder(groupQuestion.getOrganizationOrder());
-        return groupQuestionRepository.save(itemDB);
+        GroupQuestion aux = findById(groupQuestion.getId());
+        aux.setNameGroup(groupQuestion.getNameGroup());
+        aux.setDescription(groupQuestion.getDescription());
+        aux.setOrganizationOrder(groupQuestion.getOrganizationOrder());
+        return groupQuestionRepository.save(aux);
     }
 
     @Override
     public void delete(Integer id) {
-        groupQuestionRepository.deleteById(id);
+    	groupQuestionRepository.delete(new GroupQuestion(id));
     }
 }

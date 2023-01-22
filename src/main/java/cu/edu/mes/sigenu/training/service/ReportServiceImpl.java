@@ -36,14 +36,14 @@ public class ReportServiceImpl implements ReportService {
             count = i+3;
             BasicStudentVO studentSigenu = getInfoBasicStudent(list.get(i).getStudentSigenuId());
             for (int j = i; j < count; j++){
-                if (list.get(j).getQuestionAnswerId().getQuestionId().getQuestion().contains("Tienes interés")){
-                    answerInterest = list.get(j).getQuestionAnswerId().getAnswerId().getAnswer();
+                if (list.get(j).getQuestionAnswerId().getQuestionId().getNameQuestion().contains("Tienes interés")){
+                    answerInterest = list.get(j).getQuestionAnswerId().getAnswerId().getNameAnswer();
                 }
-                else if (list.get(j).getQuestionAnswerId().getQuestionId().getQuestion().contains("Experiencias")){
-                     answerExp = list.get(j).getQuestionAnswerId().getAnswerId().getAnswer();
+                else if (list.get(j).getQuestionAnswerId().getQuestionId().getNameQuestion().contains("Experiencias")){
+                     answerExp = list.get(j).getQuestionAnswerId().getAnswerId().getNameAnswer();
                 }
-                else if (list.get(j).getQuestionAnswerId().getQuestionId().getQuestion().contains("Organización")){
-                    answerOrg = list.get(j).getQuestionAnswerId().getAnswerId().getAnswer();
+                else if (list.get(j).getQuestionAnswerId().getQuestionId().getNameQuestion().contains("Organización")){
+                    answerOrg = list.get(j).getQuestionAnswerId().getAnswerId().getNameAnswer();
                 }
 
 
@@ -108,10 +108,10 @@ public class ReportServiceImpl implements ReportService {
 
                 listStudent.get(listStudent.size() - 1)
                            .getSports()
-                           .add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
+                           .add(studentAnswer.getQuestionAnswerId().getQuestionId().getNameQuestion());
 
             } else {
-                sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
+                sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getNameQuestion());
                      studentSigenu = getInfoBasicStudent(studentAnswer.getStudentSigenuId());
                 StudentSportDto item = StudentSportDto.builder()
                                                       .name((studentSigenu.getName() + " "
@@ -146,10 +146,10 @@ public class ReportServiceImpl implements ReportService {
 
                 listStudent.get(listStudent.size() - 1)
                            .getArts()
-                           .add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
+                           .add(studentAnswer.getQuestionAnswerId().getQuestionId().getNameQuestion());
 
             } else {
-                arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
+                arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getNameQuestion());
                      studentSigenu = getInfoBasicStudent(studentAnswer.getStudentSigenuId());
                 StudentArtDto item = StudentArtDto.builder()
                                                   .name((studentSigenu.getName() + " "
@@ -183,9 +183,9 @@ public class ReportServiceImpl implements ReportService {
              studentSigenu = getInfoBasicStudent(studentAnswer.getStudentSigenuId());
 
             if (studentAnswer.getQuestionAnswerId().getQuestionId().getGroupQuestionId().getNameGroup().equals("Deportes")) {
-                sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
+                sports.add(studentAnswer.getQuestionAnswerId().getQuestionId().getNameQuestion());
             } else
-                arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getQuestion());
+                arts.add(studentAnswer.getQuestionAnswerId().getQuestionId().getNameQuestion());
 
             if(aux == list.size()- 1){
                 listStudent.add(addDeportArtList(studentSigenu,sports,arts));

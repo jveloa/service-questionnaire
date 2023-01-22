@@ -12,10 +12,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionnaireStudentDto {
-
-    private String studentSigenuId;
+	private Integer id;
+	private String studentSigenuId;
     private String identification;
     private Date doneDate;
-    private Integer id;
-    private QuestionnaireDto questionnarieId;
+    private QuestionnaireDto questionnaireId;
 }

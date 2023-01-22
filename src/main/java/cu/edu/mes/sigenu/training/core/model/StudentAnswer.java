@@ -28,19 +28,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "StudentAnswer.findAll", query = "SELECT s FROM StudentAnswer s")
-    , @NamedQuery(name = "StudentAnswer.findByStudentSigenuId", query = "SELECT s FROM StudentAnswer s WHERE s.studentSigenuId = :studentSigenuId")
-    , @NamedQuery(name = "StudentAnswer.findById", query = "SELECT s FROM StudentAnswer s WHERE s.id = :id")})
+    , @NamedQuery(name = "StudentAnswer.findById", query = "SELECT s FROM StudentAnswer s WHERE s.id = :id")
+    , @NamedQuery(name = "StudentAnswer.findByStudentSigenuId", query = "SELECT s FROM StudentAnswer s WHERE s.studentSigenuId = :studentSigenuId")})
 public class StudentAnswer implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @Column(name = "student_sigenu_id")
-    private String studentSigenuId;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @Column(name = "student_sigenu_id")
+    private String studentSigenuId;
     @JoinColumn(name = "question_answer_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private QuestionAnswer questionAnswerId;
@@ -56,6 +56,14 @@ public class StudentAnswer implements Serializable {
         this.id = id;
         this.studentSigenuId = studentSigenuId;
     }
+    
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getStudentSigenuId() {
         return studentSigenuId;
@@ -63,14 +71,6 @@ public class StudentAnswer implements Serializable {
 
     public void setStudentSigenuId(String studentSigenuId) {
         this.studentSigenuId = studentSigenuId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public QuestionAnswer getQuestionAnswerId() {
@@ -105,5 +105,4 @@ public class StudentAnswer implements Serializable {
     public String toString() {
         return "cu.edu.mes.sigenu.training.core.model.StudentAnswer[ id=" + id + " ]";
     }
-    
 }

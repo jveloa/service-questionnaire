@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentAnswerDto {
     private Integer id;
-    private String identification;
     private String studentSigenuId;
+    private String identification;
     private QuestionAnswerDto questionAnswerId;
-
 }

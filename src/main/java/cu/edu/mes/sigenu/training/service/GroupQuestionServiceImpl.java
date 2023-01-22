@@ -51,4 +51,9 @@ public class GroupQuestionServiceImpl implements GroupQuestionService {
     public void delete(Integer id) {
     	groupQuestionRepository.delete(new GroupQuestion(id));
     }
+
+	@Override
+	public int lastOrder() {
+		return groupQuestionRepository.lastOrder();
+	}
 }

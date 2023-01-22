@@ -17,4 +17,6 @@ public interface GroupQuestionService {
     GroupQuestion update(GroupQuestion groupQuestion);
 
     void delete(Integer id);
+    
+    int lastOrder();
 }

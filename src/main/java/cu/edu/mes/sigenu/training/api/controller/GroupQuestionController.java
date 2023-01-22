@@ -43,6 +43,14 @@ public class GroupQuestionController {
         GroupQuestion item = groupQuestionService.findById(id);
         return modelMapper.map(item, GroupQuestionDto.class);
     }
+    
+    @GetMapping("/order")
+    @ApiOperation(value = "Get last organization order")
+    public int getLastOrder(){
+    	ModelMapper modelMapper = new ModelMapper();
+        int item = groupQuestionService.lastOrder();
+        return modelMapper.map(item, Integer.class);
+    }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)

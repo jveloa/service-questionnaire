@@ -1,7 +1,5 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
-
-
 import cu.edu.mes.sigenu.training.core.dto.GroupQuestionDto;
 import cu.edu.mes.sigenu.training.core.model.GroupQuestion;
 import cu.edu.mes.sigenu.training.core.service.GroupQuestionService;
@@ -19,7 +17,6 @@ import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @RestController
 @Api(tags = "Group Question endpoint controller")
 @RequestMapping(value = "/group-question",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,22 +26,30 @@ public class GroupQuestionController {
     private GroupQuestionService groupQuestionService;
 
     @GetMapping("")
-    @ApiOperation(value = "Get a List with all group question")
+    @ApiOperation(value = "Get a list with all group questions")
     public List<GroupQuestionDto> list(){
         ModelMapper modelMapper = new ModelMapper();
-        return groupQuestionService.listAll().stream()
+        return groupQuestionService.listAll()
+        		                   .stream()
                                    .map(item -> modelMapper.map(item,GroupQuestionDto.class))
                                    .collect(Collectors.toList());
 
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get Group question by id")
+    @ApiOperation(value = "Get group question by id")
     public GroupQuestionDto get(@PathVariable Integer id){
-            ModelMapper modelMapper = new ModelMapper();
-            GroupQuestion item = groupQuestionService.findById(id);
-            return modelMapper.map(item, GroupQuestionDto.class);
-
+    	ModelMapper modelMapper = new ModelMapper();
+        GroupQuestion item = groupQuestionService.findById(id);
+        return modelMapper.map(item, GroupQuestionDto.class);
+    }
+    
+    @GetMapping("/order")
+    @ApiOperation(value = "Get last organization order")
+    public int getLastOrder(){
+    	ModelMapper modelMapper = new ModelMapper();
+        int item = groupQuestionService.lastOrder();
+        return modelMapper.map(item, Integer.class);
     }
 
     @PostMapping("")
@@ -61,8 +66,8 @@ public class GroupQuestionController {
         return ResponseEntity.ok(new ApiResponse(true,"Group Question created successfully"));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Update group question registered")
     public ResponseEntity<ApiResponse> update(@ApiParam(value = "Values for updating", name = "Body") @RequestBody GroupQuestionDto item) {
         try {
@@ -70,24 +75,23 @@ public class GroupQuestionController {
             GroupQuestion groupQuestion = modelMapper.map(item, GroupQuestion.class);
             groupQuestionService.update(groupQuestion);
         } catch (Exception e) {
-            return ResponseEntity.ok(new ApiResponse(false, "Error: Group question hasn't been updated@"));
+            return ResponseEntity.ok(new ApiResponse(false, "Error: Group Question hasn't been updated"));
         }
-        return ResponseEntity.ok(new ApiResponse(true, "Group question updated successfully@"));
+        return ResponseEntity.ok(new ApiResponse(true, "Group Question updated successfully"));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Delete group question registered")
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
         try {
             groupQuestionService.delete(id);
         } catch (Exception e) {
             if(e instanceof DataIntegrityViolationException)
-                return ResponseEntity.ok(new ApiResponse(false, "Group question CAN'T be deleted because has been reference by another entity"));
-            return ResponseEntity.ok(new ApiResponse(false, "Group question CAN'T be deleted"));
+                return ResponseEntity.ok(new ApiResponse(false,
+                		"Error: Group Question can't be deleted because has been reference by another entity"));
+            return ResponseEntity.ok(new ApiResponse(false, "Error: Group Question can't be deleted"));
         }
-        return ResponseEntity.ok(new ApiResponse(true, "Group question deleted successfully@"));
+        return ResponseEntity.ok(new ApiResponse(true, "Group Question deleted successfully"));
     }
-
-
 }

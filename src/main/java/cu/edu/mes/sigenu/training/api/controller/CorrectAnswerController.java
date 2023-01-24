@@ -1,13 +1,15 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
 import cu.edu.mes.sigenu.training.core.dto.CorrectAnswerDto;
-import cu.edu.mes.sigenu.training.core.dto.CorrectAnswerDto;
-import cu.edu.mes.sigenu.training.core.model.CorrectAnswer;
 import cu.edu.mes.sigenu.training.core.model.CorrectAnswer;
 import cu.edu.mes.sigenu.training.core.service.CorrectAnswerService;
 import cu.edu.mes.sigenu.training.core.utils.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,12 +20,22 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Api(tags = "Correct Answer endpoint controller")
-@RequestMapping(value = "/correct-asnwer", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/correct-answer", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CorrectAnswerController {
 
     @Autowired
     private CorrectAnswerService correctAnswerService;
 
+    @GetMapping("")
+	@ApiOperation(value = "Get a list with all correct answers")
+	public List<CorrectAnswerDto> list() {
+		ModelMapper modelMapper = new ModelMapper();
+		return correctAnswerService.listAll()
+				                   .stream()
+				                   .map(item -> modelMapper.map(item, CorrectAnswerDto.class))
+				                   .collect(Collectors.toList());
+	}
+    
     @GetMapping("/{id}")
     @ApiOperation(value = "Get correct answer by id")
     public CorrectAnswerDto get(@PathVariable Integer id){
@@ -46,17 +58,18 @@ public class CorrectAnswerController {
         return ResponseEntity.ok(new ApiResponse(true,"Correct Answer created successfully"));
     }
 
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/{Id}")
     @ApiOperation(value = "Delete correct answer registered")
-    public ResponseEntity<ApiResponse> delete(@PathVariable Integer Id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
         try {
-            correctAnswerService.deleteById(Id);
+        	correctAnswerService.delete(id);
         } catch (Exception e) {
             if(e instanceof DataIntegrityViolationException)
-                return ResponseEntity.ok(new ApiResponse(false, "Correct Answer CAN'T be deleted because has been reference by another entity"));
-            return ResponseEntity.ok(new ApiResponse(false, "Correct Answer CAN'T be deleted"));
+                return ResponseEntity.ok(new ApiResponse(false, 
+                		"Error: Correct Answer can't be deleted because has been reference by another entity"));
+            return ResponseEntity.ok(new ApiResponse(false, "Error: Correct Answer can't be deleted"));
         }
-        return ResponseEntity.ok(new ApiResponse(true, "Correct Answer deleted successfully@"));
+        return ResponseEntity.ok(new ApiResponse(true, "Correct Answer deleted successfully"));
     }
 }

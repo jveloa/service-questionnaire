@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Questionnaire.findAll", query = "SELECT q FROM Questionnaire q")
     , @NamedQuery(name = "Questionnaire.findById", query = "SELECT q FROM Questionnaire q WHERE q.id = :id")
-    , @NamedQuery(name = "Questionnaire.findByName", query = "SELECT q FROM Questionnaire q WHERE q.name = :name")
+    , @NamedQuery(name = "Questionnaire.findByNameQuestionnaire", query = "SELECT q FROM Questionnaire q WHERE q.nameQuestionnaire = :nameQuestionnaire")
     , @NamedQuery(name = "Questionnaire.findByCareerSigenuId", query = "SELECT q FROM Questionnaire q WHERE q.careerSigenuId = :careerSigenuId")})
 public class Questionnaire implements Serializable {
 
@@ -43,15 +43,17 @@ public class Questionnaire implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
+    @Column(name = "name_questionnaire")
+    private String nameQuestionnaire;
     @Basic(optional = false)
     @Column(name = "career_sigenu_id")
     private String careerSigenuId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionnaireId")
+    private List<QuestionnaireCourse> questionnaireCourseList;
     @ManyToMany(mappedBy = "questionnaireList")
     private List<Question> questionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionnarieId")
-    private List<QuestionnarieStudent> questionnarieStudentList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionnaireId")
+    private List<QuestionnaireStudent> questionnaireStudentList;
 
     public Questionnaire() {
     }
@@ -60,9 +62,9 @@ public class Questionnaire implements Serializable {
         this.id = id;
     }
 
-    public Questionnaire(Integer id, String name, String careerSigenuId) {
+    public Questionnaire(Integer id, String nameQuestionnaire, String careerSigenuId) {
         this.id = id;
-        this.name = name;
+        this.nameQuestionnaire = nameQuestionnaire;
         this.careerSigenuId = careerSigenuId;
     }
 
@@ -74,12 +76,12 @@ public class Questionnaire implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNameQuestionnaire() {
+        return nameQuestionnaire;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameQuestionnaire(String nameQuestionnaire) {
+        this.nameQuestionnaire = nameQuestionnaire;
     }
 
     public String getCareerSigenuId() {
@@ -88,6 +90,15 @@ public class Questionnaire implements Serializable {
 
     public void setCareerSigenuId(String careerSigenuId) {
         this.careerSigenuId = careerSigenuId;
+    }
+    
+    @XmlTransient
+    public List<QuestionnaireCourse> getQuestionnaireCourseList() {
+        return questionnaireCourseList;
+    }
+
+    public void setQuestionnaireCourseList(List<QuestionnaireCourse> questionnaireCourseList) {
+        this.questionnaireCourseList = questionnaireCourseList;
     }
 
     @XmlTransient
@@ -100,12 +111,12 @@ public class Questionnaire implements Serializable {
     }
 
     @XmlTransient
-    public List<QuestionnarieStudent> getQuestionnarieStudentList() {
-        return questionnarieStudentList;
+    public List<QuestionnaireStudent> getQuestionnaireStudentList() {
+        return questionnaireStudentList;
     }
 
-    public void setQuestionnarieStudentList(List<QuestionnarieStudent> questionnarieStudentList) {
-        this.questionnarieStudentList = questionnarieStudentList;
+    public void setQuestionnaireStudentList(List<QuestionnaireStudent> questionnaireStudentList) {
+        this.questionnaireStudentList = questionnaireStudentList;
     }
 
     @Override
@@ -131,6 +142,5 @@ public class Questionnaire implements Serializable {
     @Override
     public String toString() {
         return "cu.edu.mes.sigenu.training.core.model.Questionnaire[ id=" + id + " ]";
-    }
-    
+    }    
 }

@@ -1,9 +1,7 @@
 package cu.edu.mes.sigenu.training.service;
-import cu.edu.mes.sigenu.training.core.model.Question;
+
 import cu.edu.mes.sigenu.training.core.model.Questionnaire;
 import cu.edu.mes.sigenu.training.core.repository.QuestionnaireRepository;
-import cu.edu.mes.sigenu.training.core.service.QuestionService;
-import cu.edu.mes.sigenu.training.core.service.QuestionnaireQuestionService;
 import cu.edu.mes.sigenu.training.core.service.QuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +13,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
     @Autowired
     private QuestionnaireRepository questionnaireRepository;
-
-    @Autowired
-    private QuestionService questionService;
-
-    @Autowired
-    private QuestionnaireQuestionService questionnaireQuestionService;
 
     @Override
     public List<Questionnaire> listAll() {
@@ -42,17 +34,13 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
     @Override
     public Questionnaire update(Questionnaire questionnaire) {
-        Questionnaire itemDB = findById(questionnaire.getId());
-        itemDB.setName(questionnaire.getName());
-        return questionnaireRepository.save(itemDB);
+        Questionnaire aux = findById(questionnaire.getId());
+        aux.setNameQuestionnaire(questionnaire.getNameQuestionnaire());
+        return questionnaireRepository.save(aux);
     }
 
     @Override
     public void delete(Integer id) {
-        Questionnaire questionnaire = questionnaireRepository.findById(id).get();
-        List<Question> questionList =  questionnaire.getQuestionList();
-        questionList.forEach(question -> questionnaireQuestionService.deleteQuestionToQuestionnaire(id,question.getId()));
-        questionnaireRepository.deleteById(id);
-
+    	questionnaireRepository.delete(new Questionnaire(id));
     }
 }

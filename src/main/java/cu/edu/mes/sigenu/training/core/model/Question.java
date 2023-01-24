@@ -34,8 +34,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q")
     , @NamedQuery(name = "Question.findById", query = "SELECT q FROM Question q WHERE q.id = :id")
-    , @NamedQuery(name = "Question.findByQuestion", query = "SELECT q FROM Question q WHERE q.question = :question")
-    , @NamedQuery(name = "Question.findByIsEvaluationQuestion", query = "SELECT q FROM Question q WHERE q.isEvaluationQuestion = :isEvaluationQuestion")})
+    , @NamedQuery(name = "Question.findByNameQuestion", query = "SELECT q FROM Question q WHERE q.nameQuestion = :nameQuestion")
+    , @NamedQuery(name = "Question.findByIsEvaluationQuestion", query = "SELECT q FROM Question q WHERE q.isEvaluationQuestion = :isEvaluationQuestion")
+    , @NamedQuery(name = "Question.findByIsSpecificQuestion", query = "SELECT q FROM Question q WHERE q.isSpecificQuestion = ïsSpecificQuestion")
+    , @NamedQuery(name = "Question.findByIsCanceled", query = "SELECT q FROM Question q WHERE q.isCanceled = :isCanceled")})
 public class Question implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,11 +47,17 @@ public class Question implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "question")
-    private String question;
+    @Column(name = "name_question")
+    private String nameQuestion;
     @Basic(optional = false)
     @Column(name = "is_evaluation_question")
     private boolean isEvaluationQuestion;
+    @Basic(optional = false)
+    @Column(name = "is_specific_question")
+    private boolean isSpecificQuestion;
+    @Basic(optional = false)
+    @Column(name = "is_canceled")
+    private boolean isCanceled;
     @JoinTable(name = "questionnaire_question", joinColumns = {
         @JoinColumn(name = "question_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "questionnaire_id", referencedColumnName = "id")})
@@ -60,8 +68,6 @@ public class Question implements Serializable {
     private GroupQuestion groupQuestionId;
     @OneToMany(mappedBy = "questionId")
     private List<QuestionAnswer> questionAnswerList;
-    @OneToMany(mappedBy = "questionId")
-    private List<QuestionCarrer> questionCarrerList;
 
     public Question() {
     }
@@ -69,11 +75,19 @@ public class Question implements Serializable {
     public Question(Integer id) {
         this.id = id;
     }
+    
+    public Question(Integer id, String nameQuestion) {
+    	this.id = id;
+        this.nameQuestion = nameQuestion;
+    }
 
-    public Question(Integer id, String question, boolean isEvaluationQuestion) {
+    public Question(Integer id, String nameQuestion, boolean isEvaluationQuestion,
+    		boolean isSpecificQuestion, boolean isCanceled) {
         this.id = id;
-        this.question = question;
+        this.nameQuestion = nameQuestion;
         this.isEvaluationQuestion = isEvaluationQuestion;
+        this.isSpecificQuestion = isSpecificQuestion;
+        this.isCanceled = isCanceled;
     }
 
     public Integer getId() {
@@ -84,12 +98,12 @@ public class Question implements Serializable {
         this.id = id;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getNameQuestion() {
+        return nameQuestion;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setNameQuestion(String nameQuestion) {
+        this.nameQuestion = nameQuestion;
     }
 
     public boolean getIsEvaluationQuestion() {
@@ -98,6 +112,22 @@ public class Question implements Serializable {
 
     public void setIsEvaluationQuestion(boolean isEvaluationQuestion) {
         this.isEvaluationQuestion = isEvaluationQuestion;
+    }
+    
+    public boolean getIsSpecificQuestion() {
+        return isSpecificQuestion;
+    }
+
+    public void setIsSpecificQuestion(boolean isSpecificQuestion) {
+        this.isSpecificQuestion = isSpecificQuestion;
+    }
+    
+    public boolean getIsCanceled() {
+        return isCanceled;
+    }
+
+    public void setIsCanceled(boolean isCanceled) {
+        this.isCanceled = isCanceled;
     }
 
     @XmlTransient
@@ -126,15 +156,6 @@ public class Question implements Serializable {
         this.questionAnswerList = questionAnswerList;
     }
 
-    @XmlTransient
-    public List<QuestionCarrer> getQuestionCarrerList() {
-        return questionCarrerList;
-    }
-
-    public void setQuestionCarrerList(List<QuestionCarrer> questionCarrerList) {
-        this.questionCarrerList = questionCarrerList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -158,6 +179,5 @@ public class Question implements Serializable {
     @Override
     public String toString() {
         return "cu.edu.mes.sigenu.training.core.model.Question[ id=" + id + " ]";
-    }
-    
+    }    
 }

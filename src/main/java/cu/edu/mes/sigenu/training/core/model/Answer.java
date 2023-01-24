@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Answer.findAll", query = "SELECT a FROM Answer a")
     , @NamedQuery(name = "Answer.findById", query = "SELECT a FROM Answer a WHERE a.id = :id")
-    , @NamedQuery(name = "Answer.findByAnswer", query = "SELECT a FROM Answer a WHERE a.answer = :answer")})
+    , @NamedQuery(name = "Answer.findByNameAnswer", query = "SELECT a FROM Answer a WHERE a.nameAnswer = :nameAnswer")})
 public class Answer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,8 +41,8 @@ public class Answer implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "answer")
-    private String answer;
+    @Column(name = "name_answer")
+    private String nameAnswer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "answerId")
     private List<QuestionAnswer> questionAnswerList;
 
@@ -53,9 +53,9 @@ public class Answer implements Serializable {
         this.id = id;
     }
 
-    public Answer(Integer id, String answer) {
+    public Answer(Integer id, String nameAnswer) {
         this.id = id;
-        this.answer = answer;
+        this.nameAnswer = nameAnswer;
     }
 
     public Integer getId() {
@@ -66,12 +66,12 @@ public class Answer implements Serializable {
         this.id = id;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getNameAnswer() {
+        return nameAnswer;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setNameAnswer(String nameAnswer) {
+        this.nameAnswer = nameAnswer;
     }
 
     @XmlTransient
@@ -107,5 +107,4 @@ public class Answer implements Serializable {
     public String toString() {
         return "cu.edu.mes.sigenu.training.core.model.Answer[ id=" + id + " ]";
     }
-    
 }

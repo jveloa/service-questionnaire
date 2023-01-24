@@ -14,8 +14,8 @@ public class StudentAnswerServiceImpl implements StudentAnswerService {
     private StudentAnswerRepository studentAnswerRepository;
 
     @Override
-    public List<StudentAnswer> listAllByStudent(String sigenuId) {
-        return studentAnswerRepository.findAllByStudentSigenuId(sigenuId);
+    public List<StudentAnswer> listAllByStudentSigenuId(String studentSigenuId) {
+        return studentAnswerRepository.findAllByStudentSigenuId(studentSigenuId);
     }
 
     @Override
@@ -29,18 +29,5 @@ public class StudentAnswerServiceImpl implements StudentAnswerService {
     @Override
     public List<StudentAnswer> save(List<StudentAnswer> studentAnswer) {
         return studentAnswerRepository.saveAll(studentAnswer);
-    }
-
-    @Override
-    public StudentAnswer update(StudentAnswer studentAnswer) {
-        StudentAnswer itemDb = findById(studentAnswer.getId());
-        itemDb.setStudentSigenuId(studentAnswer.getStudentSigenuId());
-        itemDb.setQuestionAnswerId(studentAnswer.getQuestionAnswerId());
-        return studentAnswerRepository.save(itemDb);
-    }
-
-    @Override
-    public void delete(Integer id) {
-        studentAnswerRepository.deleteById(id);
     }
 }

@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "GroupQuestion.findAll", query = "SELECT g FROM GroupQuestion g")
     , @NamedQuery(name = "GroupQuestion.findById", query = "SELECT g FROM GroupQuestion g WHERE g.id = :id")
-    , @NamedQuery(name = "GroupQuestion.findByDescription", query = "SELECT g FROM GroupQuestion g WHERE g.description = :description")
     , @NamedQuery(name = "GroupQuestion.findByNameGroup", query = "SELECT g FROM GroupQuestion g WHERE g.nameGroup = :nameGroup")
+    , @NamedQuery(name = "GroupQuestion.findByDescription", query = "SELECT g FROM GroupQuestion g WHERE g.description = :description")
     , @NamedQuery(name = "GroupQuestion.findByOrganizationOrder", query = "SELECT g FROM GroupQuestion g WHERE g.organizationOrder = :organizationOrder")})
 public class GroupQuestion implements Serializable {
 
@@ -42,11 +42,11 @@ public class GroupQuestion implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "description")
-    private String description;
     @Basic(optional = false)
     @Column(name = "name_group")
     private String nameGroup;
+    @Column(name = "description")
+    private String description;
     @Column(name = "organization_order")
     private Integer organizationOrder;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupQuestionId")
@@ -63,6 +63,25 @@ public class GroupQuestion implements Serializable {
         this.id = id;
         this.nameGroup = nameGroup;
     }
+    
+    public GroupQuestion(Integer id, String nameGroup, String description) {
+    	this.id = id;
+        this.nameGroup = nameGroup;
+        this.description = description;
+    }
+    
+    public GroupQuestion(Integer id, String nameGroup, Integer organizationOrder) {
+    	this.id = id;
+        this.nameGroup = nameGroup;
+        this.organizationOrder = organizationOrder;
+    }
+    
+    public GroupQuestion(Integer id, String nameGroup, String description, Integer organizationOrder) {
+    	this.id = id;
+        this.nameGroup = nameGroup;
+        this.description = description;
+        this.organizationOrder = organizationOrder;
+    }
 
     public Integer getId() {
         return id;
@@ -71,6 +90,14 @@ public class GroupQuestion implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+    
+    public String getNameGroup() {
+        return nameGroup;
+    }
+
+    public void setNameGroup(String nameGroup) {
+        this.nameGroup = nameGroup;
+    }
 
     public String getDescription() {
         return description;
@@ -78,14 +105,6 @@ public class GroupQuestion implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getNameGroup() {
-        return nameGroup;
-    }
-
-    public void setNameGroup(String nameGroup) {
-        this.nameGroup = nameGroup;
     }
 
     public Integer getOrganizationOrder() {
@@ -129,5 +148,4 @@ public class GroupQuestion implements Serializable {
     public String toString() {
         return "cu.edu.mes.sigenu.training.core.model.GroupQuestion[ id=" + id + " ]";
     }
-    
 }

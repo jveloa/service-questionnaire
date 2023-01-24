@@ -88,5 +88,4 @@ public class CorrectAnswer implements Serializable {
     public String toString() {
         return "cu.edu.mes.sigenu.training.core.model.CorrectAnswer[ id=" + id + " ]";
     }
-    
 }

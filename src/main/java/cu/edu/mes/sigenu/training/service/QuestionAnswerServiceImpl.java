@@ -30,6 +30,25 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     }
 
     @Override
+    public QuestionAnswer save(QuestionAnswer questionAnswer) {
+        return questionAnswerRepository.save(questionAnswer);
+    }
+
+    @Override
+    public QuestionAnswer update(QuestionAnswer questionAnswer) {
+        QuestionAnswer aux = findById(questionAnswer.getId());
+        aux.setQuestionId(questionAnswer.getQuestionId());
+        aux.setAnswerId(questionAnswer.getAnswerId());
+        aux.setIsCanceled(questionAnswer.getIsCanceled());
+        return questionAnswerRepository.save(aux);
+    }
+
+    @Override
+    public void delete(Integer id) {
+    	questionAnswerRepository.delete(new QuestionAnswer(id));
+    }
+
+    @Override
     public QuestionAnswer findByQuestionIdAnswerId(Question questionId, Answer answerId){
         return questionAnswerRepository.getByQuestionIdAndAnswerId(questionId, answerId);
     }
@@ -38,23 +57,4 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     public List<QuestionAnswer> getByQuestionId(Question questionId) {
         return questionAnswerRepository.getByQuestionId(questionId);
     }
-
-    @Override
-    public QuestionAnswer save(QuestionAnswer questionAnswer) {
-        return questionAnswerRepository.save(questionAnswer);
-    }
-
-    @Override
-    public QuestionAnswer update(QuestionAnswer questionAnswer) {
-        QuestionAnswer itemDb = findById(questionAnswer.getId());
-        itemDb.setQuestionId(questionAnswer.getQuestionId());
-        itemDb.setAnswerId(questionAnswer.getAnswerId());
-        return questionAnswerRepository.save(itemDb);
-    }
-
-    @Override
-    public void delete(Integer id) {
-        questionAnswerRepository.deleteById(id);
-    }
-
 }

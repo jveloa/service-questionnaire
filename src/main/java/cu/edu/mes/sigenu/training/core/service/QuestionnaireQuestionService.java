@@ -7,13 +7,12 @@ import cu.edu.mes.sigenu.training.core.dto.QuestionnaireQuestionByGroupDto;
 import java.util.List;
 
 public interface QuestionnaireQuestionService {
+	
+	List<QuestionDto> getQuestionsByQuestionnaireId(Integer questionnaireId);
 
-    void addQuestionToQuestionnaire (Integer questionnaire_id, Integer question_id);
+    void addQuestionToQuestionnaire(Integer questionnaireId, Integer questionId);
 
-    void deleteQuestionToQuestionnaire (Integer questionnaire_id, Integer question_id);
+    void deleteQuestionToQuestionnaire(Integer questionnaireId, Integer questionId);
 
     List<QuestionnaireQuestionByGroupDto> getQuestionsByQuestionnaire(Integer questionnaireId);
-
-    List<QuestionDto> getQuestionsByQuestionnaireId(Integer questionnaire_id);
-
 }

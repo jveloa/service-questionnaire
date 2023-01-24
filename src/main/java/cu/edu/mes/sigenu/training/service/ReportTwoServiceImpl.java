@@ -67,7 +67,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         float percentNot = 0;
         float percentNever = 0;
         List<StudentsAnswerByAnswerByQuestionDto> listReport = new ArrayList<>();
-        List<Question> questions = questionRepository.findIQuestionsByGroupQuestion(year,questionnarieId);
+        List<Question> questions = questionRepository.findQuestionsByGroupQuestion(year,questionnarieId);
 
 
         for (int i = 0; i < questions.size(); i++ ){
@@ -80,18 +80,18 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                         ,list.get(j).getAnswerId().getId(),questionnarieId);
                 float percents = (part / total) * 100;
                 percents = (float) (Math.round(percents * 100d) / 100d);
-                Answer answer = answerRepository.findIAnswerName(list.get(j).getAnswerId().getId(),questionnarieId);
+                Answer answer = answerRepository.findAnswer(list.get(j).getAnswerId().getId(),questionnarieId);
 
-                if (answer.getAnswer().equals("Mucho")) {
+                if (answer.getNameAnswer().equals("Mucho")) {
                     percentMuch = percents;
 
-                } else if (answer.getAnswer().equals("Nunca")) {
+                } else if (answer.getNameAnswer().equals("Nunca")) {
                     percentNever = percents;
 
-                } else if (answer.getAnswer().equals("No sé")){
+                } else if (answer.getNameAnswer().equals("No sé")){
                     percentNot = percents;
 
-                }else if (answer.getAnswer().equals("Un poco")){
+                }else if (answer.getNameAnswer().equals("Un poco")){
                     percentLittle = percents;
 
                 }
@@ -99,7 +99,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
 
             }
             StudentsAnswerByAnswerByQuestionDto item = StudentsAnswerByAnswerByQuestionDto.builder()
-                    .nameQuestion(questions.get(i).getQuestion().toString())
+                    .nameQuestion(questions.get(i).getNameQuestion().toString())
                     .percentMuch(percentMuch)
                     .percentLittle(percentLittle)
                     .percentNot(percentNot)
@@ -131,7 +131,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
                 float percents = part / total * 100;
                 percents = (float) (Math.round(percents * 100d) / 100d);
                 PercentsStudyHoursByAnswerDto item = PercentsStudyHoursByAnswerDto.builder()
-                        .question(list.get(i).getAnswerId().getAnswer().toString())
+                        .question(list.get(i).getAnswerId().getNameAnswer().toString())
                         .value(percents)
                         .build();
                 listReport.add(item);
@@ -149,7 +149,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         if(year == 0 || questionnarieId == 0)
             return listReport;
 
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
+        List<QuestionnaireStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
 
         for (int i = 0; i < list.size(); i++){
 
@@ -173,7 +173,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         float noteSpanish = 0;
 
         List<StudentsNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
+        List<QuestionnaireStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
 
         for (int i = 0; i < list.size(); i++){
 
@@ -231,7 +231,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         int countMat = 0;
 
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year, questionnarieId);
+        List<QuestionnaireStudent> list = questionnaireStudentRepository.findAllByDate(year, questionnarieId);
         if(year == 0 || questionnarieId == 0 || list.isEmpty())
             return listReport;
 
@@ -305,7 +305,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         StudentVO studentSigenu = new StudentVO();
 
         List<StudentsWithNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
+        List<QuestionnaireStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
         List <Float> noteAcademic = new ArrayList<>();
         List <Float> noteSpanish = new ArrayList<>();
         List <Float> noteMat = new ArrayList<>();
@@ -393,7 +393,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         float spanish = 0;
 
         List<StudentsNotesDto> listReport = new ArrayList<>();
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
+        List<QuestionnaireStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
 
         for (int i = 0; i < list.size(); i++) {
 
@@ -477,7 +477,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         if(year == 0 || questionnarieId == 0)
             return listReport;
 
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
+        List<QuestionnaireStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
 
         for (int i = 0; i < list.size(); i++){
 
@@ -589,7 +589,7 @@ public class ReportTwoServiceImpl implements ReportTwoService {
         Integer quantityOptionPlusThree = 0;
 
 
-        List<QuestionnarieStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
+        List<QuestionnaireStudent> list = questionnaireStudentRepository.findAllByDate(year,questionnarieId);
 
         for (int i = 0; i < list.size(); i++){
 

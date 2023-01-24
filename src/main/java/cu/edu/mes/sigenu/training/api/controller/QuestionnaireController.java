@@ -1,7 +1,5 @@
 package cu.edu.mes.sigenu.training.api.controller;
 
-
-
 import cu.edu.mes.sigenu.training.core.dto.QuestionnaireDto;
 
 import cu.edu.mes.sigenu.training.core.model.Questionnaire;
@@ -30,12 +28,12 @@ public class QuestionnaireController {
     private QuestionnaireService questionnaireService;
 
     @GetMapping("")
-    @ApiOperation(value = "Get a List with all questionnaire")
+    @ApiOperation(value = "Get a list with all questionnaires")
     public List<QuestionnaireDto> list(){
         ModelMapper modelMapper = new ModelMapper();
         return questionnaireService.listAll().stream()
-                .map(item -> modelMapper.map(item,QuestionnaireDto.class))
-                .collect(Collectors.toList());
+                                   .map(item -> modelMapper.map(item,QuestionnaireDto.class))
+                                   .collect(Collectors.toList());
 
     }
 
@@ -45,7 +43,6 @@ public class QuestionnaireController {
         ModelMapper modelMapper = new ModelMapper();
         Questionnaire item = questionnaireService.findById(id);
         return modelMapper.map(item, QuestionnaireDto.class);
-
     }
 
     @PostMapping("")
@@ -57,13 +54,13 @@ public class QuestionnaireController {
             Questionnaire questionnaire = modelMapper.map(item,Questionnaire.class);
             questionnaireService.save(questionnaire);
         }catch (Exception e){
-            return ResponseEntity.ok(new ApiResponse(false,"Error: questionnaire hasn't created"));
+            return ResponseEntity.ok(new ApiResponse(false,"Error: Questionnaire hasn't created"));
         }
         return ResponseEntity.ok(new ApiResponse(true,"Questionnaire created successfully"));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Update questionnaire registered")
     public ResponseEntity<ApiResponse> update(@ApiParam(value = "Values for updating", name = "Body") @RequestBody QuestionnaireDto item) {
         try {
@@ -71,26 +68,23 @@ public class QuestionnaireController {
             Questionnaire questionnaire = modelMapper.map(item, Questionnaire.class);
             questionnaireService.update(questionnaire);
         } catch (Exception e) {
-            return ResponseEntity.ok(new ApiResponse(false, "Error: Questionnaire hasn't been updated@"));
+            return ResponseEntity.ok(new ApiResponse(false, "Error: Questionnaire hasn't been updated"));
         }
-        return ResponseEntity.ok(new ApiResponse(true, "Questionnaire updated successfully@"));
+        return ResponseEntity.ok(new ApiResponse(true, "Questionnaire updated successfully"));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Delete questionnaire registered")
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
         try {
-            Questionnaire questionnaire = questionnaireService.findById(id);
-            if (!questionnaire.getQuestionnarieStudentList().isEmpty()){
-                return ResponseEntity.ok(new ApiResponse(false, "Questionnaire has already been taken"));
-            }
             questionnaireService.delete(id);
         } catch (Exception e) {
             if(e instanceof DataIntegrityViolationException)
-                return ResponseEntity.ok(new ApiResponse(false, "Questionnaire CAN'T be deleted because has been reference by another entity"));
-            return ResponseEntity.ok(new ApiResponse(false, "Questionnaire CAN'T be deleted"));
+                return ResponseEntity.ok(new ApiResponse(false,
+                		"Error: Questionnaire can't be deleted because has been reference by another entity"));
+            return ResponseEntity.ok(new ApiResponse(false, "Error: Questionnaire can't be deleted"));
         }
-        return ResponseEntity.ok(new ApiResponse(true, "Questionnaire deleted successfully@"));
+        return ResponseEntity.ok(new ApiResponse(true, "Questionnaire deleted successfully"));
     }
 }

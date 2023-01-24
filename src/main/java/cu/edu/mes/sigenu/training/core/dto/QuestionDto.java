@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionDto {
-
     private Integer id;
+    private String nameQuestion;
 	private Integer groupQuestionId;
-	private String question;
     private boolean isEvaluationQuestion;
+    private boolean isSpecificQuestion;
+    private boolean isCanceled;
 }

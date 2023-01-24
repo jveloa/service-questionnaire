@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class QuestionnaireDto {
     private Integer id;
-    private String name;
+    private String nameQuestionnaire;
     private String careerSigenuId;
 }
